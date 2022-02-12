@@ -5,12 +5,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float walkSpeed;
-    private CharacterController controller;
 
     // Start is called before the first frame update
     void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        
     }
 
     // Update is called once per frame
@@ -20,6 +19,6 @@ public class Player : MonoBehaviour
         float ad = Input.GetAxis("Horizontal");
 
         Vector2 movement = new(ad*walkSpeed, ws*walkSpeed);
-        controller.Move(movement);
+        transform.position = new Vector2(transform.position.x+movement.x, transform.position.y+movement.y);
     }
 }
