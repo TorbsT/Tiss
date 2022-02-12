@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
         float ws = Input.GetAxis("Vertical");
         float ad = Input.GetAxis("Horizontal");
 
-        Vector3 movement = new(ad*walkSpeed, 0f, ws*walkSpeed);
+        Vector2 movement = new(ad*walkSpeed, ws*walkSpeed);
         controller.Move(movement);
     }
 }
