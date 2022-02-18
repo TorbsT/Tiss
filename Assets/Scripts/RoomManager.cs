@@ -5,8 +5,10 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
+    public int GeneratorPower => generatorPower;
 
     [SerializeField] private int mapSize;
+    [SerializeField] private int generatorPower;
     
     private Loader loader;
 
@@ -29,15 +31,23 @@ public class RoomManager : MonoBehaviour
         }
         loader.StartLoading(locsToLoad, new HashSet<Vector2Int>());
     }
-
+    public Room GetRoomById(Vector2Int id)
+    {
+        return loader.GetRoomById(id);
+    }
     public void NextRound()
     {
         Dictionary<Vector2Int, Room> loadedDict = loader.GetLoadedDict();
+        ICollection<Generator> loadedGenerators = loader.GetLoadedGenerators();
         foreach (Vector2Int key in loadedDict.Keys)
         {
             Room room = loadedDict[key];
             room.NewRotation += 1;
             room.StartRotationAnimation();
+        }
+        foreach (Generator gen in loadedGenerators)
+        {
+            gen.StartApplyingPower();
         }
     }
 }

@@ -9,10 +9,26 @@ public class Loader : MonoBehaviour
     private ICollection<Vector2Int> locsToLoad;
     private ICollection<Vector2Int> locsToUnload;
     private Dictionary<Vector2Int, Room> dict = new();
+    private HashSet<Generator> generators = new();
 
     [SerializeField] private bool running;
+    [SerializeField] private int generatorOdds = 10;
     [SerializeField] private float fpsPriority = 512f;
 
+    public Room GetRoomById(Vector2Int id)
+    {
+        if (!dict.ContainsKey(id)) return null;
+        return dict[id];
+    }
+    public ICollection<Generator> GetLoadedGenerators()
+    {
+        HashSet<Generator> result = new();
+        foreach (Generator gen in generators)
+        {
+            result.Add(gen);
+        }
+        return result;
+    }
     public Dictionary<Vector2Int, Room> GetLoadedDict()
     {
         Dictionary<Vector2Int, Room> result = new();
@@ -58,6 +74,15 @@ public class Loader : MonoBehaviour
         room.NewRotation = Random.Range(0, 4);
         room.StartRotationAnimation();
 
+        if (Random.Range(0, generatorOdds) == 0)
+        {
+            Generator gen = GeneratorPool.Instance.Depool();
+            gen.MaxPower = RoomManager.Instance.GeneratorPower;
+            gen.Place(room);
+            gen.StartApplyingPower();
+            generators.Add(gen);
+        }
+
         dict.Add(loc, room);
     }
     private void Unload(Vector2Int loc)
@@ -68,6 +93,12 @@ public class Loader : MonoBehaviour
             return;
         }
         Room room = dict[loc];
+
+        foreach (Generator gen in room.transform.GetComponentsInChildren<Generator>())
+        {
+            generators.Remove(gen);
+        }
+
         RoomPool.Instance.Enpool(room);
         dict.Remove(loc);
     }

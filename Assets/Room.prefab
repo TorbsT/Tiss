@@ -915,7 +915,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: {x: 0, y: 0}
   newRotation: 0
-  animationDuration: 1
+  newPower: 0
+  newDirection: 0
+  rotationAnimationDuration: 1
+  lightAnimationDuration: 0.95
   rotationCurve:
     serializedVersion: 2
     m_Curve:
@@ -940,7 +943,65 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  animStartRotation: 0
-  animTargetRotation: 0
-  animTime: 0
-  animRunning: 0
+  lightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  lightGradient:
+    serializedVersion: 2
+    key0: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
+    key1: {r: 0.6132076, g: 0.51864547, b: 0.36734605, a: 1}
+    key2: {r: 1, g: 0.79607844, b: 0.43137255, a: 1}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 4048
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 65535
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  floorSprite: {fileID: 6699193029441721932}
+  rotanimStartRotation: 0
+  rotanimTargetRotation: 0
+  rotanimTime: 0
+  rotanimRunning: 0
+  lightanimStartRatio: 0
+  lightanimTargetRatio: 0
+  lightanimTime: 0
+  lightanimRunning: 0

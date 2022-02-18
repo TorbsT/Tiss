@@ -10,6 +10,8 @@ namespace Pools
         [SerializeField] protected T prefab;
         [SerializeField] protected bool disableObjectsOnEnpool = true;
         [SerializeField] protected bool enableObjectsOnDepool = true;
+        [SerializeField] private int releasedCount;
+        [SerializeField] private int pooledCount;
 
         public static Pool<T> Instance { get { if (instance == null) Debug.LogError("NO INSTANCES OF " + typeof(Pool<T>) + " IN SCENE"); return instance; } }
 
@@ -32,11 +34,13 @@ namespace Pools
             if (enpooledObjects.Count > 0)
             {
                 result = enpooledObjects.Dequeue();
+                pooledCount--;
             } else
             {
                 result = Instantiate(prefab, transform);
             }
 
+            releasedCount++;
             JustDepooled(result);
             if (enableObjectsOnDepool) result.gameObject.SetActive(true);
             return result;
@@ -46,6 +50,8 @@ namespace Pools
             JustEnpooled(t);
             if (disableObjectsOnEnpool) t.gameObject.SetActive(false);
             t.transform.SetParent(transform);
+            releasedCount--;
+            pooledCount++;
             enpooledObjects.Enqueue(t);
         }
 
