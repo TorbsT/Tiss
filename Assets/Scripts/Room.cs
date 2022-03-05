@@ -110,7 +110,7 @@ public class Room : MonoBehaviour
         HashSet<Room> rooms = new();
         foreach (Vector2Int loc in neighbours)
         {
-            Room r = RoomManager.Instance.GetRoomById(loc);
+            Room r = RoomManager.Instance.LocToRoom(loc);
             if (r == null) continue;
             if (r.IsNeighbour(id)) rooms.Add(r);
         }

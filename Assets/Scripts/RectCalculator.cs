@@ -18,12 +18,15 @@ public class RectCalculator : MonoBehaviour
     }
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawCube(worldPosition, Vector2.one*50f);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(viewportPosition, Vector2.one*50f);
-        Gizmos.color = Color.green;
-        Gizmos.DrawCube(anchoredPosition, Vector2.one*50f);
+        if (gizmos)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(worldPosition, Vector2.one * 50f);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawCube(viewportPosition, Vector2.one * 50f);
+            Gizmos.color = Color.green;
+            Gizmos.DrawCube(anchoredPosition, Vector2.one * 50f);
+        }
     }
     public Vector2 WorldToScreenPoint(Vector2 worldPosition)
     {

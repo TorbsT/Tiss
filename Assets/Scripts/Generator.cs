@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pools;
+using Pathfinding;
 
-public class Generator : MonoBehaviour, IInteractable
+public class Generator : MonoBehaviour, IInteractable, IAttackable
 {
     private class PathfindingStep
     {
@@ -18,9 +19,10 @@ public class Generator : MonoBehaviour, IInteractable
     }
 
     public Vector3 Position => transform.position;
-    public bool Running => fuel > 0f;
+    public bool Running => running;
     public int MaxPower { get => maxPower; set { maxPower = value; } }
 
+    [SerializeField, Range(0f, 100f)] private float newFuel;
     [SerializeField, Range(0f, 100f)] private float fuel;
     [SerializeField] private Room parentRoom;
     [SerializeField] private int maxPower;
@@ -29,35 +31,41 @@ public class Generator : MonoBehaviour, IInteractable
     [SerializeField] private float interactDelay;
     [SerializeField] private bool isSearchingRooms;
     [SerializeField] private int roomSearchFrames;
+    [SerializeField] private bool updateRequested;
+    [SerializeField] private bool running;
 
     private float lastHoverTime;
+    private Target target;
     private Tooltip tooltip;
     private Dictionary<Room, int> poweredRooms = new();
     private Dictionary<Room, int> newCalculatedRooms = new();
     private Coroutine pathfindingRoutine;
 
+    void Awake()
+    {
+        target = GetComponent<Target>();
+    }
+
     // Start is called before the first frame update
     void OnEnable()
     {
-        fuel = 100f;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (updateRequested || newFuel != fuel)
+        {
+            if (isSearchingRooms) StopAllCoroutines();
+            StartCalculatingPower();
+            updateRequested = false;
+        }
     }
-
-    public void StartApplyingPower()
+    public void RequestUpdate()
     {
-        if (parentRoom == null) return;
-
-        if (Running) producedPower = maxPower;
-        else producedPower = 0;
-
-        pathfindingRoutine = StartCoroutine(PowerRoomsRoutine());
+        updateRequested = true;
     }
-
     public void Place(Room room)
     {
         if (room == null) Debug.LogWarning("Tried placing a generator in null room");
@@ -68,7 +76,19 @@ public class Generator : MonoBehaviour, IInteractable
             transform.localPosition = Vector2.zero;
         }
     }
-    private IEnumerator PowerRoomsRoutine()
+    private void StartCalculatingPower()
+    {
+        if (isSearchingRooms) StopCoroutine(pathfindingRoutine);
+        if (parentRoom == null) return;
+
+        if (running) producedPower = maxPower;
+        else producedPower = 0;
+
+        pathfindingRoutine = StartCoroutine(CalculateRoomsRoutine());
+    }
+
+
+    private IEnumerator CalculateRoomsRoutine()
     {
         isSearchingRooms = true;
         int frames = 1;
@@ -101,9 +121,11 @@ public class Generator : MonoBehaviour, IInteractable
             }
         }
         newCalculatedRooms = explored;
-        isSearchingRooms = false;
         roomSearchFrames = frames;
-        ApplyPowerToCalculatedRooms();
+
+        ApplyPowerToCalculatedRooms();  // ye
+
+        isSearchingRooms = false;
     }
     private void ApplyPowerToCalculatedRooms()
     {
@@ -116,9 +138,11 @@ public class Generator : MonoBehaviour, IInteractable
         {
             room.AddPowerSource(this, newCalculatedRooms[room]);
         }
-
+        Target.Discoverability discoverability = Target.Discoverability.hidden;
+        if (newFuel > 0f) discoverability = Target.Discoverability.discoverable;
+        target.SetDiscoverability(discoverability);
         poweredRooms = newCalculatedRooms;
-        fuel = Mathf.Max(0f, fuel - 25f);
+        fuel = newFuel;
     }
 
 
@@ -151,6 +175,21 @@ public class Generator : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        fuel = Mathf.Min(fuel + 25f, 100f);
+        AddFuel(25f);
+    }
+    public void Attack(float damage)
+    {
+        AddFuel(-damage);
+    }
+    public void AddFuel(float amount)
+    {
+        SetFuel(newFuel + amount);
+    }
+    private void SetFuel(float amount)
+    {
+        newFuel = Mathf.Clamp(amount, 0f, 100f);
+        running = newFuel > 0f;
+        if (running) target.SetDiscoverability(Target.Discoverability.discoverable);
+        else target.SetDiscoverability(Target.Discoverability.hidden);
     }
 }

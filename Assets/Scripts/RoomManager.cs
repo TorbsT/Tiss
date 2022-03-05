@@ -31,10 +31,13 @@ public class RoomManager : MonoBehaviour
         }
         loader.StartLoading(locsToLoad, new HashSet<Vector2Int>());
     }
-    public Room GetRoomById(Vector2Int id)
+    public Vector2 LocToPos(Vector2Int loc) => loc * 10;
+    public Room PosToRoom(Vector2 pos) => LocToRoom(PosToLoc(pos));
+    public Room LocToRoom(Vector2Int loc)
     {
-        return loader.GetRoomById(id);
+        return loader.GetRoomById(loc);
     }
+    public Vector2Int PosToLoc(Vector2 pos) => new(Mathf.RoundToInt(pos.x/10f), Mathf.RoundToInt(pos.y/10f));
     public void NextRound()
     {
         Dictionary<Vector2Int, Room> loadedDict = loader.GetLoadedDict();
@@ -47,7 +50,11 @@ public class RoomManager : MonoBehaviour
         }
         foreach (Generator gen in loadedGenerators)
         {
-            gen.StartApplyingPower();
+            gen.AddFuel(-25f);
+            gen.RequestUpdate();
         }
+
+        // Rooms should update their pathfinding
+        Pathfinding.PathfindingManager.Instance.NewRound();
     }
 }

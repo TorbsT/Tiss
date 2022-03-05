@@ -70,7 +70,7 @@ public class Loader : MonoBehaviour
         Room room = RoomPool.Instance.Depool();
 
         room.Id = loc;
-        room.transform.position = new Vector2(loc.x, loc.y) * 10;
+        room.transform.position = RoomManager.Instance.LocToPos(loc);
         room.NewRotation = Random.Range(0, 4);
         room.StartRotationAnimation();
 
@@ -79,7 +79,6 @@ public class Loader : MonoBehaviour
             Generator gen = GeneratorPool.Instance.Depool();
             gen.MaxPower = RoomManager.Instance.GeneratorPower;
             gen.Place(room);
-            gen.StartApplyingPower();
             generators.Add(gen);
         }
 

@@ -871,6 +871,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8140163464346693986}
   - component: {fileID: 6222422402968216857}
+  - component: {fileID: -7855296189345140258}
   m_Layer: 0
   m_Name: Room
   m_TagString: Untagged
@@ -1005,3 +1006,19 @@ MonoBehaviour:
   lightanimTargetRatio: 0
   lightanimTime: 0
   lightanimRunning: 0
+--- !u!114 &-7855296189345140258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8140163464346693985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c26c5d4031d69d94dba01eecd2605bc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fpsPriority: 1000
+  calculationTime: 0
+  state: 0
+  gizmoBoxSize: 10
