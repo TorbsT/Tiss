@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using ExtensionMethods;
 using Pathfinding;
+using Pools;
 
-public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
+public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener, IHPListener
 {
     [Header("CONFIG")]
     [SerializeField] private float walkSpeed;
@@ -18,6 +19,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     [SerializeField] private float timeSinceAttack;
     [SerializeField] private Room currentRoom;
 
+    private HP hp;
     private Locomotion locomotion;
     private Transform subgoal;
     private TargetChooser chooser;
@@ -30,6 +32,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
         locomotion = GetComponent<Locomotion>();
         pathfinder = GetComponent<Pathfinder>();
         chooser = GetComponent<TargetChooser>();
+        hp = GetComponent<HP>();
     }
 
     // Start is called before the first frame update
@@ -41,6 +44,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     private void OnEnable()
     {
         PathfindingManager.Instance.AddZombie(this);
+        hp.Set(100f);
     }
     private void OnDisable()
     {
@@ -73,6 +77,14 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             }
         }
     }
+    public void Damage(float damage)
+    {
+        hp.Decrease(damage);
+    }
+    public void Despawn()
+    {
+        ZombiePool.Instance.Enpool(this);
+    }
     public void Research()
     {
         chooser.Research();
@@ -86,5 +98,10 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     public void NewSubgoal(Transform old, Transform newGoal)
     {
         subgoal = newGoal;
+    }
+
+    public void NewHP(float oldHP, float newHP)
+    {
+        if (newHP <= 0f) Despawn();
     }
 }

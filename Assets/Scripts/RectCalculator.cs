@@ -35,4 +35,9 @@ public class RectCalculator : MonoBehaviour
         this.viewportPosition = view;
         return view;
     }
+    public Vector2 ScreenPointToWorld(Vector2 screenPosition)
+    {
+        Vector2 view = camera.ScreenToWorldPoint(screenPosition);
+        return view;
+    }
 }

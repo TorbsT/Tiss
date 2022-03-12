@@ -147,18 +147,18 @@ public class Generator : MonoBehaviour, IInteractable, IAttackable
 
 
     // IInteractable
-    public bool CanHover()
+    public bool CanHover(Interactor interactor)
     {
         return true;
         return fuel <= 75f && lastHoverTime + interactDelay > Time.time;
     }
 
-    public bool CanInteract()
+    public bool CanInteract(Interactor interactor)
     {
         return true;
     }
 
-    public void Hover()
+    public void Hover(Interactor interactor)
     {
         tooltip = TooltipPool.Instance.Depool();
         tooltip.KeyCode = KeyCode.F;
@@ -166,14 +166,14 @@ public class Generator : MonoBehaviour, IInteractable, IAttackable
         tooltip.PositionToDisplay = transform.position;
     }
 
-    public void Unhover()
+    public void Unhover(Interactor interactor)
     {
         TooltipPool.Instance.Enpool(tooltip);
         tooltip = null;
         lastHoverTime = Time.time;
     }
 
-    public void Interact()
+    public void Interact(Interactor interactor)
     {
         AddFuel(25f);
     }

@@ -6,9 +6,12 @@ using Pathfinding;
 public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
+    [SerializeField] private bool gizmos;
     [SerializeField] private float walkSpeed;
     private Locomotion locomotion;
     private Target target;
+    private Vector2 lookingAt;
+    private HP hp;
 
     // Start is called before the first frame update
     void Awake()
@@ -16,19 +19,36 @@ public class Player : MonoBehaviour
         Instance = this;
         locomotion = GetComponent<Locomotion>();
         target = GetComponent<Target>();
+        hp = GetComponent<HP>();
     }
 
     private void Start()
     {
         target.SetDiscoverability(Target.Discoverability.discoverable);
+        hp.Set(100f);
+    }
+    private void OnDrawGizmos()
+    {
+        if (!gizmos) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(lookingAt, 0.5f);
+        Gizmos.DrawLine(transform.position, lookingAt);
     }
 
     // Update is called once per frame
     void Update()
     {
-        float ws = Input.GetAxis("Vertical");
-        float ad = Input.GetAxis("Horizontal");
+        float ws = Input.GetAxisRaw("Vertical");
+        float ad = Input.GetAxisRaw("Horizontal");
+        Vector2 mouseScreenPosition = Input.mousePosition;
+        Vector2 mousePos = UI.Instance.RectCalculator.ScreenPointToWorld(mouseScreenPosition);
+        lookingAt = mousePos;
 
+        Vector2 pos = transform.position;
+        float angle = Vector2.SignedAngle(Vector2.up, lookingAt-pos);
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+        // movement
         Vector2 direction = new(ad, ws);
         locomotion.Direction = direction;
         locomotion.Speed = walkSpeed;

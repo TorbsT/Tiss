@@ -6,6 +6,8 @@ namespace Pools
 {
     public abstract class Pool<T> : MonoBehaviour where T : Component
     {
+        public T Prefab => prefab;
+
         [Header("POOL CONFIG")]
         [SerializeField] protected T prefab;
         [SerializeField] protected bool disableObjectsOnEnpool = true;
@@ -27,7 +29,8 @@ namespace Pools
             }
             instance = this;
         }
-        
+
+
         public T Depool()
         {
             T result;

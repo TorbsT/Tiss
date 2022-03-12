@@ -10,13 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2179976814436814934}
   - component: {fileID: 1467665871004710975}
-  - component: {fileID: 8269147747035176638}
-  - component: {fileID: 894392620445902379}
   - component: {fileID: 209770485398328889}
   - component: {fileID: -811149304653127267}
+  - component: {fileID: 8269147747035176638}
+  - component: {fileID: 894392620445902379}
   - component: {fileID: 7356713661394715389}
   - component: {fileID: -4769731362719242566}
-  m_Layer: 0
+  - component: {fileID: -723072766834650729}
+  m_Layer: 10
   m_Name: Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,7 +81,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.4811321, g: 0.3798357, b: 0.27006942, a: 1}
+  m_Color: {r: 0.22745098, g: 0.22745098, b: 0.22745098, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -90,42 +91,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8269147747035176638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3895385873017785338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 021d9bac46f21f7438d32462992ec6a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 1.5
-  attackDelay: 1
-  attackRange: 1
-  attackDamage: 1
-  updateTargetDelay: 0
-  goal: {x: 0, y: 0}
-  timeSinceTargetUpdate: 0
-  timeSinceAttack: 0
-  currentRoom: {fileID: 0}
---- !u!114 &894392620445902379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3895385873017785338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bd35999a1730484695344d01d7ac3de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0
-  direction: {x: 0, y: 0}
-  delta: {x: 0, y: 0}
 --- !u!58 &209770485398328889
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -163,6 +128,41 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &8269147747035176638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895385873017785338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021d9bac46f21f7438d32462992ec6a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkSpeed: 1.5
+  attackDelay: 1
+  attackRange: 1
+  attackDamage: 1
+  goal: {x: 0, y: 0}
+  timeSinceTargetUpdate: 0
+  timeSinceAttack: 0
+  currentRoom: {fileID: 0}
+--- !u!114 &894392620445902379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895385873017785338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd35999a1730484695344d01d7ac3de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  direction: {x: 0, y: 0}
+  delta: {x: 0, y: 0}
 --- !u!114 &7356713661394715389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d25a2209a08f5743a9189551fc4bf28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  running: 0
 --- !u!114 &-4769731362719242566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,11 +190,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomReachedDistance: 4
   reachedCheckDelay: 1
-  target: {fileID: 0}
-  subGoal: {fileID: 0}
+  subgoal: {fileID: 0}
   currentRoom: {fileID: 0}
   currentLoc: {x: 0, y: 0}
   outdated: 0
   state: 0
   subGoalDistanceRequirement: 0
   timeSinceReachedCheck: 0
+--- !u!114 &-723072766834650729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895385873017785338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7954e3a58afa74686edf7920c67e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0

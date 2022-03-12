@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionManager : MonoBehaviour
+public class Interactor : MonoBehaviour
 {
     private enum State
     {
@@ -41,9 +41,9 @@ public class InteractionManager : MonoBehaviour
 
         if (currentHover != null)
         {
-            if (Input.GetKeyDown(KeyCode.F) && currentHover.CanInteract())
+            if (Input.GetKeyDown(KeyCode.F) && currentHover.CanInteract(this))
             {
-                currentHover.Interact();
+                currentHover.Interact(this);
                 Unhover();
             }
         }
@@ -60,7 +60,7 @@ public class InteractionManager : MonoBehaviour
     }
     private void Unhover()
     {
-        currentHover.Unhover();
+        currentHover.Unhover(this);
         currentHover = null;
         state = State.none;
     }
@@ -74,9 +74,9 @@ public class InteractionManager : MonoBehaviour
         {
             IInteractable interactable = hitCollider.GetComponent<IInteractable>();
             if (interactable == null) continue;
-            if (!interactable.CanHover()) continue;
+            if (!interactable.CanHover(this)) continue;
             currentHover = interactable;
-            currentHover.Hover();
+            currentHover.Hover(this);
             state = State.hovering;
             break;
         }

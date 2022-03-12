@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Bullet
+  - Player
+  - DroppedItem
+  - Wall
+  - Zombie
   - 
   - 
   - 
