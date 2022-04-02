@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EzPools;
 
 public sealed class Drop : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public sealed class Drop : MonoBehaviour
 
     [SerializeField] private bool active = true;
     [SerializeField] private Item item;
-    [SerializeField] private int quantity;
+    [SerializeField] private int quantity = 1;
     [SerializeField] private float pickupDelay;
 
     private void Update()
@@ -53,7 +52,7 @@ public sealed class Drop : MonoBehaviour
         this.quantity = result;
         if (this.quantity <= 0)
         {
-            Manager.Instance.Enpool(gameObject);
+            GetComponent<Destroyable>().Destroy();
         }
     }
 

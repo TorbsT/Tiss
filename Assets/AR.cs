@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EzPools;
 
-public class AR : MonoBehaviour, IHolsterable
+public class AR : MonoBehaviour
 {
 
 
@@ -19,15 +18,4 @@ public class AR : MonoBehaviour, IHolsterable
         
     }
 
-    public void Holster(Hands hands)
-    {
-        transform.SetParent(hands.GunSocket);
-        transform.localRotation = Quaternion.identity;
-        transform.localPosition = Vector2.zero;
-    }
-
-    public void Unholster()
-    {
-        Manager.Instance.Enpool(gameObject);
-    }
 }

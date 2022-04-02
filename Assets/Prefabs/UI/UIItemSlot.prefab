@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 831669340941918843}
   - component: {fileID: 7443646067130110914}
   - component: {fileID: -3242116354116739020}
+  - component: {fileID: -6845815578694076511}
   m_Layer: 5
   m_Name: UIItemSlot
   m_TagString: Untagged
@@ -90,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1691375771ff42743846e88a2dfde58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  background: {fileID: 831669340941918843}
+  markColor: {r: 0.2856865, g: 0.661, b: 0.27448308, a: 1}
 --- !u!114 &-3242116354116739020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,7 +139,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7443646067130110914}
         m_TargetAssemblyTypeName: UIItemSlot, Assembly-CSharp
-        m_MethodName: Clicked
+        m_MethodName: Click
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -146,3 +149,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &-6845815578694076511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3163747549081160978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f502e194f1638548baa939748f2a9ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debug: 0

@@ -138,6 +138,8 @@ GameObject:
   - component: {fileID: 6714169102035949065}
   - component: {fileID: 6714169102035949062}
   - component: {fileID: 7609939183286938856}
+  - component: {fileID: 5681550755147685789}
+  - component: {fileID: 4750167349983874434}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -489,7 +491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23d16adfb74be441a96901e44fd8b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropper: {fileID: 6714169102035949065}
   main: {fileID: 11400000, guid: 81b518fa57959f24fb04090e4c2de30d, type: 2}
   moving: {fileID: 11400000, guid: acfbc97352608154e8518eb1258b1425, type: 2}
 --- !u!114 &6714169102035949065
@@ -535,6 +536,34 @@ MonoBehaviour:
   state: 0
   animator: {fileID: 0}
   gunSocket: {fileID: 6061024592515669743}
+  holsteredGO: {fileID: 0}
+--- !u!114 &5681550755147685789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6714169102035949176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cf1518e6163554ca57669d4150ea13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 0
+  prefabToPreview: {fileID: 0}
+  previewGO: {fileID: 0}
+--- !u!114 &4750167349983874434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6714169102035949176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f502e194f1638548baa939748f2a9ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7622912931519922458
 GameObject:
   m_ObjectHideFlags: 0

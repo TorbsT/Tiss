@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using EzPools;
 
 public class Flash : MonoBehaviour
 {
@@ -28,7 +27,7 @@ public class Flash : MonoBehaviour
 
         if (flashTime > flashObject.FlashDuration)
         {
-            Manager.Instance.Enpool(gameObject);
+            GetComponent<Destroyable>().Destroy();
         }
 
         float ratio = flashTime / flashObject.FlashDuration;

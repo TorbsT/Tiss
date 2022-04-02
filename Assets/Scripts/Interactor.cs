@@ -9,21 +9,21 @@ public class Interactor : MonoBehaviour
         none,
         hovering
     }
-    public IInteractable CurrentHover => currentHover;
+    public Interactable CurrentHover => currentHover;
 
     [SerializeField] private float hoverGetRange;
     [SerializeField] private float hoverLoseRange;
     [SerializeField] private float verifyWaitTime;
     [SerializeField] private float findWaitTime;
 
-    private IInteractable currentHover;
+    private Interactable currentHover;
     [SerializeField] private State state;
     [SerializeField] private float timeWaited;
     // Update is called once per frame
     void Update()
     {
         timeWaited += Time.deltaTime;
-        if (currentHover == null)
+        if (currentHover == null || !currentHover.isActiveAndEnabled)
         {
             if (timeWaited > findWaitTime)
             {
@@ -39,9 +39,9 @@ public class Interactor : MonoBehaviour
             }
         }
 
-        if (currentHover != null)
+        if (currentHover != null && currentHover.isActiveAndEnabled)
         {
-            if (Input.GetKeyDown(KeyCode.F) && currentHover.CanInteract(this))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 currentHover.Interact(this);
                 Unhover();
@@ -50,7 +50,7 @@ public class Interactor : MonoBehaviour
     }
     private bool OutOfRange()
     {
-        float distance = (currentHover.Position - transform.position).magnitude;
+        float distance = (currentHover.transform.position - transform.position).magnitude;
         return distance > hoverLoseRange;
     }
     private void Verify()
@@ -72,9 +72,8 @@ public class Interactor : MonoBehaviour
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos2, hoverGetRange);
         foreach (Collider2D hitCollider in hitColliders)
         {
-            IInteractable interactable = hitCollider.GetComponent<IInteractable>();
-            if (interactable == null) continue;
-            if (!interactable.CanHover(this)) continue;
+            Interactable interactable = hitCollider.GetComponent<Interactable>();
+            if (interactable == null || !interactable.Active) continue;
             currentHover = interactable;
             currentHover.Hover(this);
             state = State.hovering;

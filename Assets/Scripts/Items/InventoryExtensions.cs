@@ -79,4 +79,11 @@ public static class InventoryExtensions
         // Returns remaining quantity that couldn't be added
         return quantity;
     }
+    public static void Flush(InventoryObject inventory)
+    {
+        for (int i = 0; i < inventory.SlotCount; i++)
+        {
+            inventory.Set(i, null, 0);
+        }
+    }
 }

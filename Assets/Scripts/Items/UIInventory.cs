@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EzPools;
 
 public class UIInventory : MonoBehaviour, IInventoryListener
 {
@@ -39,14 +38,9 @@ public class UIInventory : MonoBehaviour, IInventoryListener
         }
         foreach (UIItemSlot slot in GetComponentsInChildren<UIItemSlot>())
         {
-            UIItem old = slot.UIItem;
-            if (old != null) Manager.Instance.Enpool(old.gameObject);
-
             int index = slot.Index;
-            UIItem uiitem = Manager.Instance.Depool(Manager.Instance.UIItemPrefab).GetComponent<UIItem>();
-            uiitem.Item = inventory.GetSlotItem(index);
-            uiitem.Quantity = inventory.GetSlotQuantity(index);
-            slot.SetUIItem(uiitem);
+            slot.SetItem(inventory.GetSlotItem(index));
+            slot.SetQuantity(inventory.GetSlotQuantity(index));
         }
     }
 

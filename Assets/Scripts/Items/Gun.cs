@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pools;
 using UnityEngine.Rendering.Universal;
-using EzPools;
 
 public class Gun : MonoBehaviour
 {
@@ -49,7 +48,7 @@ public class Gun : MonoBehaviour
         }
         timeSinceShot = 0f;
 
-        GameObject flash = Manager.Instance.Depool(flashPrefab);
+        GameObject flash = EzPools.Instance.Depool(flashPrefab);
         flash.transform.position = shotOrigin.position;
         flash.GetComponent<Flash>().FlashObject = flashObject;
 

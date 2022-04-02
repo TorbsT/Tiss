@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EzPools;
 
 public class Hands : MonoBehaviour, IHotbarListener
 {
@@ -23,6 +22,7 @@ public class Hands : MonoBehaviour, IHotbarListener
 
     // Cached
     private Gun holsteredGun;
+    private bool holdingPlaceable;
 
     void Start()
     {
@@ -30,15 +30,23 @@ public class Hands : MonoBehaviour, IHotbarListener
     }
     void Update()
     {
-        if (holsteredGO == null) return;
+        KeyCode m1 = KeyCode.Mouse0;
         if (holsteredGun != null)
         {
             if (holsteredGun.CanShoot)
             {
-                KeyCode fireCode = KeyCode.Mouse0;
-                if (holsteredGun.FireMode == Gun.Mode.semiauto && Input.GetKeyDown(fireCode)) holsteredGun.Shoot();
-                else if (holsteredGun.FireMode == Gun.Mode.auto && Input.GetKey(fireCode)) holsteredGun.Shoot();
+                if (holsteredGun.FireMode == Gun.Mode.semiauto && Input.GetKeyDown(m1)) holsteredGun.Shoot();
+                else if (holsteredGun.FireMode == Gun.Mode.auto && Input.GetKey(m1)) holsteredGun.Shoot();
             }
+        }
+        if (holdingPlaceable)
+        {
+            if (Input.GetKeyDown(m1))
+            {
+                GetComponent<ItemPlacer>().Place();
+                GetComponent<PlayerInventoryAPI>().Main.Set(GetComponent<Hotbar>().ChosenIndex, null, 0);
+            }
+            
         }
     }
 
@@ -47,26 +55,36 @@ public class Hands : MonoBehaviour, IHotbarListener
         chosenItem = hotbar.ChosenItem;
         if (holsteredGO != null)
         {
-            holsteredGO.GetComponent<IHolsterable>().Unholster();
+            holsteredGO.GetComponent<Destroyable>().Destroy();
+            holsteredGO = null;
         }
         holsteredGun = null;
 
-        bool canHolster = chosenItem != null;
-        if (!canHolster) return;
-        GameObject prefab = chosenItem.Prefab;
-        canHolster = prefab.GetComponent<IHolsterable>() != null;
-        if (canHolster)
+
+        holdingPlaceable = false;
+        if (chosenItem != null)
         {
-            holsteredGO = Manager.Instance.Depool(prefab);
-            Drop drop = holsteredGO.GetComponent<Drop>();
-            if (drop != null) drop.Active = false;
-            holsteredGun = holsteredGO.GetComponent<Gun>();
-            Collider2D collider = holsteredGO.GetComponent<Collider2D>();
-            if (collider != null) collider.enabled = false;
-            Rigidbody2D rb = holsteredGO.GetComponent<Rigidbody2D>();
-            if (rb != null) rb.simulated = false;
-            holsteredGO.GetComponent<IHolsterable>().Holster(this);
+            GameObject prefab = chosenItem.Prefab;
+            if (prefab.GetComponent<Holsterable>() != null)
+            {
+                holsteredGO = EzPools.Instance.Depool(prefab);
+                Drop drop = holsteredGO.GetComponent<Drop>();
+                if (drop != null) drop.Active = false;
+                holsteredGun = holsteredGO.GetComponent<Gun>();
+                Collider2D collider = holsteredGO.GetComponent<Collider2D>();
+                if (collider != null) collider.enabled = false;
+                Rigidbody2D rb = holsteredGO.GetComponent<Rigidbody2D>();
+                if (rb != null) rb.simulated = false;
+                holsteredGO.GetComponent<Holsterable>().Holster(this);
+            }
+            if (prefab.GetComponent<Placeable>() != null)
+            {
+                holdingPlaceable = true;
+                GetComponent<ItemPlacer>().PrefabToPreview = prefab;
+            }
         }
+        if (!holdingPlaceable) GetComponent<ItemPlacer>().PrefabToPreview = null;
+
     }
     public void SetAnimation(State newState)
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIInventoryManager : MonoBehaviour, IHotbarListener
+public class UIInventoryManager : MonoBehaviour, IHotbarListener, IButtonReceiver
 {
     // Display all relevant UIInventories, handle moving items, handle equipping items
     // Start is called before the first frame update
@@ -44,10 +44,9 @@ public class UIInventoryManager : MonoBehaviour, IHotbarListener
     {
         Item itm = movingUIInv.Inventory.GetSlotItem(0);
         int quantity = movingUIInv.Inventory.GetSlotQuantity(0);
-
         InventoryExtensions.QuickMove(movingUIInv.Inventory, 0, api.Dropper);
     }
-    public void Clicked(UIItemSlot slot, UIInventory inventory)
+    public void Click(UIItemSlot slot, UIInventory inventory)
     {
         InventoryObject moving = movingUIInv.Inventory;
         InventoryObject subject = inventory.Inventory;

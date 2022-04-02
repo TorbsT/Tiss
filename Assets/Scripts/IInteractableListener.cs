@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IHolsterable
+public interface IInteractableListener
 {
-    void Holster(Hands hands);
-    void Unholster();
+    void Interact(Interactor interactor);
 }

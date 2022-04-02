@@ -4,7 +4,7 @@ using UnityEngine;
 using Pools;
 using Pathfinding;
 
-public class Generator : MonoBehaviour, IInteractable, IAttackable
+public class Generator : MonoBehaviour, IAttackable, IInteractableListener
 {
     private class PathfindingStep
     {
@@ -45,7 +45,10 @@ public class Generator : MonoBehaviour, IInteractable, IAttackable
     {
         target = GetComponent<Target>();
     }
-
+    void Start()
+    {
+        GetComponent<Interactable>().AddListener(this);
+    }
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -143,34 +146,6 @@ public class Generator : MonoBehaviour, IInteractable, IAttackable
         target.SetDiscoverability(discoverability);
         poweredRooms = newCalculatedRooms;
         fuel = newFuel;
-    }
-
-
-    // IInteractable
-    public bool CanHover(Interactor interactor)
-    {
-        return true;
-        return fuel <= 75f && lastHoverTime + interactDelay > Time.time;
-    }
-
-    public bool CanInteract(Interactor interactor)
-    {
-        return true;
-    }
-
-    public void Hover(Interactor interactor)
-    {
-        tooltip = TooltipPool.Instance.Depool();
-        tooltip.KeyCode = KeyCode.F;
-        tooltip.transform.SetParent(UI.Instance.transform, false);
-        tooltip.PositionToDisplay = transform.position;
-    }
-
-    public void Unhover(Interactor interactor)
-    {
-        TooltipPool.Instance.Enpool(tooltip);
-        tooltip = null;
-        lastHoverTime = Time.time;
     }
 
     public void Interact(Interactor interactor)

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EzPools;
 
 public class ItemDropper : MonoBehaviour, IItemReceiver
 {
@@ -14,8 +13,9 @@ public class ItemDropper : MonoBehaviour, IItemReceiver
 
     public Drop Drop(Item item, int quantity)
     {
+
         GameObject prefab = item.Prefab;
-        GameObject obj = Manager.Instance.Depool(prefab);
+        GameObject obj = EzPools.Instance.Depool(prefab);
         Drop drop = obj.GetComponent<Drop>();
         if (drop == null)
         {
