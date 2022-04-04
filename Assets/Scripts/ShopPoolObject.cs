@@ -15,8 +15,8 @@ public class ShopPoolObject : ScriptableObject
         public string Title => title;
         public string Desc => desc;
 
-        [SerializeField] private string group;
         [SerializeField] private string title;
+        [SerializeField] private string group;
         [SerializeField] private string desc;
         [SerializeField] private Item item;
         [SerializeField, Range(1, 9999)] private int quantity;

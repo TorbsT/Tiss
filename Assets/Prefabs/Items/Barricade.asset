@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
+  m_Name: Barricade
+  m_EditorClassIdentifier: 
+  inventorySprite: {fileID: 21300000, guid: 37a64cc6c9e8f47468d3e02f268fae62, type: 3}
+  prefab: {fileID: 1704098749425701253, guid: 430021c3e4c0d0f4c921604dd8c6edaf, type: 3}
+  id: Barricade
+  stackSize: 64

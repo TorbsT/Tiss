@@ -4,7 +4,7 @@ using UnityEngine;
 using Pools;
 using Pathfinding;
 
-public class Generator : MonoBehaviour, IAttackable, IInteractableListener
+public class Generator : MonoBehaviour, IInteractableListener, IHPListener
 {
     private class PathfindingStep
     {
@@ -150,15 +150,11 @@ public class Generator : MonoBehaviour, IAttackable, IInteractableListener
 
     public void Interact(Interactor interactor)
     {
-        AddFuel(25f);
+        GetComponent<HP>().Increase(25f);
     }
-    public void Attack(float damage)
+    public void NewHP(float oldHP, float newHP)
     {
-        AddFuel(-damage);
-    }
-    public void AddFuel(float amount)
-    {
-        SetFuel(newFuel + amount);
+        SetFuel(newHP);
     }
     private void SetFuel(float amount)
     {

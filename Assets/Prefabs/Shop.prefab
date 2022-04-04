@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 8042030581842436706}
   - component: {fileID: 8042030581842436717}
   - component: {fileID: 8042030581842436716}
+  - component: {fileID: 6707913354129946516}
+  - component: {fileID: 1637319111669957174}
   m_Layer: 0
   m_Name: Shop
   m_TagString: Untagged
@@ -143,3 +145,29 @@ MonoBehaviour:
   itemPool: {fileID: 11400000, guid: 1a3f0a0728a8eed4b8ba47e0bb703dbb, type: 2}
   offers: []
   interactorTransform: {fileID: 0}
+--- !u!114 &6707913354129946516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8042030581842436719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7954e3a58afa74686edf7920c67e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+--- !u!114 &1637319111669957174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8042030581842436719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69370c99ee735384e8b83b76bf31bf46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 1

@@ -40,10 +40,17 @@ public class ItemPlacer : MonoBehaviour
         {
             Vector2 mousePos = UI.Instance.RectCalculator.ScreenPointToWorld(Input.mousePosition);
             Vector2 position = transform.position;
+            Transform t = previewGO.transform;
             if ((mousePos-position).magnitude < range)
             {
                 pos = mousePos;
-                previewGO.transform.position = pos;
+                t.position = pos;
+            }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Quaternion r = t.rotation;
+                r = Quaternion.Euler(0f, 0f, -90f) * r;
+                t.rotation = r;
             }
         }
     }
@@ -51,10 +58,22 @@ public class ItemPlacer : MonoBehaviour
     {
         if (previewGO == null) return;
         GameObject go = EzPools.Instance.Depool(prefabToPreview);
-        go.transform.position = pos;
+        Transform t = go.transform;
+        t.position = pos;
         Drop drop = go.GetComponent<Drop>();
         if (drop != null) drop.Active = false;
         Placeable placeable = go.GetComponent<Placeable>();
-        if (placeable != null) placeable.Active = false;
+        if (placeable != null)
+        {
+            if (placeable.ParentToRoom)
+            {
+                Vector2 p = t.position;
+                Quaternion rotation = previewGO.transform.rotation;
+                Room r = RoomManager.Instance.PosToRoom(p);
+                if (r != null) t.parent = r.transform;
+                t.rotation = rotation;
+            }
+            placeable.Active = false;
+        }
     }
 }

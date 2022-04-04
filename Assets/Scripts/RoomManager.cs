@@ -50,7 +50,7 @@ public class RoomManager : MonoBehaviour
         }
         foreach (Generator gen in loadedGenerators)
         {
-            gen.AddFuel(-25f);
+            gen.GetComponent<HP>().Decrease(0f);
             gen.RequestUpdate();
         }
 

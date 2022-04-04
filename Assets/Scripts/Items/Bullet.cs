@@ -11,11 +11,18 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Transform t = collision.collider.transform;
-        Rigidbody2D rb = t.GetComponent<Rigidbody2D>();
-        if (rb != null) t.position += transform.right * so.Knockback;
-        Zombie z = t.GetComponent<Zombie>();
-        if (z != null) z.Damage(so.Damage);
+        Transform tr = collision.collider.transform;
+
+        Rigidbody2D rb = tr.GetComponent<Rigidbody2D>();
+        if (rb != null) tr.position += transform.right * so.Knockback;
+        Team otherTeam = tr.GetComponent<Team>();
+        if (otherTeam != null)
+        {
+            if (GetComponent<Team>().CanInjure(otherTeam))
+            {
+                otherTeam.GetComponent<HP>().Decrease(so.Damage);
+            }
+        }
         Despawn();
     }
     private void OnEnable()

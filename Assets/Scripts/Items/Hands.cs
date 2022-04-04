@@ -44,7 +44,7 @@ public class Hands : MonoBehaviour, IHotbarListener
             if (Input.GetKeyDown(m1))
             {
                 GetComponent<ItemPlacer>().Place();
-                GetComponent<PlayerInventoryAPI>().Main.Set(GetComponent<Hotbar>().ChosenIndex, null, 0);
+                InventoryExtensions.QuickRemove(GetComponent<PlayerInventoryAPI>().Main, GetComponent<Hotbar>().ChosenIndex, 1);
             }
             
         }

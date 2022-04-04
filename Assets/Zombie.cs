@@ -14,44 +14,60 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     [SerializeField] private float attackDamage;
 
     [Header("DEBUG")]
+    [SerializeField] private bool gizmos;
     [SerializeField] private Vector2 goal;
     [SerializeField] private float timeSinceTargetUpdate;
     [SerializeField] private float timeSinceAttack;
     [SerializeField] private Room currentRoom;
 
-    private HP hp;
     private Locomotion locomotion;
     private Transform subgoal;
     private TargetChooser chooser;
     private Target target;
     private Pathfinder pathfinder;
-    private IAttackable cachedAttackable;
+    private HashSet<Transform> collisions = new();
 
     private void Awake()
     {
         locomotion = GetComponent<Locomotion>();
         pathfinder = GetComponent<Pathfinder>();
         chooser = GetComponent<TargetChooser>();
-        hp = GetComponent<HP>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        GetComponent<HP>().AddListener(this);
     }
 
+    void OnDrawGizmosSelected()
+    {
+        if (!gizmos) return;
+        Gizmos.color = Color.red;
+        foreach (Transform t in collisions)
+        {
+            Gizmos.DrawSphere(t.position, 1f);
+        }
+    }
     private void OnEnable()
     {
         PathfindingManager.Instance.AddZombie(this);
-        hp.Set(100f);
+        collisions = new();
+        GetComponent<HP>().Set(100f);
     }
     private void OnDisable()
     {
         PathfindingManager.Instance.RemoveZombie(this);
     }
     
-
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        collisions.Add(collision.transform);
+    }
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        collisions.Remove(collision.transform);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -68,18 +84,24 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
         }
 
         timeSinceAttack += Time.deltaTime;
-        if (cachedAttackable != null && timeSinceAttack > attackDelay)
+        if (timeSinceAttack > attackDelay)
         {
-            if ((target.transform.position-transform.position).magnitude < attackRange)
+            foreach (Transform t in collisions)
             {
-                timeSinceAttack = 0f;
-                cachedAttackable.Attack(attackDamage);
+                Team otherTeam = t.GetComponent<Team>();
+                if (otherTeam != null)
+                {
+                    HP hp = otherTeam.GetComponent<HP>();
+                    if (hp != null)
+                    {
+                        timeSinceAttack = 0f;
+                        hp.Decrease(attackDamage);
+                        break;
+                    }
+                }
             }
+
         }
-    }
-    public void Damage(float damage)
-    {
-        hp.Decrease(damage);
     }
     public void Despawn()
     {
@@ -93,7 +115,6 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     {
         pathfinder.SetTarget(newTarget);
         target = newTarget;
-        cachedAttackable = target.GetComponent<IAttackable>();
     }
     public void NewSubgoal(Transform old, Transform newGoal)
     {

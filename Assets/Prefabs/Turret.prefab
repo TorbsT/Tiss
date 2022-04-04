@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 284853614049207804}
   - component: {fileID: 677776116359255694}
   - component: {fileID: 5419652472482545820}
+  - component: {fileID: 4660016934697632269}
+  - component: {fileID: 2775911281781401411}
   m_Layer: 8
   m_Name: Turret
   m_TagString: Untagged
@@ -168,6 +170,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f502e194f1638548baa939748f2a9ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
+--- !u!114 &4660016934697632269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899611878393542037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7954e3a58afa74686edf7920c67e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+--- !u!114 &2775911281781401411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899611878393542037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69370c99ee735384e8b83b76bf31bf46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team: 1
 --- !u!1 &1036041378731397436
 GameObject:
   m_ObjectHideFlags: 0

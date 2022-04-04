@@ -86,4 +86,26 @@ public static class InventoryExtensions
             inventory.Set(i, null, 0);
         }
     }
+    public static void QuickRemove(InventoryObject inventory, int index, int count)
+    {
+        QuickRemove(inventory, inventory.GetSlotItem(index), count);
+    }
+    public static void QuickRemove(InventoryObject inventory, Item item, int count)
+    {
+        int left = count;
+        for (int i = inventory.SlotCount-1; i >= 0; i--)
+        {
+            if (inventory.GetSlotItem(i) == item)
+            {
+                int current = inventory.GetSlotQuantity(i);
+                if (current > 0)
+                {
+                    int used = Mathf.Min(current, left);
+                    inventory.Set(i, item, current - used);
+                    left -= used;
+                    if (left == 0) break;
+                }
+            }
+        }
+    }
 }

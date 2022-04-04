@@ -5,8 +5,11 @@ using UnityEngine;
 public class Placeable : MonoBehaviour
 {
     public bool Active { get => active; set { active = value; } }
+    public bool ParentToRoom { get => parentToRoom; set { parentToRoom = value; } }
+
     [SerializeField] private bool active;
-    [SerializeField] private Color color = new(0f, 1f, 1f, 0.25f);
+    [SerializeField] private bool parentToRoom = true;
+    [SerializeField] private Color color = new(0xFF, 0xEE, 0x00, 0.25f);
     [SerializeField] private List<SpriteRenderer> renderers;
 
     private bool prevActive;
