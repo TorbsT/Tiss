@@ -41,20 +41,29 @@ public class RoomManager : MonoBehaviour
     public void NextRound()
     {
         Dictionary<Vector2Int, Room> loadedDict = loader.GetLoadedDict();
-        ICollection<Generator> loadedGenerators = loader.GetLoadedGenerators();
+        ICollection<RoomDweller> loadedDwellers = loader.GetLoadedDwellers();
+        //ICollection<Shop> loadedShops = loader.GetLoadedShops();
         foreach (Vector2Int key in loadedDict.Keys)
         {
             Room room = loadedDict[key];
             room.NewRotation += 1;
             room.StartRotationAnimation();
         }
-        foreach (Generator gen in loadedGenerators)
+        foreach (RoomDweller dweller in loadedDwellers)
         {
-            gen.GetComponent<HP>().Decrease(0f);
-            gen.RequestUpdate();
+            // TODO RoundDependant component?
+            if (dweller.GetComponent<Generator>() is Generator gen)
+            {
+                gen.GetComponent<HP>().Decrease(0f);  // Decrease every round
+                gen.RequestUpdate();
+            }
         }
+        //foreach (Shop shop in loadedShops)
+        //{
 
+        //}
         // Rooms should update their pathfinding
         Pathfinding.PathfindingManager.Instance.NewRound();
+        MinerSystem.Instance.MakeMoreAvailableDelayed();
     }
 }

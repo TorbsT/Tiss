@@ -76,6 +76,7 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
             Debug.LogWarning("ShopUI has no Shop");
             return;
         }
+        PlayerInventoryAPI.Instance.Wallet.Shitcoin -= chosenCost;
         InventoryExtensions.QuickAdd(PlayerInventoryAPI.Instance.Main, chosenItem, chosenQuantity);
     }
     public void Open(Shop shop)

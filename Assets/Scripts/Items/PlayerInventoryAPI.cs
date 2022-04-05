@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventoryAPI : MonoBehaviour
+public class PlayerInventoryAPI : MonoBehaviour, IWalletProvider
 {
     public static PlayerInventoryAPI Instance { get; private set; }
     public InventoryObject Main => main;
@@ -10,7 +10,9 @@ public class PlayerInventoryAPI : MonoBehaviour
     public ItemDropper Dropper => dropper;
     public ItemPlacer Placer => placer;
     public Hotbar Hotbar => hotbar;
+    public Wallet Wallet => wallet;
 
+    [SerializeField] private Wallet wallet;
     [SerializeField] private InventoryObject main;
     [SerializeField] private InventoryObject moving;
     private ItemDropper dropper;

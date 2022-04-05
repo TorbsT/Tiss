@@ -24,7 +24,6 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
 
     [SerializeField, Range(0f, 100f)] private float newFuel;
     [SerializeField, Range(0f, 100f)] private float fuel;
-    [SerializeField] private Room parentRoom;
     [SerializeField] private int maxPower;
     [SerializeField] private int producedPower;
     [SerializeField] private int fpsPriority;
@@ -52,7 +51,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     // Start is called before the first frame update
     void OnEnable()
     {
-        
+        maxPower = RoomManager.Instance.GeneratorPower;
     }
 
     // Update is called once per frame
@@ -69,20 +68,10 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     {
         updateRequested = true;
     }
-    public void Place(Room room)
-    {
-        if (room == null) Debug.LogWarning("Tried placing a generator in null room");
-        this.parentRoom = room;
-        if (room != null)
-        {
-            transform.SetParent(room.transform);
-            transform.localPosition = Vector2.zero;
-        }
-    }
     private void StartCalculatingPower()
     {
         if (isSearchingRooms) StopCoroutine(pathfindingRoutine);
-        if (parentRoom == null) return;
+        if (GetComponent<RoomDweller>().Room == null) return;
 
         if (running) producedPower = maxPower;
         else producedPower = 0;
@@ -98,7 +87,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
         Waiter waiter = new(1f / fpsPriority);
         Dictionary<Room, int> explored = new();
         Stack<PathfindingStep> roomsToExplore = new();
-        roomsToExplore.Push(new (parentRoom, producedPower));
+        roomsToExplore.Push(new (GetComponent<RoomDweller>().Room, producedPower));
 
         while (roomsToExplore.Count > 0)
         {

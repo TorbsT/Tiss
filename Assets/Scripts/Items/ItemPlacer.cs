@@ -29,6 +29,8 @@ public class ItemPlacer : MonoBehaviour
                 placeable.Active = true;
                 Drop drop = previewGO.GetComponent<Drop>();
                 if (drop != null) drop.Active = false;
+                Collider2D coll = previewGO.GetComponent<Collider2D>();
+                if (coll != null) coll.enabled = false;
                 Interactable interactable = previewGO.GetComponent<Interactable>();
                 if (interactable != null) interactable.Active = false;
 
@@ -62,6 +64,8 @@ public class ItemPlacer : MonoBehaviour
         t.position = pos;
         Drop drop = go.GetComponent<Drop>();
         if (drop != null) drop.Active = false;
+        Collider2D coll = go.GetComponent<Collider2D>();
+        if (coll != null) coll.enabled = true;
         Placeable placeable = go.GetComponent<Placeable>();
         if (placeable != null)
         {

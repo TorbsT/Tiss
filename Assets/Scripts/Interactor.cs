@@ -48,16 +48,17 @@ public class Interactor : MonoBehaviour
             }
         }
     }
-    private bool OutOfRange()
-    {
-        float distance = (currentHover.transform.position - transform.position).magnitude;
-        return distance > hoverLoseRange;
-    }
     private void Verify()
     {
         timeWaited = 0f;
         if (OutOfRange()) Unhover();
     }
+    private bool OutOfRange()
+    {
+        float distance = (currentHover.transform.position - transform.position).magnitude;
+        return distance > hoverLoseRange;
+    }
+
     private void Unhover()
     {
         currentHover.Unhover(this);
@@ -67,13 +68,14 @@ public class Interactor : MonoBehaviour
     private void Find()
     {
         timeWaited = 0f;
-        Vector3 pos3 = transform.position;
-        Vector2 pos2 = new(pos3.x, pos3.y);
+        Vector2 pos2 = transform.position;
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos2, hoverGetRange);
         foreach (Collider2D hitCollider in hitColliders)
         {
             Interactable interactable = hitCollider.GetComponent<Interactable>();
             if (interactable == null || !interactable.Active) continue;
+            float distance = (interactable.transform.position - transform.position).magnitude;
+            if (distance > hoverGetRange) continue;  // Takes colliders out of the equation
             currentHover = interactable;
             currentHover.Hover(this);
             state = State.hovering;

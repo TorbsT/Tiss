@@ -35,9 +35,10 @@ namespace Pathfinding
         [SerializeField] private Discoverability discoverability;
         [SerializeField] private State state;
         private HashSet<ITargetSubscriber> subscribers = new();
+        private RoomDweller dweller;
         private void Awake()
         {
-            
+            dweller = GetComponent<RoomDweller>();
         }
         private void OnEnable()
         {
@@ -51,15 +52,13 @@ namespace Pathfinding
         }
         private void Update()
         {
-            Vector2 pos = transform.position;
-            Room room = RoomManager.Instance.PosToRoom(pos);
-            if (room == null)
+            if (dweller == null || dweller.Room == null)
             {
                 state = State.outOfBounds;
                 allToOne = null;
             } else
             {
-                AllToOne ato = PathfindingManager.Instance.GetAllToOne(room);
+                AllToOne ato = PathfindingManager.Instance.GetAllToOne(dweller.Room);
                 if (ato != allToOne)
                 {
                     FireStateChanged();

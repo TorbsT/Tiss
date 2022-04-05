@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: -7006263535189369478}
   - component: {fileID: 6365073135221193703}
   - component: {fileID: -4798678155670033634}
+  - component: {fileID: 6177728270246986376}
   m_Layer: 9
   m_Name: Generator
   m_TagString: Untagged
@@ -105,7 +106,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newFuel: 100
   fuel: 0
-  parentRoom: {fileID: 0}
   maxPower: 0
   producedPower: 0
   fpsPriority: 1000
@@ -212,3 +212,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+--- !u!114 &6177728270246986376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4142767738475809018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c3d8bb331c7c84f85c76a1a9a1871e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room: {fileID: 0}

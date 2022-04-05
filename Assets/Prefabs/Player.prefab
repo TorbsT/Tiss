@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 5681550755147685789}
   - component: {fileID: 4750167349983874434}
   - component: {fileID: 7719739146629399008}
+  - component: {fileID: 8604790744357642052}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -492,6 +493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23d16adfb74be441a96901e44fd8b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallet: {fileID: 11400000, guid: ea4762bc153a7e54886ea5139f34c3fd, type: 2}
   main: {fileID: 11400000, guid: 81b518fa57959f24fb04090e4c2de30d, type: 2}
   moving: {fileID: 11400000, guid: acfbc97352608154e8518eb1258b1425, type: 2}
 --- !u!114 &6714169102035949065
@@ -579,6 +581,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 1
+--- !u!114 &8604790744357642052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6714169102035949176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c3d8bb331c7c84f85c76a1a9a1871e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room: {fileID: 0}
 --- !u!1 &7622912931519922458
 GameObject:
   m_ObjectHideFlags: 0

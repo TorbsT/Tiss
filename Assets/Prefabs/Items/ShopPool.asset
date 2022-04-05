@@ -44,4 +44,11 @@ MonoBehaviour:
     item: {fileID: 11400000, guid: 66ab7183b45dfea4eb104f9bf9c57291, type: 2}
     quantity: 6
     cost: 5
+  - title: Shitcoin Miner
+    group: Utility
+    desc: Placeable. Produces shitcoin over time. Closely packing miners together
+      reduces efficiency
+    item: {fileID: 11400000, guid: 949fc65e3c370c742b5b7a7d7bf4f34c, type: 2}
+    quantity: 6
+    cost: 5
   seed: 1234

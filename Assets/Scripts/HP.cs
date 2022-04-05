@@ -22,6 +22,7 @@ public class HP : MonoBehaviour
         // Inform arbitrary listeners
         foreach (IHPListener l in listeners)
         {
+            if (thisListener != l)
             l.NewHP(health, newHealth);
         }
 

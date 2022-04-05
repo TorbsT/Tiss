@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3135471437740957231}
   - component: {fileID: 4631666649509500324}
   - component: {fileID: 1212368968700710913}
+  - component: {fileID: 3583445339441506148}
   m_Layer: 11
   m_Name: Barricade
   m_TagString: Untagged
@@ -215,3 +216,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+--- !u!114 &3583445339441506148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704098749425701253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0c3d8bb331c7c84f85c76a1a9a1871e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room: {fileID: 0}

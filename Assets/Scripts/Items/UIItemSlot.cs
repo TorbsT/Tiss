@@ -43,7 +43,6 @@ public class UIItemSlot : MonoBehaviour
     }
     public void Mark()
     {
-        Debug.Log("PENIS");
         //background.color = markColor;
     }
     public void Unmark()
@@ -58,8 +57,24 @@ public class UIItemSlot : MonoBehaviour
         uiItem.Item = item;
         uiItem.Quantity = quantity;
 
-        uiItem.RectTransform.SetParent(rectTransform);
-        uiItem.RectTransform.anchoredPosition = Vector2.zero;
+        RectTransform rt = uiItem.RectTransform;
+        rt.SetParent(rectTransform);
+        rt.anchoredPosition = Vector2.zero;
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+
+        if (item != null && item.InventorySprite != null)
+        {
+            Vector2 spriteSize = item.InventorySprite.rect.size;
+            float largest = Mathf.Max(spriteSize.x, spriteSize.y);
+            spriteSize /= largest;
+            rt.sizeDelta = spriteSize;
+        } else
+        {
+            rt.sizeDelta = Vector2.one;
+        }
+
+        
     }
     public void Click()
     {

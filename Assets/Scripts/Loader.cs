@@ -5,14 +5,21 @@ using Pools;
 
 public class Loader : MonoBehaviour
 {
+    [System.Serializable]
+    private class Spawn
+    {
+        public GameObject prefab;
+        [Range(0f, 1f)] public float maxValue;
+    }
+
     public bool Running => running;
     private ICollection<Vector2Int> locsToLoad;
     private ICollection<Vector2Int> locsToUnload;
     private Dictionary<Vector2Int, Room> dict = new();
-    private HashSet<Generator> generators = new();
+    private HashSet<RoomDweller> dwellers = new();
 
     [SerializeField] private bool running;
-    [SerializeField] private int generatorOdds = 10;
+    [SerializeField] private List<Spawn> spawnChances;
     [SerializeField] private float fpsPriority = 512f;
 
     public Room GetRoomById(Vector2Int id)
@@ -20,12 +27,12 @@ public class Loader : MonoBehaviour
         if (!dict.ContainsKey(id)) return null;
         return dict[id];
     }
-    public ICollection<Generator> GetLoadedGenerators()
+    public ICollection<RoomDweller> GetLoadedDwellers()
     {
-        HashSet<Generator> result = new();
-        foreach (Generator gen in generators)
+        HashSet<RoomDweller> result = new();
+        foreach (RoomDweller dweller in dwellers)
         {
-            result.Add(gen);
+            result.Add(dweller);
         }
         return result;
     }
@@ -48,11 +55,13 @@ public class Loader : MonoBehaviour
     {
         running = true;
         Waiter waiter = new(1f / fpsPriority);
+        /*
         foreach (Vector2Int loc in locsToUnload)
         {
             Unload(loc);
             if (waiter.CheckTime()) yield return null;
         }
+        */
         foreach (Vector2Int loc in locsToLoad)
         {
             Load(loc);
@@ -74,16 +83,30 @@ public class Loader : MonoBehaviour
         room.NewRotation = Random.Range(0, 4);
         room.StartRotationAnimation();
 
-        if (Random.Range(0, generatorOdds) == 0)
+        float rd = Random.value;
+        GameObject prefab = null;
+        for (int i = 0; i < spawnChances.Count; i++)
         {
-            Generator gen = GeneratorPool.Instance.Depool();
-            gen.MaxPower = RoomManager.Instance.GeneratorPower;
-            gen.Place(room);
-            generators.Add(gen);
+            if (rd < spawnChances[i].maxValue)
+            {
+                prefab = spawnChances[i].prefab;
+                break;
+            }
+        }
+
+        if (prefab != null)
+        {
+            GameObject go = EzPools.Instance.Depool(prefab);
+            Transform t = go.transform;
+            RoomDweller dweller = go.GetComponent<RoomDweller>();  
+            t.position = room.transform.position;
+            // dunno if tracking dwellers or gameobjects is better
+            dwellers.Add(dweller);
         }
 
         dict.Add(loc, room);
     }
+    /*
     private void Unload(Vector2Int loc)
     {
         if (!dict.ContainsKey(loc))
@@ -97,8 +120,9 @@ public class Loader : MonoBehaviour
         {
             generators.Remove(gen);
         }
-
+        // unload generators? idk this whole shit is pretty weird
         RoomPool.Instance.Enpool(room);
         dict.Remove(loc);
     }
+    */
 }

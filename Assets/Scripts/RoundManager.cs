@@ -55,6 +55,12 @@ public class RoundManager : MonoBehaviour
                 state = State.warmup;
                 timer.ImageColor = Color.green;
                 round++;
+
+                foreach (Zombie zombie in FindObjectsOfType<Zombie>())
+                {
+                    zombie.GetComponent<HP>().Set(0f);
+                }
+
                 RoomManager.Instance.NextRound();
             }
         }
