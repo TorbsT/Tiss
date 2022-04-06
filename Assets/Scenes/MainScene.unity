@@ -3790,6 +3790,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f29271a429cb44e8d599f7932573d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollSpeed: 1
+  minZoom: 30
+  maxZoom: 1
 --- !u!114 &1720428497
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,7 +6,17 @@ public class Cam : MonoBehaviour
 {
     // Start is called before the first frame update
     private Transform following;
+    private new Camera camera;
     private bool searching;
+    [SerializeField, Range(0f, 10f)] private float scrollSpeed;
+    [SerializeField, Range(5f, 30f)] private float minZoom;
+    [SerializeField, Range(1f, 5f)] private float maxZoom;
+
+    private void Awake()
+    {
+        camera = GetComponent<Camera>();
+    }
+
     void Start()
     {
         Search();
@@ -29,5 +39,9 @@ public class Cam : MonoBehaviour
             return;
         }
         transform.position = following.position + new Vector3(0f, 0f, -10f);
+
+        float scroll = -Input.mouseScrollDelta.y;
+        scroll *= scrollSpeed;
+        camera.orthographicSize = Mathf.Clamp(camera.orthographicSize + scroll, maxZoom, minZoom);
     }
 }
