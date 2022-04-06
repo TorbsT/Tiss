@@ -51,6 +51,6 @@ public class Player : MonoBehaviour
         // movement
         Vector2 direction = new(ad, ws);
         locomotion.Direction = direction;
-        locomotion.Speed = walkSpeed;
+        locomotion.BaseSpeed = walkSpeed;
     }
 }

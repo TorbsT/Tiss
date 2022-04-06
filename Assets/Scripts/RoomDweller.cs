@@ -20,7 +20,9 @@ public class RoomDweller : MonoBehaviour
         Room r = RoomManager.Instance.PosToRoom(transform.position);
         if (room != r)
         {
-            transform.parent = r.transform;
+            Transform parent = null;
+            if (r != null) parent = r.transform;
+            transform.parent = parent;
             room = r;
         }
     }

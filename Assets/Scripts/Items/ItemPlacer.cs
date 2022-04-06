@@ -8,7 +8,7 @@ public class ItemPlacer : MonoBehaviour
 
     [SerializeField] private float range;
     [SerializeField] private GameObject prefabToPreview;
-    [SerializeField] private GameObject previewGO;
+    [SerializeField] private Placeable preview;
 
     private Vector2 pos;
     private GameObject oldPrefab;
@@ -17,48 +17,54 @@ public class ItemPlacer : MonoBehaviour
     {
         if (prefabToPreview != oldPrefab)
         {
-            if (previewGO != null) previewGO.GetComponent<Destroyable>().Destroy();
-            previewGO = null;
+            if (preview != null) preview.GetComponent<Destroyable>().Destroy();
+            preview = null;
             if (prefabToPreview != null)
             {
                 if (prefabToPreview.GetComponent<Placeable>() == null) Debug.LogWarning(prefabToPreview + " isn't really placeable");
 
 
-                previewGO = EzPools.Instance.Depool(prefabToPreview);
-                Placeable placeable = previewGO.GetComponent<Placeable>();
-                placeable.Active = true;
-                Drop drop = previewGO.GetComponent<Drop>();
+                preview = EzPools.Instance.Depool(prefabToPreview).GetComponent<Placeable>();
+                preview.Active = true;
+                preview.Valid = false;
+                Drop drop = preview.GetComponent<Drop>();
                 if (drop != null) drop.Active = false;
-                Collider2D coll = previewGO.GetComponent<Collider2D>();
+                Collider2D coll = preview.GetComponent<Collider2D>();
                 if (coll != null) coll.enabled = false;
-                Interactable interactable = previewGO.GetComponent<Interactable>();
+                Interactable interactable = preview.GetComponent<Interactable>();
                 if (interactable != null) interactable.Active = false;
 
             }
             oldPrefab = prefabToPreview;
         }
 
-        if (previewGO != null)
+        if (preview != null)
         {
             Vector2 mousePos = UI.Instance.RectCalculator.ScreenPointToWorld(Input.mousePosition);
             Vector2 position = transform.position;
-            Transform t = previewGO.transform;
+            Transform t = preview.transform;
+            pos = mousePos;
+            t.position = pos;
             if ((mousePos-position).magnitude < range)
             {
-                pos = mousePos;
-                t.position = pos;
-            }
-            if (Input.GetKeyDown(KeyCode.R))
+                preview.Valid = true;
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    Quaternion r = t.rotation;
+                    r = Quaternion.Euler(0f, 0f, -90f) * r;
+                    t.rotation = r;
+                }
+            } else
             {
-                Quaternion r = t.rotation;
-                r = Quaternion.Euler(0f, 0f, -90f) * r;
-                t.rotation = r;
+                preview.Valid = false;
             }
+
         }
     }
     public void Place()
     {
-        if (previewGO == null) return;
+        if (preview == null) return;
+        if (!preview.Valid) return;
         GameObject go = EzPools.Instance.Depool(prefabToPreview);
         Transform t = go.transform;
         t.position = pos;
@@ -72,7 +78,7 @@ public class ItemPlacer : MonoBehaviour
             if (placeable.ParentToRoom)
             {
                 Vector2 p = t.position;
-                Quaternion rotation = previewGO.transform.rotation;
+                Quaternion rotation = preview.transform.rotation;
                 Room r = RoomManager.Instance.PosToRoom(p);
                 if (r != null) t.parent = r.transform;
                 t.rotation = rotation;

@@ -5,22 +5,55 @@ using ExtensionMethods;
 
 public class Locomotion : MonoBehaviour
 {
-    public float Speed { get => speed; set { speed = value; } }
+    public float BaseSpeed { get => baseSpeed; set { baseSpeed = value; RecalculateSpeed(); } }
+    public float Speed => speed;
     public Vector2 Direction { get => direction; set { direction = value; } }
+
+    [Header("ASSIGN")]
+    [SerializeField] private float baseSpeed;
+
+    [Header("DEBUG")]
     [SerializeField] private float speed;
     [SerializeField] private Vector2 direction;
     [SerializeField] private Vector2 delta;
+    private HashSet<Splurge> splurges = new();
 
-    // Start is called before the first frame update
-    void Start()
+
+    void FixedUpdate()
     {
+        delta = direction.normalized * speed * Time.fixedDeltaTime;
+        transform.position = transform.position.Add(delta);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Splurge s = collision.GetComponent<Splurge>();
+        if (s != null)
+        {
+            splurges.Add(s);
+            RecalculateSpeed();
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Splurge s = collision.GetComponent<Splurge>();
+        if (s != null)
+        {
+            splurges.Remove(s);
+            RecalculateSpeed();
+        }
         
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+
+    private void RecalculateSpeed()
     {
-        delta = direction.normalized * speed*Time.fixedDeltaTime;
-        transform.position = transform.position.Add(delta);
+        speed = baseSpeed;
+        float splurgeMod = 1f;
+        foreach (Splurge splurge in splurges)
+        {
+            splurgeMod = Mathf.Min(splurge.Amount, splurgeMod);
+        }
+        speed *= splurgeMod;
     }
 }

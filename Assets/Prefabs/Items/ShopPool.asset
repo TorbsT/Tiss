@@ -51,4 +51,10 @@ MonoBehaviour:
     item: {fileID: 11400000, guid: 949fc65e3c370c742b5b7a7d7bf4f34c, type: 2}
     quantity: 6
     cost: 5
+  - title: '"Glue"'
+    group: Trap
+    desc: Placeable. Slows down zombies
+    item: {fileID: 11400000, guid: 62cb22d14d705c645aaa15e0d9a40858, type: 2}
+    quantity: 6
+    cost: 5
   seed: 1234

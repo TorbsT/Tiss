@@ -68,10 +68,10 @@ public class UIItemSlot : MonoBehaviour
             Vector2 spriteSize = item.InventorySprite.rect.size;
             float largest = Mathf.Max(spriteSize.x, spriteSize.y);
             spriteSize /= largest;
-            rt.sizeDelta = spriteSize;
+            rt.sizeDelta = spriteSize*0.9f;
         } else
         {
-            rt.sizeDelta = Vector2.one;
+            rt.sizeDelta = Vector2.one*0.9f;
         }
 
         

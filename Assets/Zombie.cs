@@ -76,11 +76,11 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             Research();
         }
 
-        if (subgoal == this || subgoal == null) locomotion.Speed = 0f;
+        if (subgoal == this || subgoal == null) locomotion.BaseSpeed = 0f;
         else
         {
             locomotion.Direction = subgoal.position.Subtract(transform.position);
-            locomotion.Speed = walkSpeed;
+            locomotion.BaseSpeed = walkSpeed;
         }
 
         timeSinceAttack += Time.deltaTime;
