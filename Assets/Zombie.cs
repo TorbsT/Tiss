@@ -8,7 +8,6 @@ using Pools;
 public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener, IHPListener
 {
     [Header("CONFIG")]
-    [SerializeField] private float walkSpeed;
     [SerializeField] private float attackDelay;
     [SerializeField] private float attackRange;
     [SerializeField] private float attackDamage;
@@ -26,12 +25,14 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     private Target target;
     private Pathfinder pathfinder;
     private HashSet<Transform> collisions = new();
+    private LookAt lookat;
 
     private void Awake()
     {
         locomotion = GetComponent<Locomotion>();
         pathfinder = GetComponent<Pathfinder>();
         chooser = GetComponent<TargetChooser>();
+        lookat = GetComponent<LookAt>();
     }
 
     // Start is called before the first frame update
@@ -39,7 +40,6 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     {
         GetComponent<HP>().AddListener(this);
     }
-
     void OnDrawGizmosSelected()
     {
         if (!gizmos) return;
@@ -76,11 +76,10 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             Research();
         }
 
-        if (subgoal == this || subgoal == null) locomotion.BaseSpeed = 0f;
-        else
+        if (subgoal != this && subgoal != null)
         {
             locomotion.Direction = subgoal.position.Subtract(transform.position);
-            locomotion.BaseSpeed = walkSpeed;
+            lookat.LookingAt = subgoal.position;
         }
 
         timeSinceAttack += Time.deltaTime;
@@ -89,7 +88,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             foreach (Transform t in collisions)
             {
                 Team otherTeam = t.GetComponent<Team>();
-                if (otherTeam != null)
+                if (otherTeam != null && GetComponent<Team>().CanInjure(otherTeam))
                 {
                     HP hp = otherTeam.GetComponent<HP>();
                     if (hp != null)

@@ -6,9 +6,9 @@ using UnityEngine;
 public class Destroyable : MonoBehaviour
 {
     private Queue<string> stackTraces = new();
-    private EzPools.Pool connected;
 
     [SerializeField] private bool debug;
+    [SerializeField] private EzPools.Pool connected;
     private bool destroyed;
 
     public void JustInstantiated(EzPools.Pool pool)

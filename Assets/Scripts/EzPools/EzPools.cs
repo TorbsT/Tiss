@@ -67,10 +67,11 @@ public class EzPools : MonoBehaviour
         {
             GameObject result;
 
-            if (queue.Count > 0)
+            if (pooled > 0)
             {
                 result = queue.Dequeue();
                 result.GetComponent<Destroyable>().JustDepooled();
+                pooled--;
             }
             else
             {
@@ -86,6 +87,7 @@ public class EzPools : MonoBehaviour
                 }
                 created++;
             }
+            released++;
 
             result.SetActive(true);
             return result;
@@ -93,6 +95,8 @@ public class EzPools : MonoBehaviour
         public void Enpool(GameObject go)
         {
             queue.Enqueue(go);
+            pooled++;
+            released--;
             go.transform.SetParent(Instance.transform);
             go.SetActive(false);
         }

@@ -11,10 +11,12 @@ public class Gun : MonoBehaviour
         semiauto,
         auto
     }
-    public bool CanShoot => timeSinceShot > gunSO.ShotDelay;
+    public bool DelayOver => timeSinceShot > gunSO.ShotDelay;
     public Mode FireMode => fireMode;
+    public GunSO GunSO => gunSO;
 
     [SerializeField] private GameObject flashPrefab;
+    [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GunSO gunSO;
     [SerializeField] private BulletSO bulletSO;
     [SerializeField] private Transform shotOrigin;
@@ -41,7 +43,7 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        if (!CanShoot)
+        if (!DelayOver)
         {
             Debug.LogWarning("Tried shooting " + this + ", but timesinceshot is " + timeSinceShot + " - less than " + gunSO.ShotDelay);
             return;
@@ -55,7 +57,7 @@ public class Gun : MonoBehaviour
         // Factory pattern?
         for (int i = 0; i < gunSO.ShotCount; i++)
         {
-            Bullet bullet = BulletPool.Instance.Depool();
+            Bullet bullet = EzPools.Instance.Depool(bulletPrefab).GetComponent<Bullet>();
             bullet.SO = bulletSO;
             bullet.transform.position = shotOrigin.position;
             bullet.transform.rotation = shotOrigin.rotation;

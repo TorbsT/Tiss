@@ -13,6 +13,12 @@ MonoBehaviour:
   m_Name: ShopPool
   m_EditorClassIdentifier: 
   spawns:
+  - title: Ammo
+    group: Ammo
+    desc: All-purpose ammo
+    item: {fileID: 11400000, guid: 76c1c8b49431cb14eb5e1edc052fc6fd, type: 2}
+    quantity: 128
+    cost: 10
   - title: Shotgun
     group: Weapon
     desc: Firearm. High bullet spread, but gets the job done

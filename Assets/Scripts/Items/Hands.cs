@@ -33,10 +33,10 @@ public class Hands : MonoBehaviour, IHotbarListener
         KeyCode m1 = KeyCode.Mouse0;
         if (holsteredGun != null)
         {
-            if (holsteredGun.CanShoot)
+            if (holsteredGun.DelayOver)
             {
-                if (holsteredGun.FireMode == Gun.Mode.semiauto && Input.GetKeyDown(m1)) holsteredGun.Shoot();
-                else if (holsteredGun.FireMode == Gun.Mode.auto && Input.GetKey(m1)) holsteredGun.Shoot();
+                if (holsteredGun.FireMode == Gun.Mode.semiauto && Input.GetKeyDown(m1)) TryShoot();
+                else if (holsteredGun.FireMode == Gun.Mode.auto && Input.GetKey(m1)) TryShoot();
             }
         }
         if (holdingPlaceable)
@@ -49,7 +49,6 @@ public class Hands : MonoBehaviour, IHotbarListener
             
         }
     }
-
     public void StateChanged(Hotbar hotbar)
     {
         chosenItem = hotbar.ChosenItem;
@@ -86,12 +85,22 @@ public class Hands : MonoBehaviour, IHotbarListener
         if (!holdingPlaceable) GetComponent<ItemPlacer>().PrefabToPreview = null;
 
     }
-    public void SetAnimation(State newState)
-    {
-        
-        state = newState;
-    }
 
+
+    private void TryShoot()
+    {
+        // check if there is ammo
+        InventoryObject inv = GetComponent<PlayerInventoryAPI>().Main;
+        Item ammo = holsteredGun.GunSO.Ammo;
+        int usedAmmo = holsteredGun.GunSO.AmmoPerBurst;
+        bool canShoot = InventoryExtensions.CanQuickRemove(inv, ammo, usedAmmo);
+        if (canShoot)
+        {
+            InventoryExtensions.QuickRemove(inv, ammo, usedAmmo);
+            holsteredGun.Shoot();
+        }
+        
+    }
     private void FindHotbar()
     {
         if (observedHotbar != null)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
 {
     public InventoryObject GunInventory => gunInventory;
@@ -16,10 +17,12 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
     [SerializeField] private InventoryObject ammoInventory;
     [SerializeField] private Transform child;
     [SerializeField] private Transform plate;
+    [SerializeField] private Transform target;
     [SerializeField] private float range;
     private Tooltip tooltip;
     private ICollection<Gun> childGuns = new HashSet<Gun>();
     private Collider2D[] targetsInRange;
+    private bool[] targetsLOS;
 
     void Awake()
     {
@@ -37,20 +40,55 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
         if (targetsInRange != null)
         {
             Gizmos.color = Color.red;
-            foreach (Collider2D col in targetsInRange)
+            for (int i = 0; i < targetsInRange.Length; i++)
             {
-                Gizmos.DrawSphere(col.transform.position, 1f);
+                Collider2D col = targetsInRange[i];
+                bool los = targetsLOS[i];
+                Transform t = col.transform;
+                if (target == t)
+                {
+                    Gizmos.color = Color.green;
+                } else
+                {
+                    if (los) Gizmos.color = Color.blue;
+                    else Gizmos.color = Color.red;
+                }
+                Gizmos.DrawLine(transform.position, t.position);
             }
         }
     }
     private void Update()
     {
-        int layerMask = 1 << LayerManager.ZombieLayer;
-        targetsInRange = Physics2D.OverlapCircleAll(transform.position, range, layerMask);
-        if (targetsInRange.Length > 0)
-        {
-            Transform target = targetsInRange[0].transform;
+        int zombieMask = 1 << LayerManager.ZombieLayer;
+        targetsInRange = Physics2D.OverlapCircleAll(transform.position, range, zombieMask);
+        targetsLOS = new bool[targetsInRange.Length];
 
+        int losMask = (1 << LayerManager.WallLayer) | (1 << LayerManager.BarricadeLayer);
+        target = null;
+        float shortestLength = Mathf.Infinity;
+        for (int i = 0; i < targetsInRange.Length; i++)
+        {
+            Collider2D c = targetsInRange[i];
+            Transform t = c.transform;
+            Vector2 rayDirection = t.position - transform.position;
+            float length = rayDirection.sqrMagnitude;  // Only comparing
+            if (length < shortestLength)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDirection, range, losMask);
+                bool lineOfSight = hit.transform == null;
+                targetsLOS[i] = lineOfSight;
+
+                if (lineOfSight)
+                {
+                    target = t;
+                    shortestLength = length;
+                }
+            }
+            
+        }
+
+        if (target != null)
+        {
             Vector2 lookingAt = target.position;
             Vector2 pos = transform.position;
             float angle = Vector2.SignedAngle(Vector2.up, lookingAt - pos);
@@ -87,7 +125,7 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
     {
         foreach (Gun gun in childGuns)
         {
-            if (gun.CanShoot) gun.Shoot();
+            if (gun.DelayOver) gun.Shoot();
         }
     }
 

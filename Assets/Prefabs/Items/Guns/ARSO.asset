@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b41f511adc43cf4da779688408820f8, type: 3}
   m_Name: ARSO
   m_EditorClassIdentifier: 
+  ammo: {fileID: 11400000, guid: 76c1c8b49431cb14eb5e1edc052fc6fd, type: 2}
   shotDelay: 0.1
   shotSpread: 2
   shotCount: 1

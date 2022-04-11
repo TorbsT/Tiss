@@ -17,7 +17,15 @@ namespace Pathfinding
         {
             Instance = this;
         }
-        public ICollection<Target> GetTargets() => targets;
+        public ICollection<Target> GetTargets()
+        {
+            HashSet<Target> result = new();
+            foreach (Target t in targets)
+            {
+                result.Add(t);
+            }
+            return result;
+        }
         public void AddTarget(Target target)
         {
             targets.Add(target);

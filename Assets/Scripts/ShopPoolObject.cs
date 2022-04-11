@@ -44,7 +44,6 @@ public class ShopPoolObject : ScriptableObject
             }
             available--;
         }
-        Debug.Log(result.Count + " " + available);
         return result;
     }
 }

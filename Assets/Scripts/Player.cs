@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
     [SerializeField] private bool gizmos;
-    [SerializeField] private float walkSpeed;
     private Locomotion locomotion;
     private Target target;
     private Vector2 lookingAt;
@@ -42,15 +41,12 @@ public class Player : MonoBehaviour
         float ad = Input.GetAxisRaw("Horizontal");
         Vector2 mouseScreenPosition = Input.mousePosition;
         Vector2 mousePos = UI.Instance.RectCalculator.ScreenPointToWorld(mouseScreenPosition);
-        lookingAt = mousePos;
+        GetComponent<LookAt>().LookingAt = mousePos;
 
-        Vector2 pos = transform.position;
-        float angle = Vector2.SignedAngle(Vector2.up, lookingAt-pos);
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
 
         // movement
         Vector2 direction = new(ad, ws);
         locomotion.Direction = direction;
-        locomotion.BaseSpeed = walkSpeed;
     }
 }

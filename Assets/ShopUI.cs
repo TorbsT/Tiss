@@ -12,6 +12,7 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
     [SerializeField] private RectTransform welcomePanel;
     [SerializeField] private RectTransform inspectPanel;
     [SerializeField] private RectTransform inventoryPanel;
+    [SerializeField] private RectTransform inspectBorder;
 
     [Header("Inspect Panel")]
     [SerializeField] private TextMeshProUGUI buttonField;
@@ -134,6 +135,7 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
         bool chosen = chosenItem != null;
         welcomePanel.gameObject.SetActive(!chosen);
         inspectPanel.gameObject.SetActive(chosen);
+        inspectBorder.gameObject.SetActive(chosen);
 
         if (chosen)
         {

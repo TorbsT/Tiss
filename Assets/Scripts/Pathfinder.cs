@@ -127,6 +127,7 @@ namespace Pathfinding
         public void SetTarget(Target target)
         {
             this.target = target;
+            outdated = true;
         }
     }
 }

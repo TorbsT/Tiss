@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 6148218976442906731}
   - component: {fileID: 8047936874525217284}
   - component: {fileID: 6278583578293127760}
-  - component: {fileID: 3135471437740957231}
   - component: {fileID: 4631666649509500324}
   - component: {fileID: 1212368968700710913}
   - component: {fileID: 3583445339441506148}
+  - component: {fileID: -2376856016738384899}
   m_Layer: 11
   m_Name: Barricade
   m_TagString: Untagged
@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+  connected: {fileID: 0}
 --- !u!114 &8047936874525217284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,11 +144,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcc385fab694ad6489e0475a1e57b5e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
-  parentToRoom: 1
   color: {r: 1, g: 0.93333334, b: 0, a: 0.25}
+  invalidColor: {r: 191, g: 0, b: 71, a: 0.25}
+  parentToRoom: 1
   renderers:
   - {fileID: 196985664418878528}
+  active: 0
+  valid: 0
 --- !u!114 &6278583578293127760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,35 +164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 100
-  renderer: {fileID: 196985664418878528}
-  animator: {fileID: 3135471437740957231}
-  mapper:
-  - minHP: 0
-    sprite: {fileID: 21300000, guid: 999257596861e6d4b9e70e13a491966e, type: 3}
-  - minHP: 33
-    sprite: {fileID: 21300000, guid: 4b5859f947bbf9d4181a51f8777fe1c4, type: 3}
-  - minHP: 66
-    sprite: {fileID: 21300000, guid: 37a64cc6c9e8f47468d3e02f268fae62, type: 3}
---- !u!95 &3135471437740957231
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704098749425701253}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f75b22439ca54f54ba069832929ca7cb, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &4631666649509500324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,6 +177,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  healthRenderer: {fileID: 196985664418878528}
+  healthMapper:
+  - minHP: 0
+    sprite: {fileID: 21300000, guid: 999257596861e6d4b9e70e13a491966e, type: 3}
+  - minHP: 33
+    sprite: {fileID: 21300000, guid: 4b5859f947bbf9d4181a51f8777fe1c4, type: 3}
+  - minHP: 66
+    sprite: {fileID: 21300000, guid: 37a64cc6c9e8f47468d3e02f268fae62, type: 3}
 --- !u!114 &1212368968700710913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,3 +211,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   room: {fileID: 0}
+--- !u!114 &-2376856016738384899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704098749425701253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69ab045145aa5d4e8532d949a2b08bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  expandAmount: 0.1
+  duration: 0.5
+  curve: {fileID: 11400000, guid: 82ea3b3481e1a734c800b6870bcbe932, type: 2}
+  playOnDamage: 1
+  playOnHeal: 0
+  playOnNoChange: 0

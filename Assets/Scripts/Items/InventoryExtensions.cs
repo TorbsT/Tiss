@@ -86,10 +86,7 @@ public static class InventoryExtensions
             inventory.Set(i, null, 0);
         }
     }
-    public static void QuickRemove(InventoryObject inventory, int index, int count)
-    {
-        QuickRemove(inventory, inventory.GetSlotItem(index), count);
-    }
+
     public static void QuickRemove(InventoryObject inventory, Item item, int count)
     {
         int left = count;
@@ -107,5 +104,28 @@ public static class InventoryExtensions
                 }
             }
         }
+    }
+    public static void QuickRemove(InventoryObject inventory, int index, int count)
+    {
+        QuickRemove(inventory, inventory.GetSlotItem(index), count);
+    }
+    public static bool CanQuickRemove(InventoryObject inventory, Item item, int count)
+    {
+        int left = count;
+        if (left == 0) return true;
+        for (int i = inventory.SlotCount - 1; i >= 0; i--)
+        {
+            if (inventory.GetSlotItem(i) == item)
+            {
+                int current = inventory.GetSlotQuantity(i);
+                if (current > 0)
+                {
+                    int used = Mathf.Min(current, left);
+                    left -= used;
+                    if (left == 0) return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
   m_Name: ShotgunItem
   m_EditorClassIdentifier: 
-  inventorySprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  inventorySprite: {fileID: 21300000, guid: 97fa5010bd8b45c44853bb1b4dc1f8d7, type: 3}
   prefab: {fileID: 779676094744333435, guid: 5106904840ad47a4189abd4c12187614, type: 3}
   id: Shotgun
-  stackSize: 1
+  stackSize: 64

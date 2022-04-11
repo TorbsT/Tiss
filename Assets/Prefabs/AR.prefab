@@ -64,7 +64,7 @@ Transform:
   m_GameObject: {fileID: 8932603143693335537}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 0.25, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7488708393207800028}
@@ -112,8 +112,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.23137255, g: 0.5921569, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 7aa31eb53284f6149ac04a268e4034c9, type: 3}
+  m_Color: {r: 0.20300001, g: 0.57710224, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashPrefab: {fileID: 8636678470764523763, guid: 402ca7e86e787294280bd24ff5aa8804, type: 3}
+  bulletPrefab: {fileID: 8237071375302184920, guid: b03a8c4359bfdba4d99e33985104be9c, type: 3}
   gunSO: {fileID: 11400000, guid: bf578ce152fb0e24289c22e65722d59e, type: 2}
   bulletSO: {fileID: 11400000, guid: bdadeea9488e9314e8170088093fe1c8, type: 2}
   shotOrigin: {fileID: 7488708393207800028}
@@ -174,14 +175,14 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1, y: 0.25}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.25}
   m_EdgeRadius: 0
 --- !u!50 &5262218892522001127
 Rigidbody2D:

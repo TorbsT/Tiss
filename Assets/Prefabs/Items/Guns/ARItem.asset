@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
   m_Name: ARItem
   m_EditorClassIdentifier: 
-  inventorySprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  inventorySprite: {fileID: 21300000, guid: ca5a0a012eee14f489693b347af1990b, type: 3}
   prefab: {fileID: 8932603143693335537, guid: d832c53f75307af4db1ed3a2b6dae885, type: 3}
   id: AR
   stackSize: 1

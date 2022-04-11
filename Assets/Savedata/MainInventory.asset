@@ -13,3 +13,31 @@ MonoBehaviour:
   m_Name: MainInventory
   m_EditorClassIdentifier: 
   slotCount: 9
+  slots:
+  - item: {fileID: 11400000, guid: 998854d1e7b1cfe40bd84931765abfc9, type: 2}
+    quantity: 1
+    state: 2
+  - item: {fileID: 0}
+    quantity: 0
+    state: 0
+  - item: {fileID: 0}
+    quantity: 0
+    state: 0
+  - item: {fileID: 0}
+    quantity: 0
+    state: 0
+  - item: {fileID: 0}
+    quantity: 0
+    state: 0
+  - item: {fileID: 0}
+    quantity: 0
+    state: 0
+  - item: {fileID: 0}
+    quantity: 0
+    state: 0
+  - item: {fileID: 0}
+    quantity: 0
+    state: 0
+  - item: {fileID: 0}
+    quantity: 0
+    state: 0

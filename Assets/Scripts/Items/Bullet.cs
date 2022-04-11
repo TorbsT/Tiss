@@ -5,12 +5,25 @@ using Pools;
 
 public class Bullet : MonoBehaviour
 {
+    public float Life => life;
     public BulletSO SO { get => so; set { so = value; } }
-    [SerializeField] private BulletSO so;
+    private BulletSO so;
     [SerializeField] private float life;
+    private bool shotOff = false;
+    private Rigidbody2D rb;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!isActiveAndEnabled)
+        {
+            // I have no idea why this happens but it does sometimes for some reason
+            return;
+        }
         Transform tr = collision.collider.transform;
 
         Rigidbody2D rb = tr.GetComponent<Rigidbody2D>();
@@ -28,6 +41,8 @@ public class Bullet : MonoBehaviour
     private void OnEnable()
     {
         life = 0f;
+        shotOff = false;
+        
     }
     private void Update()
     {
@@ -40,11 +55,15 @@ public class Bullet : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (so == null) return;
-        transform.position += transform.right * so.Speed * Time.fixedDeltaTime;
+        if (!shotOff)
+        {
+            Vector3 v = transform.right * so.Speed;
+            rb.velocity = new Vector2(v.x, v.y);
+            shotOff = true;
+        }
     }
     public void Despawn()
     {
-        BulletPool.Instance.Enpool(this);
+        GetComponent<Destroyable>().Destroy();
     }
 }

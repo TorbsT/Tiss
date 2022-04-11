@@ -24,7 +24,9 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
 
     [SerializeField, Range(0f, 100f)] private float newFuel;
     [SerializeField, Range(0f, 100f)] private float fuel;
-    [SerializeField] private int maxPower;
+    [SerializeField] private Gradient logoGradient;
+    [SerializeField] private SpriteRenderer logoRenderer;
+    private int maxPower;
     [SerializeField] private int producedPower;
     [SerializeField] private int fpsPriority;
     [SerializeField] private float interactDelay;
@@ -143,13 +145,11 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     }
     public void NewHP(float oldHP, float newHP)
     {
-        SetFuel(newHP);
-    }
-    private void SetFuel(float amount)
-    {
-        newFuel = Mathf.Clamp(amount, 0f, 100f);
+        newFuel = Mathf.Clamp(newHP, 0f, 100f);
+        logoRenderer.color = logoGradient.Evaluate(newFuel / 100f);
         running = newFuel > 0f;
         if (running) target.SetDiscoverability(Target.Discoverability.discoverable);
         else target.SetDiscoverability(Target.Discoverability.hidden);
     }
+
 }

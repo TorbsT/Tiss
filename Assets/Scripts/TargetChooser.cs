@@ -15,25 +15,31 @@ public class TargetChooser : MonoBehaviour
     public Target Target => target;
 
     private Room currentRoom;
-    private Target target;
+    [SerializeField] private Target target;
     [SerializeField] private bool running;
     private ICollection<ITargetChooserListener> listeners = new HashSet<ITargetChooserListener>();
 
     private void Awake()
     {
-        
-    }
-    private void OnEnable()
-    {
-        listeners = new HashSet<ITargetChooserListener>();
         foreach (ITargetChooserListener comp in GetComponents<ITargetChooserListener>())
         {
             listeners.Add(comp);
         }
     }
+    private void OnEnable()
+    {
+
+    }
     private void OnDisable()
     {
         
+    }
+    private void Update()
+    {
+        if (!running)
+        {
+            if (target == null || !target.isActiveAndEnabled || !target.Targetable) Research();
+        }
     }
     public void Research()
     {

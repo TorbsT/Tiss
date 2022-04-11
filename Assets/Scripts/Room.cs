@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[SelectionBase]
 public class Room : MonoBehaviour
 {
     public enum Direction
@@ -40,6 +39,7 @@ public class Room : MonoBehaviour
     private Coroutine rotanimRoutine;
     private Coroutine lightanimRoutine;
     private Dictionary<Generator, int> powerSources = new();
+    private HashSet<IPowerListener> powerListeners = new();
 
     private int rotation;
     private int power;
@@ -125,7 +125,15 @@ public class Room : MonoBehaviour
         return false;
     }
 
-
+    public void AddPowerListener(IPowerListener listener)
+    {
+        powerListeners.Add(listener);
+        listener.NewPower(newPower);
+    }
+    public void RemovePowerListener(IPowerListener listener)
+    {
+        powerListeners.Remove(listener);
+    }
     private void RecalculateNewPower()
     {
         int max = 0;
@@ -135,6 +143,10 @@ public class Room : MonoBehaviour
         }
         newPower = max;
         newPowerOutdated = false;
+        foreach (IPowerListener listener in powerListeners)
+        {
+            listener.NewPower(newPower);
+        }
     }
     private void RecalculateNeighbours()
     {

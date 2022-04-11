@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
-public class Miner : MonoBehaviour, IInteractableListener
+public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHPListener
 {
     public Wallet Stored { get => stored; set { stored = value; } }
     public float Range { get => range; set { range = value; } }
@@ -27,6 +28,7 @@ public class Miner : MonoBehaviour, IInteractableListener
     private void OnEnable()
     {
         MinerSystem.Track(this);
+        GetComponent<HP>().Set(100f);
         stored.Shitcoin = 0;
     }
     private void OnDisable()
@@ -56,11 +58,24 @@ public class Miner : MonoBehaviour, IInteractableListener
     {
         available += amount;
     }
+    public void NewCharge(int oldCharge, int newCharge)
+    {
+        Target t = GetComponent<Target>();
+        if (newCharge > 0) t.SetDiscoverability(Target.Discoverability.discoverable);
+        else t.SetDiscoverability(Target.Discoverability.hidden);
+    }
     public void Interact(Interactor interactor)
     {
         Wallet toWallet = interactor.GetComponent<IWalletProvider>().Wallet;
         toWallet.Shitcoin += stored.Shitcoin;
         stored.Shitcoin = 0;
+    }
+    public void NewHP(float oldHP, float newHP)
+    {
+        if (newHP <= 0f)
+        {
+            GetComponent<Destroyable>().Destroy();
+        }
     }
     private void AvailableToStored(int amount)
     {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
   m_Name: FlammenItemSO
   m_EditorClassIdentifier: 
-  inventorySprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  inventorySprite: {fileID: 21300000, guid: f27a9dc249a129340ba21b5a70a061bc, type: 3}
   prefab: {fileID: 9195688602346387915, guid: 02ef15d87274fe947a61cc05078841f0, type: 3}
   id: Flammenwerfer
   stackSize: 1
