@@ -43,5 +43,12 @@ public class UIInventory : MonoBehaviour, IInventoryListener
             slot.SetQuantity(inventory.GetSlotQuantity(index));
         }
     }
+    void OnDestroy()
+    {
+        if (inventory != null)
+        {
+            inventory.RemoveListener(this);
+        }
+    }
 
 }

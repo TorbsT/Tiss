@@ -26,4 +26,8 @@ public class PlayerInventoryAPI : MonoBehaviour, IWalletProvider
         hotbar = GetComponent<Hotbar>();
         placer = GetComponent<ItemPlacer>();
     }
+    void OnDestroy()
+    {
+        Instance = null;
+    }
 }

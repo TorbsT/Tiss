@@ -68,7 +68,11 @@ public class UIInventoryManager : MonoBehaviour, IHotbarListener, IButtonReceive
     public void StateChanged(Hotbar hotbar)
     {
         int index = hotbar.ChosenIndex;
-        Transform uiSlotTransform = mainUIInv.transform.GetChild(index);
-        hotbarChooserTransform.position = uiSlotTransform.position;
+        if (mainUIInv != null)
+        {
+            Transform uiSlotTransform = mainUIInv.transform.GetChild(index);
+            hotbarChooserTransform.position = uiSlotTransform.position;
+        }
+
     }
 }

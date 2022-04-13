@@ -118,4 +118,9 @@ public class Hands : MonoBehaviour, IHotbarListener
             GetComponent<Hotbar>().AddListener(this);
         }
     }
+
+    void OnDestroy()
+    {
+        observedHotbar.RemoveListener(this);
+    }
 }
