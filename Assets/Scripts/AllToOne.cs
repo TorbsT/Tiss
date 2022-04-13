@@ -27,6 +27,10 @@ namespace Pathfinding
         {
             targetRoom = GetComponent<Room>();
         }
+        private void OnEnable()
+        {
+            nodes = new();
+        }
         private void OnDrawGizmosSelected()
         {
             if (state != State.calculated) return;
@@ -46,6 +50,15 @@ namespace Pathfinding
         {
             if (!nodes.ContainsKey(room)) return null;
             return nodes[room];
+        }
+        public ICollection<Node> GetNodes()
+        {
+            HashSet<Node> result = new();
+            foreach (Node node in nodes.Values)
+            {
+                result.Add(node);
+            }
+            return result;
         }
         public void RemoveData()
         {

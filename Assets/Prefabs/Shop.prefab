@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 446846104095490112}
   - component: {fileID: 4273128563446515785}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Logo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 389983153162213687}
   - component: {fileID: 6875927753494875855}
   - component: {fileID: 5689558497227781325}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Shop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5894242994815995272}
   - component: {fileID: 8867865100071332896}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}

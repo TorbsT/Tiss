@@ -14,9 +14,7 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField] private float warmupDuration = 10f;
     [SerializeField] private float waveDuration = 10f;
-    [SerializeField] private int zombiesEachRound = 10;
-    [SerializeField] private float minZombieDistance = 10f;
-    [SerializeField] private float maxZombieDistance = 20f;
+    [SerializeField] private AnimationCurve zombiesPerRound;
 
     private State state = State.warmup;
     [SerializeField] private float time;
@@ -25,7 +23,7 @@ public class RoundManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Invoke(nameof(PortalSpawning), 1f);  // BAD
     }
 
     // Update is called once per frame
@@ -43,7 +41,7 @@ public class RoundManager : MonoBehaviour
                 time = 0f;
                 state = State.wave;
                 timer.ImageColor = Color.red;
-                StartCoroutine(SummonZombies());
+                PortalSystem.Instance.StartSpawningZombies();
             }
         } else if (state == State.wave)
         {
@@ -62,20 +60,14 @@ public class RoundManager : MonoBehaviour
                 }
 
                 RoomManager.Instance.NextRound();
+                Invoke(nameof(PortalSpawning), 1f);  // BAD
             }
         }
-
     }
-    private IEnumerator SummonZombies()
+    private void PortalSpawning()
     {
-        for (int i = 0; i < zombiesEachRound; i++)
-        {
-            Zombie zombie = ZombiePool.Instance.Depool();
-            float distance = Random.Range(minZombieDistance, maxZombieDistance);
-            Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-            Vector2 offset = distance * direction;
-            zombie.transform.position = Player.Instance.transform.position.Add(offset);
-            yield return null;
-        }
+        int zombiesToSpawn = Mathf.FloorToInt(zombiesPerRound.Evaluate(round));
+        PortalSystem.Instance.ZombiesToSpawn = zombiesToSpawn;
+        PortalSystem.Instance.StartSpawningPortals();
     }
 }

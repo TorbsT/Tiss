@@ -19,14 +19,15 @@ public class HP : MonoBehaviour
 
     private void Start()
     {
-        foreach (IHPListener listener in GetComponents<IHPListener>())
-        {
-            AddListener(listener);
-        }
+
     }
     private void OnEnable()
     {
         listeners = new();
+        foreach (IHPListener listener in GetComponents<IHPListener>())
+        {
+            AddListener(listener);
+        }
     }
     public void Set(float newHealth)
     {

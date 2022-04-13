@@ -67,6 +67,11 @@ public class Loader : MonoBehaviour
             Load(loc);
             if (waiter.CheckTime()) yield return null;
         }
+
+        foreach (Room room in dict.Values)
+        {
+            room.AllOtherRoomsLoaded();
+        }
         running = false;
     }
     private void Load(Vector2Int loc)
@@ -98,8 +103,9 @@ public class Loader : MonoBehaviour
         {
             GameObject go = EzPools.Instance.Depool(prefab);
             Transform t = go.transform;
-            RoomDweller dweller = go.GetComponent<RoomDweller>();  
-            t.position = room.transform.position;
+            RoomDweller dweller = go.GetComponent<RoomDweller>();
+            t.position = room.MachineSpawn.position;
+            t.localRotation = room.MachineSpawn.localRotation;
             // dunno if tracking dwellers or gameobjects is better
             dwellers.Add(dweller);
         }

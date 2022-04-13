@@ -75,8 +75,9 @@ namespace Pathfinding
                 if (currentRoom == null)
                 {
                     state = State.outOfBounds;
-                    newSubgoal = target.transform;
-                    subGoalDistanceRequirement = 0f;
+                    //newSubgoal = target.transform;
+                    newSubgoal = BorderSystem.Instance.GetClosest(transform.position).transform;
+                    subGoalDistanceRequirement = 0.5f;
                 } else
                 {
                     Node node = target.AllToOne.GetNode(currentRoom);

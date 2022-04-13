@@ -5,18 +5,24 @@ using ExtensionMethods;
 using Pathfinding;
 using Pools;
 
-public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener, IHPListener
+public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener, IHPListener, IBatteryListener
 {
     [Header("CONFIG")]
-    [SerializeField] private float attackDelay;
+    [SerializeField] private float lightAttackDelay;
     [SerializeField] private float attackRange;
     [SerializeField] private float attackDamage;
+    [SerializeField] private float lightSpeed;
+    [SerializeField] private float darkAttackDelay;
+    [SerializeField] private float darkSpeed;
+    [SerializeField, Range(1f, 2f)] private float darkSize = 2f;
 
     [Header("DEBUG")]
     [SerializeField] private bool gizmos;
+    [SerializeField] private bool dark;
     [SerializeField] private Vector2 goal;
     [SerializeField] private float timeSinceTargetUpdate;
     [SerializeField] private float timeSinceAttack;
+    [SerializeField] private float attackDelay;
     [SerializeField] private Room currentRoom;
 
     private Locomotion locomotion;
@@ -104,7 +110,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     }
     public void Despawn()
     {
-        ZombiePool.Instance.Enpool(this);
+        GetComponent<Destroyable>().Destroy();
     }
     public void Research()
     {
@@ -123,5 +129,24 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     public void NewHP(float oldHP, float newHP)
     {
         if (newHP <= 0f) Despawn();
+    }
+
+    public void NewCharge(int oldCharge, int newCharge)
+    {
+        bool newDark = newCharge == 0;
+        if (newDark == dark) return;
+        Locomotion l = GetComponent<Locomotion>();
+        if (newDark)
+        {
+            l.BaseSpeed = darkSpeed;
+            attackDelay = darkAttackDelay;
+            transform.localScale *= darkSize;
+        } else
+        {
+            l.BaseSpeed = lightSpeed;
+            attackDelay = lightAttackDelay;
+            transform.localScale /= darkSize;
+        }
+        dark = newDark;
     }
 }
