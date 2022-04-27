@@ -26,7 +26,7 @@ public class RoomDweller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Room r = RoomManager.Instance.PosToRoom(transform.position);
+        Room r = SquareRoomSystem.Instance.PosToRoom(transform.position);
         if (room != r)
         {
             Transform parent = null;

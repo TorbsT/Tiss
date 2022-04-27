@@ -7,7 +7,7 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
 {
     public Wallet Stored { get => stored; set { stored = value; } }
     public float Range { get => range; set { range = value; } }
-    public float Effratio { get => effratio; set { effratio = value; } }
+    public float Effratio { get => effratio; set { effratio = value; FireStateChanged(); } }
     public int MaxProduction { get => maxProduction; set { maxProduction = value; } }
 
     [Header("STATE")]
@@ -20,6 +20,9 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
     [SerializeField] private float effratio;
     [SerializeField] private int available;
     [SerializeField] private float waitPoints;
+
+    private HashSet<IMinerListener> listeners = new();
+
     private void Awake()
     {
         stored = ScriptableObject.CreateInstance<Wallet>();
@@ -27,9 +30,18 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
     }
     private void OnEnable()
     {
-        MinerSystem.Track(this);
+        Track();
         GetComponent<HP>().Set(100f);
         stored.Shitcoin = 0;
+    }
+    private void Track()
+    {
+        if (MinerSystem.Instance == null)
+        {
+            Invoke(nameof(Track), 1f);
+            return;
+        }
+        MinerSystem.Instance.Track(this);
     }
     private void OnDisable()
     {
@@ -50,6 +62,15 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
             waitPoints = 0f;
         }
     }
+    public void AddListener(IMinerListener listener)
+    {
+        listeners.Add(listener);
+        listener.MinerChanged(this);
+    }
+    public void RemoveListener(IMinerListener listener)
+    {
+        listeners.Remove(listener);
+    }
     public void Finish()
     {
         AvailableToStored(available);
@@ -63,12 +84,11 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
         Target t = GetComponent<Target>();
         if (newCharge > 0) t.SetDiscoverability(Target.Discoverability.discoverable);
         else t.SetDiscoverability(Target.Discoverability.hidden);
+        FireStateChanged();
     }
     public void Interact(Interactor interactor)
     {
-        Wallet toWallet = interactor.GetComponent<IWalletProvider>().Wallet;
-        toWallet.Shitcoin += stored.Shitcoin;
-        stored.Shitcoin = 0;
+        MinerUI.Instance.Open(this, interactor);
     }
     public void NewHP(float oldHP, float newHP)
     {
@@ -83,5 +103,13 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
         amount = Mathf.Min(amount, available);
         stored.Shitcoin += amount;
         available -= amount;
+        FireStateChanged();
+    }
+    private void FireStateChanged()
+    {
+        foreach (IMinerListener listener in listeners)
+        {
+            listener.MinerChanged(this);
+        }
     }
 }

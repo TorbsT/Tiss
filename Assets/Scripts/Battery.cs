@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Battery : MonoBehaviour, IPowerListener, IRoomDwellerListener
 {
+    public int Power => power;
+
     [SerializeField] private int power;
     [SerializeField] private GradientObject powerGradient;
     [SerializeField] private new SpriteRenderer renderer;
@@ -19,7 +21,7 @@ public class Battery : MonoBehaviour, IPowerListener, IRoomDwellerListener
     public void NewPower(int power)
     {
         if (renderer != null && powerGradient != null)
-            renderer.color = powerGradient.Gradient.Evaluate((float)power / RoomManager.Instance.GeneratorPower);
+            renderer.color = powerGradient.Gradient.Evaluate((float)power / SquareRoomSystem.Instance.GeneratorPower);
         foreach (IBatteryListener listener in listeners)
         {
             listener.NewCharge(this.power, power);

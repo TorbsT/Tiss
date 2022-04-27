@@ -14,13 +14,13 @@ namespace Pathfinding
         }
         public float FpsPriority { get => fpsPriority; set { fpsPriority = value; } }
         public State CurrentState => state;
-        [SerializeField] private float fpsPriority;
+        [SerializeField] private float fpsPriority = 100f;
         [SerializeField] private float calculationTime;
         private Dictionary<Room, Node> nodes;
         private Room targetRoom;
         private Coroutine coroutine;
         [SerializeField] private State state;
-        [SerializeField, Range(1f, 10f)] private float gizmoBoxSize;
+        [SerializeField, Range(1f, 10f)] private float gizmoBoxSize = 10f;
         private float calculationStartTime;
 
         private void Awake()
@@ -30,6 +30,8 @@ namespace Pathfinding
         private void OnEnable()
         {
             nodes = new();
+            StopAllCoroutines();
+            StartCoroutine(DijkstraRoutine());
         }
         private void OnDrawGizmosSelected()
         {
@@ -59,17 +61,6 @@ namespace Pathfinding
                 result.Add(node);
             }
             return result;
-        }
-        public void RemoveData()
-        {
-            if (state == State.running) StopCoroutine(coroutine);
-            nodes = new();
-            state = State.empty;
-        }
-        public void StartRecalculating()
-        {
-            if (state != State.empty) RemoveData();
-            coroutine = StartCoroutine(DijkstraRoutine());
         }
         private IEnumerator DijkstraRoutine()
         {
@@ -113,6 +104,7 @@ namespace Pathfinding
             calculationTime = Time.time - calculationStartTime;
             nodes = newNodes;
             state = State.calculated;
+            PathfindingSystem.Instance.AllToOneDone(this);
         }
     }
     public class Node

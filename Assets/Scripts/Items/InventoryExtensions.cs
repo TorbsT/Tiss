@@ -109,6 +109,7 @@ public static class InventoryExtensions
     {
         QuickRemove(inventory, inventory.GetSlotItem(index), count);
     }
+
     public static bool CanQuickRemove(InventoryObject inventory, Item item, int count)
     {
         int left = count;

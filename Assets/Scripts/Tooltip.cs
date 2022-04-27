@@ -6,13 +6,15 @@ using TMPro;
 
 public class Tooltip : MonoBehaviour
 {
-    public Vector2 PositionToDisplay { get => positionToDisplay; set { positionToDisplay = value; } }
+    public Transform TransformToFollow { get => transformToFollow; set { transformToFollow = value; } }
     public KeyCode KeyCode { get => keyCode; set { keyCode = value; keyCodeTextField.text = value.ToString(); } }
+    public Vector2 Offset { get => offset; set { offset = value; } }
 
     [SerializeField] private KeyCode keyCode;
     [SerializeField] private TextMeshProUGUI keyCodeTextField;
-    [SerializeField] private Vector2 positionToDisplay;
+    private Vector2 offset;
     private RectTransform rectTransform;
+    private Transform transformToFollow;
     private Image image;
 
     private void Awake()
@@ -23,9 +25,11 @@ public class Tooltip : MonoBehaviour
 
     private void Update()
     {
-        bool show = !ShopUI.Instance.isActiveAndEnabled;
+        bool show = !ShopUI.Instance.isActiveAndEnabled && !MinerUI.Instance.isActiveAndEnabled && transformToFollow != null;
         image.enabled = show;
         keyCodeTextField.enabled = show;
-        rectTransform.anchoredPosition = UI.Instance.RectCalculator.WorldToScreenPoint(positionToDisplay);
+        Vector2 posToFollow = transformToFollow.position;
+        if (show)
+        rectTransform.anchoredPosition = UI.Instance.RectCalculator.WorldToScreenPoint(posToFollow+offset);
     }
 }

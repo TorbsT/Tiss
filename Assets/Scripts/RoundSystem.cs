@@ -4,28 +4,27 @@ using UnityEngine;
 using Pools;
 using ExtensionMethods;
 
-public class RoundManager : MonoBehaviour
+public class RoundSystem : MonoBehaviour, IEventListener
 {
     private enum State
     {
         warmup,
         wave
     }
-
+    public static RoundSystem Instance { get; private set; }
+    public int Round => round;
     [SerializeField] private float warmupDuration = 10f;
     [SerializeField] private float waveDuration = 10f;
-    [SerializeField] private AnimationCurve zombiesPerRound;
 
     private State state = State.warmup;
     [SerializeField] private float time;
     [SerializeField] private int round;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        Invoke(nameof(PortalSpawning), 1f);  // BAD
+        Instance = this;
+        EventSystem.AddEventListener(this, Event.LoaderFinished);
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -41,7 +40,7 @@ public class RoundManager : MonoBehaviour
                 time = 0f;
                 state = State.wave;
                 timer.ImageColor = Color.red;
-                PortalSystem.Instance.StartSpawningZombies();
+                EventSystem.DeclareEvent(Event.NewWave);
             }
         } else if (state == State.wave)
         {
@@ -53,21 +52,20 @@ public class RoundManager : MonoBehaviour
                 state = State.warmup;
                 timer.ImageColor = Color.green;
                 round++;
-
-                foreach (Zombie zombie in FindObjectsOfType<Zombie>())
-                {
-                    zombie.GetComponent<HP>().Set(0f);
-                }
-
-                RoomManager.Instance.NextRound();
-                Invoke(nameof(PortalSpawning), 1f);  // BAD
+                RoundChanged();
             }
         }
     }
-    private void PortalSpawning()
+    private void RoundChanged()
     {
-        int zombiesToSpawn = Mathf.FloorToInt(zombiesPerRound.Evaluate(round));
-        PortalSystem.Instance.ZombiesToSpawn = zombiesToSpawn;
-        PortalSystem.Instance.StartSpawningPortals();
+        EventSystem.DeclareEvent(Event.NewRound);
+    }
+    public void EventDeclared(Event e)
+    {
+        if (e == Event.LoaderFinished)
+        {
+            EventSystem.RemoveListener(this);
+            RoundChanged();
+        }
     }
 }

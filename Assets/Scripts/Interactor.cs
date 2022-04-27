@@ -23,7 +23,7 @@ public class Interactor : MonoBehaviour
     void Update()
     {
         timeWaited += Time.deltaTime;
-        if (currentHover == null || !currentHover.isActiveAndEnabled)
+        if (currentHover == null)
         {
             if (timeWaited > findWaitTime)
             {
@@ -51,7 +51,7 @@ public class Interactor : MonoBehaviour
     private void Verify()
     {
         timeWaited = 0f;
-        if (OutOfRange()) Unhover();
+        if (OutOfRange() || !currentHover.isActiveAndEnabled) Unhover();
     }
     private bool OutOfRange()
     {

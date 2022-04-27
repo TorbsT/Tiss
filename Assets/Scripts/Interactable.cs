@@ -23,7 +23,8 @@ public class Interactable : MonoBehaviour
         tooltip = TooltipPool.Instance.Depool();
         tooltip.KeyCode = KeyCode.F;
         tooltip.transform.SetParent(UI.Instance.transform, false);
-        tooltip.PositionToDisplay = new Vector2(transform.position.x, transform.position.y + 1f);
+        tooltip.TransformToFollow = transform;
+        tooltip.Offset = Vector2.up*2f;
     }
 
     public void Unhover(Interactor interactor)

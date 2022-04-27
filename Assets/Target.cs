@@ -34,7 +34,6 @@ namespace Pathfinding
         [SerializeField] private AllToOne allToOne;
         [SerializeField] private Discoverability discoverability;
         [SerializeField] private State state;
-        private HashSet<ITargetSubscriber> subscribers = new();
         private RoomDweller dweller;
         private void Awake()
         {
@@ -48,7 +47,7 @@ namespace Pathfinding
         }
         private void OnDisable()
         {
-            PathfindingManager.Instance.RemoveTarget(this);
+            PathfindingSystem.Instance.RemoveTarget(this);
         }
         private void Update()
         {
@@ -58,67 +57,40 @@ namespace Pathfinding
                 allToOne = null;
             } else
             {
-                AllToOne ato = PathfindingManager.Instance.GetAllToOne(dweller.Room);
-                if (ato != allToOne)
+                allToOne = dweller.Room.GetComponent<AllToOne>();
+                if (allToOne == null)
                 {
-                    FireStateChanged();
-                    allToOne = ato;
-                    if (allToOne.CurrentState == AllToOne.State.empty)
-                    {
-                        allToOne.StartRecalculating();
-                        state = State.unreadyRoom;
-                    } else if (allToOne.CurrentState == AllToOne.State.running)
-                    {
-                        state = State.unreadyRoom;
-                    } else if (allToOne.CurrentState == AllToOne.State.calculated)
-                    {
-                        state = State.readyRoom;
-                    }
+                    state = State.unreadyRoom;
+                    PathfindingSystem.Instance.RequestAllToOne(this);
+                } else
+                {
+                    state = State.readyRoom;
                 }
             }
         }
         private void RegisterTarget()
         {
-            if (PathfindingManager.Instance == null)
+            if (PathfindingSystem.Instance == null)
             {
                 Invoke(nameof(RegisterTarget), 1f);
                 return;
             }
-            PathfindingManager.Instance.AddTarget(this);
-        }
-        private void AllChooseTarget()
-        {
-            PathfindingManager.Instance.AllChooseTarget();
+            PathfindingSystem.Instance.AddTarget(this);
         }
         public void SetDiscoverability(Discoverability newDiscoverability)
         {
             if (newDiscoverability == discoverability) return;
             if (newDiscoverability == Discoverability.hidden)
             {
-                AllChooseTarget();
+                PathfindingSystem.Instance.RemoveTarget(this);
             } else if (newDiscoverability == Discoverability.targetable)
             {
-                
+                PathfindingSystem.Instance.AddTarget(this);
             } else if (newDiscoverability == Discoverability.discoverable)
             {
-                AllChooseTarget();
+                PathfindingSystem.Instance.AddTarget(this);
             }
             discoverability = newDiscoverability;
-        }
-        private void FireStateChanged()
-        {
-            foreach (ITargetSubscriber subscriber in subscribers)
-            {
-                subscriber.StateChanged();
-            }
-        }
-        public void AddSubscriber(ITargetSubscriber subscriber)
-        {
-            subscribers.Add(subscriber);
-        }
-        public void RemoveSubscriber(ITargetSubscriber subscriber)
-        {
-            subscribers.Remove(subscriber);
         }
         public void MarkOutdated()
         {

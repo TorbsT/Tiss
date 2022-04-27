@@ -3,40 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pools;
 
-public class Loader : MonoBehaviour
+public class LoaderSystem : MonoBehaviour
 {
     [System.Serializable]
     private class Spawn
     {
+        [Range(0f, 1f)] public float max;
         public GameObject prefab;
-        [Range(0f, 1f)] public float maxValue;
     }
-
+    public static LoaderSystem Instance { get; private set; }
+    
     public bool Running => running;
     private ICollection<Vector2Int> locsToLoad;
     private ICollection<Vector2Int> locsToUnload;
     private Dictionary<Vector2Int, Room> dict = new();
-    private HashSet<RoomDweller> dwellers = new();
 
+    [SerializeField] private List<Spawn> spawns;
     [SerializeField] private bool running;
-    [SerializeField] private List<Spawn> spawnChances;
     [SerializeField] private float fpsPriority = 512f;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     public Room GetRoomById(Vector2Int id)
     {
         if (!dict.ContainsKey(id)) return null;
         return dict[id];
     }
-    public ICollection<RoomDweller> GetLoadedDwellers()
-    {
-        HashSet<RoomDweller> result = new();
-        foreach (RoomDweller dweller in dwellers)
-        {
-            result.Add(dweller);
-        }
-        return result;
-    }
-    public Dictionary<Vector2Int, Room> GetLoadedDict()
+    public Dictionary<Vector2Int, Room> GetLoadedDictCopy()
     {
         Dictionary<Vector2Int, Room> result = new();
         foreach (Vector2Int key in dict.Keys)
@@ -55,23 +50,14 @@ public class Loader : MonoBehaviour
     {
         running = true;
         Waiter waiter = new(1f / fpsPriority);
-        /*
-        foreach (Vector2Int loc in locsToUnload)
-        {
-            Unload(loc);
-            if (waiter.CheckTime()) yield return null;
-        }
-        */
+
         foreach (Vector2Int loc in locsToLoad)
         {
             Load(loc);
             if (waiter.CheckTime()) yield return null;
         }
 
-        foreach (Room room in dict.Values)
-        {
-            room.AllOtherRoomsLoaded();
-        }
+        EventSystem.DeclareEvent(Event.LoaderFinished);
         running = false;
     }
     private void Load(Vector2Int loc)
@@ -84,21 +70,23 @@ public class Loader : MonoBehaviour
         Room room = RoomPool.Instance.Depool();
 
         room.Id = loc;
-        room.transform.position = RoomManager.Instance.LocToPos(loc);
-        room.NewRotation = Random.Range(0, 4);
-        room.StartRotationAnimation();
+        room.transform.position = SquareRoomSystem.Instance.LocToPos(loc);
 
+        dict.Add(loc, room);
+
+        
         float rd = Random.value;
         GameObject prefab = null;
-        for (int i = 0; i < spawnChances.Count; i++)
+        for (int i = 0; i < spawns.Count; i++)
         {
-            if (rd < spawnChances[i].maxValue)
+            if (rd < spawns[i].max)
             {
-                prefab = spawnChances[i].prefab;
+                prefab = spawns[i].prefab;
                 break;
             }
         }
 
+        
         if (prefab != null)
         {
             GameObject go = EzPools.Instance.Depool(prefab);
@@ -106,29 +94,7 @@ public class Loader : MonoBehaviour
             RoomDweller dweller = go.GetComponent<RoomDweller>();
             t.position = room.MachineSpawn.position;
             t.localRotation = room.MachineSpawn.localRotation;
-            // dunno if tracking dwellers or gameobjects is better
-            dwellers.Add(dweller);
         }
-
-        dict.Add(loc, room);
     }
-    /*
-    private void Unload(Vector2Int loc)
-    {
-        if (!dict.ContainsKey(loc))
-        {
-            Debug.LogWarning("already unloaded");
-            return;
-        }
-        Room room = dict[loc];
 
-        foreach (Generator gen in room.transform.GetComponentsInChildren<Generator>())
-        {
-            generators.Remove(gen);
-        }
-        // unload generators? idk this whole shit is pretty weird
-        RoomPool.Instance.Enpool(room);
-        dict.Remove(loc);
-    }
-    */
 }

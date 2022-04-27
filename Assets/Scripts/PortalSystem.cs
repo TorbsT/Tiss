@@ -2,18 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-public class PortalSystem : MonoBehaviour
+public class PortalSystem : MonoBehaviour, IEventListener
 {
     public static PortalSystem Instance { get; private set; }
     public int ZombiesToSpawn { get => zombiesToSpawn; set { zombiesToSpawn = value; } }
     private void Awake()
     {
         Instance = this;
+        EventSystem.AddEventListener(this, Event.NewRound);
+        EventSystem.AddEventListener(this, Event.NewWave);
     }
 
+    [SerializeField] private AnimationCurve zombiesPerRound;
     [SerializeField] private GameObject portalPrefab;
     [SerializeField] private int minRoomsAway = 1;
     [SerializeField] private int zombiesToSpawn;
+    [SerializeField] private int round;  // from RoundManager
     private HashSet<Portal> portals;
     private HashSet<Node> chosenNodes;
     private Coroutine portalRoutine;
@@ -21,6 +25,7 @@ public class PortalSystem : MonoBehaviour
 
     public void StartSpawningPortals()
     {
+        zombiesToSpawn = Mathf.FloorToInt(zombiesPerRound.Evaluate(GetRound()));
         StopPortalRoutine();
         portalRoutine = StartCoroutine(PortalRoutine());
     }
@@ -144,6 +149,34 @@ public class PortalSystem : MonoBehaviour
                 }
             }
             return best;
+        }
+    }
+
+    private int GetRound()
+    {
+        if (RoundSystem.Instance != null)
+        {
+            round = RoundSystem.Instance.Round;
+        }
+        return round;
+    }
+
+    public void EventDeclared(Event e)
+    {
+        if (e == Event.NewRound)
+        {
+            EventSystem.AddEventListener(this, Event.PathfindingToPlayerDone);
+            Debug.Log("ASDS");
+        }
+        if (e == Event.PathfindingToPlayerDone)
+        {
+            EventSystem.RemoveEventListener(this, Event.PathfindingToPlayerDone);
+            StartSpawningPortals();
+            Debug.Log("Æ");
+        }
+        if (e == Event.NewWave)
+        {
+            StartSpawningZombies();
         }
     }
 }

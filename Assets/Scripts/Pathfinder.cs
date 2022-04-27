@@ -69,8 +69,8 @@ namespace Pathfinding
             if (outdated || currentRoom == null)
             {  // Target moved, a rotation took place, or subgoal was reached
                 
-                currentLoc = RoomManager.Instance.PosToLoc(transform.position);
-                currentRoom = RoomManager.Instance.PosToRoom(transform.position);
+                currentLoc = SquareRoomSystem.Instance.PosToLoc(transform.position);
+                currentRoom = SquareRoomSystem.Instance.PosToRoom(transform.position);
                 Transform newSubgoal = null;
                 if (currentRoom == null)
                 {
@@ -80,7 +80,7 @@ namespace Pathfinding
                     subGoalDistanceRequirement = 0.5f;
                 } else
                 {
-                    Node node = target.AllToOne.GetNode(currentRoom);
+                    Node node = PathfindingSystem.Instance.LatestAllToOne(target).GetNode(currentRoom);
                     if (node == null)
                     {  // no path available
                         state = State.noPathAvailable;

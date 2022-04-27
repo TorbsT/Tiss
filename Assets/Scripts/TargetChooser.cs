@@ -50,16 +50,16 @@ public class TargetChooser : MonoBehaviour
     {
         target = null;
         running = true;
-        currentRoom = RoomManager.Instance.PosToRoom(transform.position);
+        currentRoom = SquareRoomSystem.Instance.PosToRoom(transform.position);
         Target closestTarget = null;
         if (currentRoom != null)
         {
             int closestStepsFromTarget = int.MaxValue;
-            foreach (Target t in PathfindingManager.Instance.GetTargets())
+            foreach (Target t in PathfindingSystem.Instance.GetTargets())
             {
                 yield return null;
                 if (!t.Discoverable) continue;
-                AllToOne ato = t.AllToOne;
+                AllToOne ato = PathfindingSystem.Instance.LatestAllToOne(t);
                 if (ato == null) continue;
                 Node node = ato.GetNode(currentRoom);
                 if (node == null) continue;
@@ -78,7 +78,7 @@ public class TargetChooser : MonoBehaviour
         if (closestTarget == null)
         {
             float shortestDistance = float.MaxValue;
-            foreach (Target t in PathfindingManager.Instance.GetTargets())
+            foreach (Target t in PathfindingSystem.Instance.GetTargets())
             {
                 yield return null;
                 float distance = (t.transform.position - transform.position).sqrMagnitude;

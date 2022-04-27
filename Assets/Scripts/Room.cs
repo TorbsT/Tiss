@@ -116,7 +116,7 @@ public class Room : MonoBehaviour
     } 
     public void StartRotationAnimation()
     {
-        if (rotanimRunning) return;
+        if (rotanimRunning) StopAllCoroutines();
         rotanimRoutine = StartCoroutine(RotationRoutine());
     }
 
@@ -134,7 +134,7 @@ public class Room : MonoBehaviour
         HashSet<Room> rooms = new();
         foreach (Vector2Int loc in neighbours)
         {
-            Room r = RoomManager.Instance.LocToRoom(loc);
+            Room r = SquareRoomSystem.Instance.LocToRoom(loc);
             if (r == null) continue;
             if (r.IsNeighbour(id)) rooms.Add(r);
         }
@@ -207,7 +207,7 @@ public class Room : MonoBehaviour
     }
     private void UpdateTargetLightAnim()
     {
-        float maxPower = RoomManager.Instance.GeneratorPower;
+        float maxPower = SquareRoomSystem.Instance.GeneratorPower;
         lightanimStartRatio = Mathf.Clamp(power / maxPower, 0f, 1f);
         lightanimTargetRatio = Mathf.Clamp(newPower / maxPower, 0f, 1f);
     }
@@ -269,6 +269,7 @@ public class Room : MonoBehaviour
 
         rotation = newRotation;
         rotanimRunning = false;
+        RotationSystem.Instance.FinishedRotating(this);
     }
     public void AllOtherRoomsLoaded()
     {
@@ -286,7 +287,7 @@ public class Room : MonoBehaviour
             border.gameObject.SetActive(show);
         }
     }
-    private Room GetRoom(Vector2Int loc) => RoomManager.Instance.LocToRoom(loc);
+    private Room GetRoom(Vector2Int loc) => SquareRoomSystem.Instance.LocToRoom(loc);
     private Vector2Int RelativeToAbsLoc(Vector2Int loc) => id + loc;
     private Vector2Int GetRelativeLoc(Direction absDirection)
     {

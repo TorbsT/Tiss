@@ -53,7 +53,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     // Start is called before the first frame update
     void OnEnable()
     {
-        maxPower = RoomManager.Instance.GeneratorPower;
+        maxPower = SquareRoomSystem.Instance.GeneratorPower;
     }
 
     // Update is called once per frame

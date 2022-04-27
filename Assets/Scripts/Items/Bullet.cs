@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!isActiveAndEnabled)
+        if (!isActiveAndEnabled || !collision.gameObject.activeSelf)
         {
             // I have no idea why this happens but it does sometimes for some reason
             return;

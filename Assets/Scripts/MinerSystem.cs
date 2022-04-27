@@ -2,52 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinerSystem : MonoBehaviour
+public class MinerSystem : MonoBehaviour, IEventListener
 {
     public static MinerSystem Instance { get; private set; }
     private HashSet<Miner> miners = new();
-    private static HashSet<Miner> preMiners = new();
 
     private void Awake()
     {
         Instance = this;
-        foreach (Miner m in preMiners)
-        {
-            miners.Add(m);
-        }
+        EventSystem.AddEventListener(this, Event.RotationsDone);
     }
-    public static void Track(Miner miner)
+    public void Track(Miner miner)
     {
-        if (Instance != null)
-        {
-            Instance.miners.Add(miner);
-        } else
-        {
-            preMiners.Add(miner);
-        }
+        miners.Add(miner);
+        RecalculateAllEffratios();
     }
     public void Untrack(Miner miner)
     {
         miners.Remove(miner);
+        RecalculateAllEffratios();
     }
-    public void MakeMoreAvailableDelayed()
+    public void FinishedRotating()
     {
-        Invoke(nameof(MakeMoreAvailable), 3f);  //hohohoho this is so bad
+        MakeMoreAvailable();
     }
-    private void MakeMoreAvailable()
+    public void MakeMoreAvailable()
     {
+        RecalculateAllEffratios();
         foreach (Miner miner in miners)
         {
-            float effratio = CalculateEffratioFor(miner);
-            miner.Effratio = effratio;
-            miner.AddToAvailable(Mathf.CeilToInt(effratio * miner.MaxProduction));
+            miner.AddToAvailable(Mathf.CeilToInt(miner.Effratio * miner.MaxProduction));
         }
         // TODO make coroutine
+    }
+    private void RecalculateAllEffratios()
+    {
+        foreach (Miner m in miners)
+        {
+            float effratio = CalculateEffratioFor(m);
+            m.Effratio = effratio;
+        }
     }
     public float CalculateEffratioFor(Miner miner)
     {
         // Having miners in close proximity reduce the efficiency
-        Debug.Log("Æ");
         float divideBy = 1f;
         Vector2 pos = miner.transform.position;
         foreach (Miner m in miners)
@@ -63,5 +61,17 @@ public class MinerSystem : MonoBehaviour
         float ratio = 1f / divideBy;
         Debug.Log(divideBy);
         return ratio;
+    }
+
+    public void EventDeclared(Event e)
+    {
+        if (e == Event.RotationsDone)
+        {
+            RecalculateAllEffratios();
+        }
+        if (e == Event.NewWave)
+        {
+            MakeMoreAvailable();
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class ItemPlacer : MonoBehaviour
 {
@@ -33,6 +34,10 @@ public class ItemPlacer : MonoBehaviour
                 if (coll != null) coll.enabled = false;
                 Interactable interactable = preview.GetComponent<Interactable>();
                 if (interactable != null) interactable.Active = false;
+                Miner miner = preview.GetComponent<Miner>();
+                if (miner != null) miner.enabled = false;
+                Target target = preview.GetComponent<Target>();
+                if (target != null) target.enabled = false;
 
             }
             oldPrefab = prefabToPreview;
@@ -72,6 +77,10 @@ public class ItemPlacer : MonoBehaviour
         if (drop != null) drop.Active = false;
         Collider2D coll = go.GetComponent<Collider2D>();
         if (coll != null) coll.enabled = true;
+        Miner miner = go.GetComponent<Miner>();
+        if (miner != null) miner.enabled = true;
+        Target target = go.GetComponent<Target>();
+        if (target != null) target.enabled = true;
         Placeable placeable = go.GetComponent<Placeable>();
         if (placeable != null)
         {
@@ -79,7 +88,7 @@ public class ItemPlacer : MonoBehaviour
             {
                 Vector2 p = t.position;
                 Quaternion rotation = preview.transform.rotation;
-                Room r = RoomManager.Instance.PosToRoom(p);
+                Room r = SquareRoomSystem.Instance.PosToRoom(p);
                 if (r != null) t.parent = r.transform;
                 t.rotation = rotation;
             }

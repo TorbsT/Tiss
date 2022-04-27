@@ -8,8 +8,9 @@ public class Cam : MonoBehaviour
     private Transform following;
     private new Camera camera;
     private bool searching;
+    [SerializeField] private AnimationCurve scrollCurve;
     [SerializeField, Range(0f, 10f)] private float scrollSpeed;
-    [SerializeField, Range(5f, 30f)] private float minZoom;
+    [SerializeField, Range(5f, 100f)] private float minZoom;
     [SerializeField, Range(1f, 5f)] private float maxZoom;
 
     private void Awake()
@@ -42,6 +43,7 @@ public class Cam : MonoBehaviour
 
         float scroll = -Input.mouseScrollDelta.y;
         scroll *= scrollSpeed;
+        scroll *= scrollCurve.Evaluate((camera.orthographicSize-maxZoom) / (minZoom - maxZoom));
         camera.orthographicSize = Mathf.Clamp(camera.orthographicSize + scroll, maxZoom, minZoom);
     }
 }
