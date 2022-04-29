@@ -128,7 +128,11 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
 
     public void NewHP(float oldHP, float newHP)
     {
-        if (newHP <= 0f) Despawn();
+        if (newHP <= 0f)
+        {
+            Player.Instance.GetComponent<IWalletProvider>().Wallet.Shitcoin += 5;
+            Despawn();
+        }
     }
 
     public void NewCharge(int oldCharge, int newCharge)

@@ -21,7 +21,7 @@ public class Battery : MonoBehaviour, IPowerListener, IRoomDwellerListener
     public void NewPower(int power)
     {
         if (renderer != null && powerGradient != null)
-            renderer.color = powerGradient.Gradient.Evaluate((float)power / SquareRoomSystem.Instance.GeneratorPower);
+            renderer.color = powerGradient.Gradient.Evaluate((float)power / GeneratorSystem.Instance.GlobalPower);
         foreach (IBatteryListener listener in listeners)
         {
             listener.NewCharge(this.power, power);

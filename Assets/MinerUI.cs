@@ -77,15 +77,17 @@ public class MinerUI : MonoBehaviour, IMinerListener
     public void MinerChanged(Miner miner)
     {
         storedField.text = "$"+miner.Stored.Shitcoin;
-        int percent = Mathf.CeilToInt(miner.Effratio * 100f);
+        int percent = Mathf.CeilToInt(miner.RealEffratio * 100f);
         efficiencyField.text =  percent+"%";
-        efficiencyTutorial.SetActive(percent < 100);
+        
 
-        Color color = efficiencyColors.Evaluate(miner.Effratio);
+        Color color = efficiencyColors.Evaluate(miner.RealEffratio);
         efficiencyMeter.color = color;
-        efficiencyMeter.fillAmount = miner.Effratio;
+        efficiencyMeter.fillAmount = miner.RealEffratio;
 
         bool powered = miner.GetComponent<Battery>().Power > 0;
+
+        efficiencyTutorial.SetActive(powered && percent < 100);
         poweredGO.SetActive(powered);
         needsPowerGO.SetActive(!powered);
     }

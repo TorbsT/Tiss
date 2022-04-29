@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stored: {fileID: 0}
-  maxProduction: 2
+  baseProduction: 100
   range: 5
   speed: 10
   effratio: 0

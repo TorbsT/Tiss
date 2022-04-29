@@ -129,4 +129,25 @@ public static class InventoryExtensions
         }
         return false;
     }
+    /**
+     * Merges item a into item b if they are the same.
+     * If they aren't the same, swap
+     */
+    public static void MergeElseSwap(InventoryObject oa, int ia, InventoryObject ob, int ib)
+    {
+        if (SameItem(oa, ia, ob, ib))
+        {
+            // Merge
+            Merge(oa, ia, ob, ib);
+        } else
+        {
+            // Swap
+            Swap(oa, ia, ob, ib);
+        }
+    }
+    public static bool SameItem(InventoryObject oa, int ia, InventoryObject ob, int ib)
+    {
+        if (oa == null || ob == null) Debug.LogError("From-inventory is " + oa + ", To-inventory is " + ob);
+        return oa.GetSlotItem(ia) == ob.GetSlotItem(ib);
+    }
 }

@@ -13,6 +13,8 @@ public class RoundSystem : MonoBehaviour, IEventListener
     }
     public static RoundSystem Instance { get; private set; }
     public int Round => round;
+    private RoundTimer timer => RoundTimer.Instance;
+    private RoundInfoUI info => RoundInfoUI.Instance;
     [SerializeField] private float warmupDuration = 10f;
     [SerializeField] private float waveDuration = 10f;
 
@@ -25,11 +27,14 @@ public class RoundSystem : MonoBehaviour, IEventListener
         Instance = this;
         EventSystem.AddEventListener(this, Event.LoaderFinished);
     }
+    void Start()
+    {
+        SetColor(Color.green);
+        info.Text = "Round "+round;
+    }
     // Update is called once per frame
     void Update()
     {
-        RoundTimer timer = RoundTimer.Instance;
-
         time += Time.deltaTime;
         if (state == State.warmup)
         {
@@ -39,8 +44,9 @@ public class RoundSystem : MonoBehaviour, IEventListener
             {
                 time = 0f;
                 state = State.wave;
-                timer.ImageColor = Color.red;
+                SetColor(Color.red);
                 EventSystem.DeclareEvent(Event.NewWave);
+                info.Text = "Wave " + round;
             }
         } else if (state == State.wave)
         {
@@ -48,13 +54,20 @@ public class RoundSystem : MonoBehaviour, IEventListener
             timer.LoadProgress = time / waveDuration;
             if (time >= waveDuration)
             {
+                round++;
                 time = 0f;
                 state = State.warmup;
-                timer.ImageColor = Color.green;
-                round++;
+                info.Text = "Round " + round;
+                SetColor(Color.green);
                 RoundChanged();
             }
         }
+    }
+    private void SetColor(Color c)
+    {
+        timer.ImageColor = c;
+        timer.TextColor = c;
+        info.Color = c;
     }
     private void RoundChanged()
     {

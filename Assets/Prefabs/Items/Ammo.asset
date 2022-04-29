@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
   m_Name: Ammo
   m_EditorClassIdentifier: 
+  name: Shitty ammo
   inventorySprite: {fileID: 21300000, guid: ccf0a2c772270a047a86a7c27f190a3e, type: 3}
   prefab: {fileID: 3011492918047905978, guid: 6ae3e702780fd6444a8f2bc142acc668, type: 3}
   id: Ammo
+  tags: ammo,
   stackSize: 1024

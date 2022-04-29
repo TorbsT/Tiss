@@ -5,10 +5,8 @@ using UnityEngine;
 public class SquareRoomSystem : MonoBehaviour, IEventListener
 {
     public static SquareRoomSystem Instance { get; private set; }
-    public int GeneratorPower => generatorPower;
 
     [SerializeField] private int mapSize;
-    [SerializeField] private int generatorPower;
     private Dictionary<Vector2Int, Room> dict = new();
 
     private void Awake()

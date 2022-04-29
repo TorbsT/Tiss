@@ -80,7 +80,7 @@ namespace Pathfinding
                     subGoalDistanceRequirement = 0.5f;
                 } else
                 {
-                    Node node = PathfindingSystem.Instance.LatestAllToOne(target).GetNode(currentRoom);
+                    Node node = PathfindingSystem.Instance.LatestAllToOne(target)?.GetNode(currentRoom);
                     if (node == null)
                     {  // no path available
                         state = State.noPathAvailable;

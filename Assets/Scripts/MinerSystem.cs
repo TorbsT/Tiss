@@ -6,32 +6,60 @@ public class MinerSystem : MonoBehaviour, IEventListener
 {
     public static MinerSystem Instance { get; private set; }
     private HashSet<Miner> miners = new();
+    [SerializeField] private int baseAvailable = 100000000;
+    [SerializeField] private int currentAvailableLeft;
+    [SerializeField] private float waitPoints;
+    [SerializeField, Range(0f, 10f)] private float speed = 10f;
 
     private void Awake()
     {
         Instance = this;
         EventSystem.AddEventListener(this, Event.RotationsDone);
+        EventSystem.AddEventListener(this, Event.NewWave);
+        EventSystem.AddEventListener(this, Event.NewRound);
+        EventSystem.AddEventListener(this, Event.PowerChanged);
+    }
+    void Update()
+    {
+        if (currentAvailableLeft > 0 && speed > 0f)
+        {
+            waitPoints += Time.deltaTime;
+            float waitPointsPerTick = 1f / speed;
+            if (waitPoints > waitPointsPerTick)
+            {
+                int ticks = Mathf.FloorToInt(waitPoints / waitPointsPerTick);
+                waitPoints -= waitPointsPerTick * ticks;
+                Distribute(ticks);
+            }
+        }
+        else
+        {
+            waitPoints = 0f;
+        }
     }
     public void Track(Miner miner)
     {
         miners.Add(miner);
-        RecalculateAllEffratios();
+        Invoke(nameof(RecalculateAllEffratios), 1f);
     }
     public void Untrack(Miner miner)
     {
         miners.Remove(miner);
-        RecalculateAllEffratios();
+        Invoke(nameof(RecalculateAllEffratios), 1f);
     }
-    public void FinishedRotating()
+    private void Distribute(int amount)
     {
-        MakeMoreAvailable();
-    }
-    public void MakeMoreAvailable()
-    {
-        RecalculateAllEffratios();
+        amount = Mathf.Clamp(amount, 0, currentAvailableLeft);
+        currentAvailableLeft -= amount;
+        
         foreach (Miner miner in miners)
         {
-            miner.AddToAvailable(Mathf.CeilToInt(miner.Effratio * miner.MaxProduction));
+            float expected = amount * miner.RealEffratio;
+            int guaranteed = Mathf.FloorToInt(expected);
+            float leftover = expected - guaranteed;  // From 0 to 1
+            int finalAmount = guaranteed;
+            if (leftover > Random.Range(0f, 1f)) finalAmount++;
+            miner.Stored.Shitcoin += finalAmount;
         }
         // TODO make coroutine
     }
@@ -43,7 +71,7 @@ public class MinerSystem : MonoBehaviour, IEventListener
             m.Effratio = effratio;
         }
     }
-    public float CalculateEffratioFor(Miner miner)
+    private float CalculateEffratioFor(Miner miner)
     {
         // Having miners in close proximity reduce the efficiency
         float divideBy = 1f;
@@ -51,15 +79,14 @@ public class MinerSystem : MonoBehaviour, IEventListener
         foreach (Miner m in miners)
         {
             if (m == miner) continue;
+            if (!m.Powered) continue;
             Vector2 p = m.transform.position;  // cache position? modifiability--, speed++
             float distance = (p - pos).magnitude;  // sqrmagnitude for efficiency?
             if (distance > m.Range + miner.Range) continue;  // don't affect each other
             float occupiedHere = 1f-distance / (m.Range + miner.Range);
-            Debug.Log(occupiedHere);
             divideBy += occupiedHere;
         }
         float ratio = 1f / divideBy;
-        Debug.Log(divideBy);
         return ratio;
     }
 
@@ -69,9 +96,17 @@ public class MinerSystem : MonoBehaviour, IEventListener
         {
             RecalculateAllEffratios();
         }
+        if (e == Event.NewRound)
+        {
+            Distribute(currentAvailableLeft);
+        }
         if (e == Event.NewWave)
         {
-            MakeMoreAvailable();
+            currentAvailableLeft = baseAvailable;
+        }
+        if (e == Event.PowerChanged)
+        {
+            Invoke(nameof(RecalculateAllEffratios), 1f);
         }
     }
 }

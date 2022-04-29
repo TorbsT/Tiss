@@ -17,7 +17,7 @@ public class PortalSystem : MonoBehaviour, IEventListener
     [SerializeField] private GameObject portalPrefab;
     [SerializeField] private int minRoomsAway = 1;
     [SerializeField] private int zombiesToSpawn;
-    [SerializeField] private int round;  // from RoundManager
+    private int round;  // from RoundManager
     private HashSet<Portal> portals;
     private HashSet<Node> chosenNodes;
     private Coroutine portalRoutine;
@@ -121,7 +121,6 @@ public class PortalSystem : MonoBehaviour, IEventListener
                 Portal portal = EzPools.Instance.Depool(portalPrefab).GetComponent<Portal>();
                 portal.transform.position = node.Room.transform.position;
                 int delegatedZombies = Mathf.FloorToInt((float)node.StepsFromTarget/totalSteps*zombiesLeftToDelegate);
-                Debug.Log(totalSteps + " " + delegatedZombies + " " + node.StepsFromTarget + " " + zombiesLeftToDelegate);
                 portal.ZombiesToSpawn = delegatedZombies;
                 zombiesLeftToDelegate -= delegatedZombies;
                 portals.Add(portal);
@@ -166,13 +165,11 @@ public class PortalSystem : MonoBehaviour, IEventListener
         if (e == Event.NewRound)
         {
             EventSystem.AddEventListener(this, Event.PathfindingToPlayerDone);
-            Debug.Log("ASDS");
         }
         if (e == Event.PathfindingToPlayerDone)
         {
             EventSystem.RemoveEventListener(this, Event.PathfindingToPlayerDone);
             StartSpawningPortals();
-            Debug.Log("Æ");
         }
         if (e == Event.NewWave)
         {

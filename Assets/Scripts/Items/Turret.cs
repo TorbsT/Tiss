@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [SelectionBase]
-public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
+public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener, IBatteryListener
 {
     public InventoryObject GunInventory => gunInventory;
     public InventoryObject AmmoInventory => ammoInventory;
 
     public Vector3 Position => transform.position;
+    public bool Powered => powered;
 
     [SerializeField] private bool gizmos;
     [SerializeField] private bool autofire;
@@ -23,16 +24,25 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
     private ICollection<Gun> childGuns = new HashSet<Gun>();
     private Collider2D[] targetsInRange;
     private bool[] targetsLOS;
+    private bool powered;
+    private HashSet<ITurretListener> listeners = new(); 
 
     void Awake()
     {
         gunInventory = ScriptableObject.CreateInstance<InventoryObject>();
         gunInventory.SlotCount = 1;
+        ammoInventory = ScriptableObject.CreateInstance<InventoryObject>();
+        ammoInventory.SlotCount = 4;
     }
     void Start()
     {
         gunInventory.AddListener(this);
+        ammoInventory.AddListener(this);
         GetComponent<Interactable>().AddListener(this);
+    }
+    void OnDisable()
+    {
+        listeners = new();
     }
     void OnDrawGizmosSelected()
     {
@@ -103,6 +113,15 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
     {
         AttachedChanged();
     }
+    public void AddListener(ITurretListener listener)
+    {
+        listeners.Add(listener);
+        listener.StateChanged(this);
+    }
+    public void RemoveListener(ITurretListener listener)
+    {
+        listeners.Remove(listener);
+    }
     private void AttachedChanged()
     {
         childGuns = plate.GetComponentsInChildren<Gun>();
@@ -125,12 +144,18 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
     {
         foreach (Gun gun in childGuns)
         {
-            if (gun.DelayOver) gun.Shoot();
+            if (powered && gun.DelayOver && InventoryExtensions.CanQuickRemove(ammoInventory, gun.GunSO.Ammo, gun.GunSO.AmmoPerBurst))
+            {
+                gun.Shoot();
+                InventoryExtensions.QuickRemove(ammoInventory, gun.GunSO.Ammo, gun.GunSO.AmmoPerBurst);
+            }
         }
     }
 
     public void Interact(Interactor interactor)
     {
+        TurretUI.Instance.Open(this, interactor);
+        /*
         Hotbar hb = interactor.GetComponent<Hotbar>();
         int index = hb.ChosenIndex;
 
@@ -146,6 +171,7 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
             // Swap items
             InventoryExtensions.Swap(gunInventory, 0, swappingInv, index);
         }
+        */
         
     }
     public void StateChanged(InventoryObject inv)
@@ -164,5 +190,19 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener
             child.SetParent(plate);
         }
         AttachedChanged();
+        FireStateChanged();
+    }
+    private void FireStateChanged()
+    {
+        foreach (ITurretListener listener in listeners)
+        {
+            listener.StateChanged(this);
+        }
+    }
+
+    public void NewCharge(int oldCharge, int newCharge)
+    {
+        powered = newCharge > 0;
+        FireStateChanged();
     }
 }

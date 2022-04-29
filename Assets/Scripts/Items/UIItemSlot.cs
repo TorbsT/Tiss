@@ -12,6 +12,7 @@ public class UIItemSlot : MonoBehaviour
     public UIItem UIItem => uiItem;
 
 
+    [SerializeField] private bool debug;
     [SerializeField] private Image background;
     [SerializeField] private Color markColor;
     private Color unmarkColor;
@@ -60,9 +61,11 @@ public class UIItemSlot : MonoBehaviour
         RectTransform rt = uiItem.RectTransform;
         rt.SetParent(rectTransform);
         rt.anchoredPosition = Vector2.zero;
-        rt.anchorMin = Vector2.zero;
-        rt.anchorMax = Vector2.one;
+        rt.anchorMin = Vector2.one*0f;
+        rt.anchorMax = Vector2.one*1f;
 
+        rt.sizeDelta = Vector2.one;
+        /*
         if (item != null && item.InventorySprite != null)
         {
             Vector2 spriteSize = item.InventorySprite.rect.size;
@@ -72,9 +75,9 @@ public class UIItemSlot : MonoBehaviour
         } else
         {
             rt.sizeDelta = Vector2.one*0.9f;
-        }
+        }*/
 
-        
+        if (debug) Debug.Log("Refreshed " + this + ". the item is " + item + " with count " + quantity);
     }
     public void Click()
     {

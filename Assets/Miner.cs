@@ -3,44 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHPListener
+public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHPListener, IWalletListener
 {
-    public Wallet Stored { get => stored; set { stored = value; } }
+    public Wallet Stored { get => stored; }
     public float Range { get => range; set { range = value; } }
     public float Effratio { get => effratio; set { effratio = value; FireStateChanged(); } }
-    public int MaxProduction { get => maxProduction; set { maxProduction = value; } }
+    public float RealEffratio { get { if (powered) return effratio; return 0f; } }
+    public bool Powered => powered;
 
     [Header("STATE")]
     [SerializeField] private Wallet stored;
-    [SerializeField, Range(0f, 100f)] private int maxProduction;
     [SerializeField, Range(0f, 10f)] private float range;
-    [SerializeField, Range(0.1f, 10f)] private float speed;  // Production per second
+    //[SerializeField, Range(0.1f, 10f)] private float speed;  // Production per second
 
     [Header("DEBUG")]
     [SerializeField] private float effratio;
-    [SerializeField] private int available;
-    [SerializeField] private float waitPoints;
+    private bool powered;
 
     private HashSet<IMinerListener> listeners = new();
 
     private void Awake()
     {
         stored = ScriptableObject.CreateInstance<Wallet>();
+        stored.AddListener(this);
         GetComponent<Interactable>().AddListener(this);
     }
     private void OnEnable()
     {
-        Track();
-        GetComponent<HP>().Set(100f);
         stored.Shitcoin = 0;
-    }
-    private void Track()
-    {
-        if (MinerSystem.Instance == null)
-        {
-            Invoke(nameof(Track), 1f);
-            return;
-        }
+        GetComponent<HP>().Set(100f);
         MinerSystem.Instance.Track(this);
     }
     private void OnDisable()
@@ -49,18 +40,7 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
     }
     private void Update()
     {
-        if (available > 0)
-        {
-            waitPoints += Time.deltaTime;
-            if (waitPoints > 1f/speed)
-            {
-                waitPoints -= 1f / speed;
-                AvailableToStored(1);
-            }
-        } else
-        {
-            waitPoints = 0f;
-        }
+
     }
     public void AddListener(IMinerListener listener)
     {
@@ -71,18 +51,11 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
     {
         listeners.Remove(listener);
     }
-    public void Finish()
-    {
-        AvailableToStored(available);
-    }
-    public void AddToAvailable(int amount)
-    {
-        available += amount;
-    }
     public void NewCharge(int oldCharge, int newCharge)
     {
         Target t = GetComponent<Target>();
-        if (newCharge > 0) t.SetDiscoverability(Target.Discoverability.discoverable);
+        powered = newCharge > 0;
+        if (powered) t.SetDiscoverability(Target.Discoverability.discoverable);
         else t.SetDiscoverability(Target.Discoverability.hidden);
         FireStateChanged();
     }
@@ -97,19 +70,15 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
             GetComponent<Destroyable>().Destroy();
         }
     }
-    private void AvailableToStored(int amount)
-    {
-        // Can't take more than available
-        amount = Mathf.Min(amount, available);
-        stored.Shitcoin += amount;
-        available -= amount;
-        FireStateChanged();
-    }
     private void FireStateChanged()
     {
         foreach (IMinerListener listener in listeners)
         {
             listener.MinerChanged(this);
         }
+    }
+    void IWalletListener.WalletChanged(int oldValue, int newValue)
+    {
+        FireStateChanged();
     }
 }

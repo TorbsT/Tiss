@@ -16,5 +16,5 @@ MonoBehaviour:
   shotDelay: 0.05
   shotSpread: 25
   shotCount: 4
-  ammoPerBurst: 0
+  ammoPerBurst: 1
   auto: 1

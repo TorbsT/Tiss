@@ -53,7 +53,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     // Start is called before the first frame update
     void OnEnable()
     {
-        maxPower = SquareRoomSystem.Instance.GeneratorPower;
+        maxPower = GeneratorSystem.Instance.GlobalPower;
     }
 
     // Update is called once per frame
@@ -61,7 +61,6 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     {
         if (updateRequested || newFuel != fuel)
         {
-            if (isSearchingRooms) StopAllCoroutines();
             StartCalculatingPower();
             updateRequested = false;
         }
@@ -72,7 +71,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     }
     private void StartCalculatingPower()
     {
-        if (isSearchingRooms) StopCoroutine(pathfindingRoutine);
+        if (isSearchingRooms) StopAllCoroutines();
         if (GetComponent<RoomDweller>().Room == null) return;
 
         if (running) producedPower = maxPower;
@@ -137,6 +136,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
         target.SetDiscoverability(discoverability);
         poweredRooms = newCalculatedRooms;
         fuel = newFuel;
+        GeneratorSystem.Instance.NotifyPowerChanged();
     }
 
     public void Interact(Interactor interactor)

@@ -81,6 +81,8 @@ public class ItemPlacer : MonoBehaviour
         if (miner != null) miner.enabled = true;
         Target target = go.GetComponent<Target>();
         if (target != null) target.enabled = true;
+        Interactable interactable = go.GetComponent<Interactable>();
+        if (interactable != null) interactable.Active = true;
         Placeable placeable = go.GetComponent<Placeable>();
         if (placeable != null)
         {

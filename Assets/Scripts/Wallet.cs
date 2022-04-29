@@ -20,10 +20,10 @@ public class Wallet : ScriptableObject
     }
     private void Set(int value)
     {
+        shitcoin = value;
         foreach (IWalletListener listener in listeners)
         {
             listener.WalletChanged(shitcoin, value);
         }
-        shitcoin = value;
     }
 }

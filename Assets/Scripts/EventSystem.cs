@@ -103,6 +103,7 @@ public enum Event
     LoaderFinished,
     PathfindingToPlayerDone,
     MasterStarted,
+    PowerChanged,
 }
 public interface IEventListener
 {

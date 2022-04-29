@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
   m_Name: Barricade
   m_EditorClassIdentifier: 
+  name: Barricade
   inventorySprite: {fileID: 21300000, guid: 0cdbdeac74213ff41b239ee819be10fd, type: 3}
   prefab: {fileID: 1704098749425701253, guid: 430021c3e4c0d0f4c921604dd8c6edaf, type: 3}
   id: Barricade
+  tags: 
   stackSize: 64

@@ -33,7 +33,7 @@ MonoBehaviour:
     cost: 30
   - title: Flammenwerfer
     group: Weapon
-    desc: Firearm. Fuck shit up
+    desc: The real firearm. Requires gas to shoot
     item: {fileID: 11400000, guid: 998854d1e7b1cfe40bd84931765abfc9, type: 2}
     quantity: 1
     cost: 40
@@ -62,5 +62,11 @@ MonoBehaviour:
     desc: Placeable. Slows down zombies
     item: {fileID: 11400000, guid: 62cb22d14d705c645aaa15e0d9a40858, type: 2}
     quantity: 6
+    cost: 5
+  - title: Gas
+    group: Ammo
+    desc: Used as fuel in generators and flammenwerfers
+    item: {fileID: 11400000, guid: cf2b26baf3baeaf4388c56469a63f2be, type: 2}
+    quantity: 83
     cost: 5
   seed: 1234

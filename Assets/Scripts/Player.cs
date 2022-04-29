@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     {
         target.SetDiscoverability(Target.Discoverability.discoverable);
         hp.Set(100f);
+        GetComponent<IWalletProvider>().Wallet.Shitcoin = 150;
     }
     private void OnDrawGizmos()
     {

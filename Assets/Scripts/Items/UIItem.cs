@@ -32,12 +32,14 @@ public class UIItem : MonoBehaviour
         if (item == null)
         {
             image.sprite = emptySprite;
+            SetOpacity(0f);
             text.text = "";
             return;
         }
         if (image.sprite != item.InventorySprite)
         {
             image.sprite = item.InventorySprite;
+            SetOpacity(1f);
         }
         if (quantity != oldQuantity)
         {
@@ -48,5 +50,9 @@ public class UIItem : MonoBehaviour
             oldQuantity = quantity;
         }
     }
-
+    private void SetOpacity(float opacity)
+    {
+        Color c = image.color;
+        image.color = new(c.r, c.g, c.b, opacity);
+    }
 }

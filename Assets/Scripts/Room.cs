@@ -207,7 +207,7 @@ public class Room : MonoBehaviour
     }
     private void UpdateTargetLightAnim()
     {
-        float maxPower = SquareRoomSystem.Instance.GeneratorPower;
+        float maxPower = GeneratorSystem.Instance.GlobalPower;
         lightanimStartRatio = Mathf.Clamp(power / maxPower, 0f, 1f);
         lightanimTargetRatio = Mathf.Clamp(newPower / maxPower, 0f, 1f);
     }

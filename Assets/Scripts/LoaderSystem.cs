@@ -5,12 +5,6 @@ using Pools;
 
 public class LoaderSystem : MonoBehaviour
 {
-    [System.Serializable]
-    private class Spawn
-    {
-        [Range(0f, 1f)] public float max;
-        public GameObject prefab;
-    }
     public static LoaderSystem Instance { get; private set; }
     
     public bool Running => running;
@@ -18,7 +12,6 @@ public class LoaderSystem : MonoBehaviour
     private ICollection<Vector2Int> locsToUnload;
     private Dictionary<Vector2Int, Room> dict = new();
 
-    [SerializeField] private List<Spawn> spawns;
     [SerializeField] private bool running;
     [SerializeField] private float fpsPriority = 512f;
 
@@ -73,28 +66,6 @@ public class LoaderSystem : MonoBehaviour
         room.transform.position = SquareRoomSystem.Instance.LocToPos(loc);
 
         dict.Add(loc, room);
-
-        
-        float rd = Random.value;
-        GameObject prefab = null;
-        for (int i = 0; i < spawns.Count; i++)
-        {
-            if (rd < spawns[i].max)
-            {
-                prefab = spawns[i].prefab;
-                break;
-            }
-        }
-
-        
-        if (prefab != null)
-        {
-            GameObject go = EzPools.Instance.Depool(prefab);
-            Transform t = go.transform;
-            RoomDweller dweller = go.GetComponent<RoomDweller>();
-            t.position = room.MachineSpawn.position;
-            t.localRotation = room.MachineSpawn.localRotation;
-        }
     }
 
 }
