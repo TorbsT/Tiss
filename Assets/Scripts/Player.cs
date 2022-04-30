@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
     [SerializeField] private bool gizmos;
+    [SerializeField] private Item clubItem;
     private Locomotion locomotion;
     private Target target;
     private Vector2 lookingAt;
@@ -26,6 +27,10 @@ public class Player : MonoBehaviour
         target.SetDiscoverability(Target.Discoverability.discoverable);
         hp.Set(100f);
         GetComponent<IWalletProvider>().Wallet.Shitcoin = 150;
+        if (!InventoryExtensions.CanQuickRemove(GetComponent<PlayerInventoryAPI>().Main, clubItem, 1))
+        {
+            InventoryExtensions.QuickAdd(GetComponent<PlayerInventoryAPI>().Main, clubItem, 1);
+        }
     }
     private void OnDrawGizmos()
     {

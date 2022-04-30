@@ -21,6 +21,8 @@ public class Hands : MonoBehaviour, IHotbarListener
     [SerializeField] private GameObject holsteredGO;
 
     // Cached
+    private Weapon holsteredWeapon;
+    private Melee holsteredMelee;
     private Gun holsteredGun;
     private bool holdingPlaceable;
 
@@ -31,22 +33,21 @@ public class Hands : MonoBehaviour, IHotbarListener
     void Update()
     {
         KeyCode m1 = KeyCode.Mouse0;
-        if (holsteredGun != null)
+        if (holsteredWeapon != null)
         {
-            if (holsteredGun.DelayOver)
+            if (holsteredWeapon.DelayOver)
             {
-                if (holsteredGun.FireMode == Gun.Mode.semiauto && Input.GetKeyDown(m1)) TryShoot();
-                else if (holsteredGun.FireMode == Gun.Mode.auto && Input.GetKey(m1)) TryShoot();
+                if (holsteredWeapon.FireMode == Weapon.Mode.semiauto && Input.GetKeyDown(m1)) TryShoot();
+                else if (holsteredWeapon.FireMode == Weapon.Mode.auto && Input.GetKey(m1)) TryShoot();
             }
         }
-        if (holdingPlaceable)
+        else if (holdingPlaceable)
         {
             if (Input.GetKeyDown(m1))
             {
                 GetComponent<ItemPlacer>().Place();
                 InventoryExtensions.QuickRemove(GetComponent<PlayerInventoryAPI>().Main, GetComponent<Hotbar>().ChosenIndex, 1);
             }
-            
         }
     }
     public void StateChanged(Hotbar hotbar)
@@ -58,7 +59,8 @@ public class Hands : MonoBehaviour, IHotbarListener
             holsteredGO = null;
         }
         holsteredGun = null;
-
+        holsteredMelee = null;
+        holsteredWeapon = null;
 
         holdingPlaceable = false;
         if (chosenItem != null)
@@ -69,6 +71,8 @@ public class Hands : MonoBehaviour, IHotbarListener
                 holsteredGO = EzPools.Instance.Depool(prefab);
                 Drop drop = holsteredGO.GetComponent<Drop>();
                 if (drop != null) drop.Active = false;
+                holsteredWeapon = holsteredGO.GetComponent<Weapon>();
+                holsteredMelee = holsteredGO.GetComponent<Melee>();
                 holsteredGun = holsteredGO.GetComponent<Gun>();
                 Collider2D collider = holsteredGO.GetComponent<Collider2D>();
                 if (collider != null) collider.enabled = false;
@@ -89,17 +93,21 @@ public class Hands : MonoBehaviour, IHotbarListener
 
     private void TryShoot()
     {
-        // check if there is ammo
-        InventoryObject inv = GetComponent<PlayerInventoryAPI>().Main;
-        Item ammo = holsteredGun.GunSO.Ammo;
-        int usedAmmo = holsteredGun.GunSO.AmmoPerBurst;
-        bool canShoot = InventoryExtensions.CanQuickRemove(inv, ammo, usedAmmo);
-        if (canShoot)
+        bool canShoot = true;
+        if (holsteredGun != null)
         {
-            InventoryExtensions.QuickRemove(inv, ammo, usedAmmo);
-            holsteredGun.Shoot();
+            // check if there is ammo
+            InventoryObject inv = GetComponent<PlayerInventoryAPI>().Main;
+            Item ammo = holsteredGun.GunSO.Ammo;
+            int usedAmmo = holsteredGun.GunSO.AmmoPerBurst;
+            canShoot = InventoryExtensions.CanQuickRemove(inv, ammo, usedAmmo);
+            if (canShoot)
+            {
+                InventoryExtensions.QuickRemove(inv, ammo, usedAmmo);
+            }
         }
-        
+
+        if (canShoot) holsteredWeapon.Shoot();
     }
     private void FindHotbar()
     {

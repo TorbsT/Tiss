@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
   m_Name: Splurge
   m_EditorClassIdentifier: 
+  name: Splurge
   inventorySprite: {fileID: 21300000, guid: 50068e2dd084cf14c96d36ad403992dd, type: 3}
   prefab: {fileID: 1395350257481101201, guid: 36e1f40f9239a2d49b0f836929a17d87, type: 3}
   id: Splurge
+  tags: 
   stackSize: 64

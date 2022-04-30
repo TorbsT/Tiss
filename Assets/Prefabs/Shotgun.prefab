@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 769451780128079434}
   - component: {fileID: -8883709641058768222}
   - component: {fileID: 5479167264734302157}
+  - component: {fileID: -5050302250485438000}
   m_Layer: 8
   m_Name: Shotgun
   m_TagString: Untagged
@@ -141,7 +142,6 @@ MonoBehaviour:
   bulletSO: {fileID: 11400000, guid: bdadeea9488e9314e8170088093fe1c8, type: 2}
   shotOrigin: {fileID: 779676093215561121}
   flashObject: {fileID: 11400000, guid: 3e1b166989a3478418174986548a2638, type: 2}
-  fireMode: 0
 --- !u!114 &5075711101237444256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,3 +242,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+  connected: {fileID: 0}
+--- !u!114 &-5050302250485438000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779676094744333435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34e105ba60cf634182e68e3b5b7aa6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireMode: 1
+  shotDelay: 0.5

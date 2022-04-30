@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 858672824778174238}
   - component: {fileID: -2546760343317444525}
   - component: {fileID: -4315935995310112443}
+  - component: {fileID: 6840964036476831546}
   m_Layer: 8
   m_Name: Flammenwerfer
   m_TagString: Untagged
@@ -141,7 +142,6 @@ MonoBehaviour:
   bulletSO: {fileID: 11400000, guid: e7d1d8a0919ed7b40a234411e2b8742d, type: 2}
   shotOrigin: {fileID: 5081737756984553497}
   flashObject: {fileID: 11400000, guid: 3e1b166989a3478418174986548a2638, type: 2}
-  fireMode: 1
 --- !u!114 &-563012273440523613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,3 +242,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
+  connected: {fileID: 0}
+--- !u!114 &6840964036476831546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9195688602346387915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34e105ba60cf634182e68e3b5b7aa6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireMode: 1
+  shotDelay: 0.025

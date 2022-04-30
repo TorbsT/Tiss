@@ -17,4 +17,4 @@ MonoBehaviour:
   prefab: {fileID: 779676094744333435, guid: 5106904840ad47a4189abd4c12187614, type: 3}
   id: Shotgun
   tags: gun,
-  stackSize: 64
+  stackSize: 1

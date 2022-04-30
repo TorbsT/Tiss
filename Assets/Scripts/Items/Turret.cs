@@ -144,9 +144,10 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener, 
     {
         foreach (Gun gun in childGuns)
         {
-            if (powered && gun.DelayOver && InventoryExtensions.CanQuickRemove(ammoInventory, gun.GunSO.Ammo, gun.GunSO.AmmoPerBurst))
+            Weapon w = gun.GetComponent<Weapon>();  // oh boy
+            if (powered && w.DelayOver && InventoryExtensions.CanQuickRemove(ammoInventory, gun.GunSO.Ammo, gun.GunSO.AmmoPerBurst))
             {
-                gun.Shoot();
+                w.Shoot();
                 InventoryExtensions.QuickRemove(ammoInventory, gun.GunSO.Ammo, gun.GunSO.AmmoPerBurst);
             }
         }

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
-  m_Name: Turret
+  m_Name: Club
   m_EditorClassIdentifier: 
-  name: Turret
-  inventorySprite: {fileID: 21300000, guid: 8530b4baa9c3a2c45904f40db53a416c, type: 3}
-  prefab: {fileID: 899611878393542037, guid: 329f6c37e5a02b4488200169965ece63, type: 3}
-  id: Turret
-  tags: 
+  name: Club
+  inventorySprite: {fileID: 21300000, guid: 09ef702b59e7bb4428d95f3d2aecfaf4, type: 3}
+  prefab: {fileID: 3399664798793417373, guid: 5df8476370e52da4aadb02c6528fbe87, type: 3}
+  id: club
+  tags: melee
   stackSize: 1
