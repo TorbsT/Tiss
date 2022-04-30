@@ -22,7 +22,7 @@ public class Interactable : MonoBehaviour
         }
         tooltip = TooltipPool.Instance.Depool();
         tooltip.KeyCode = KeyCode.F;
-        tooltip.transform.SetParent(UI.Instance.transform, false);
+        tooltip.transform.SetParent(UI.Instance.TooltipTransform, false);
         tooltip.TransformToFollow = transform;
         tooltip.Offset = Vector2.up*2f;
     }
