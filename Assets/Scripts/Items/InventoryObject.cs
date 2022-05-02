@@ -58,6 +58,7 @@ public class InventoryObject : ScriptableObject
     }
     private void EnsureIndex(int index)
     {
+        if (slotCount != slots.Count) Debug.LogError("What is this sorcery " + index + ", " + slotCount + " " + slots.Count);
         if (index < 0 || index >= slotCount) Debug.LogError("Invalid index " + index + " - slotCount is " + slotCount);
     }
 
@@ -70,7 +71,7 @@ public class InventoryObject : ScriptableObject
         {
             if (slotCount > slots.Count)
             {
-                for (int i = 0; i < slotCount-slots.Count; i++)
+                while (slots.Count < slotCount)
                 {
                     slots.Add(new());
                 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using Pools;
 using Pathfinding;
 
-public class Generator : MonoBehaviour, IInteractableListener, IHPListener
+public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInventoryListener
 {
     private class PathfindingStep
     {
@@ -21,6 +21,9 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     public Vector3 Position => transform.position;
     public bool Running => running;
     public int MaxPower { get => maxPower; set { maxPower = value; } }
+    public float NewFuel => newFuel;
+    public InventoryObject Inventory => inventory;
+    public Item FuelItem => fuelItem;
 
     [SerializeField, Range(0f, 100f)] private float newFuel;
     [SerializeField, Range(0f, 100f)] private float fuel;
@@ -28,6 +31,8 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     [SerializeField] private SpriteRenderer logoRenderer;
     private int maxPower;
     [SerializeField] private int producedPower;
+    [SerializeField] private Item fuelItem;
+    [SerializeField, Range(0f, 100f)] private float chargePerFuel = 5f;
     [SerializeField] private int fpsPriority;
     [SerializeField] private float interactDelay;
     [SerializeField] private bool isSearchingRooms;
@@ -41,10 +46,15 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     private Dictionary<Room, int> poweredRooms = new();
     private Dictionary<Room, int> newCalculatedRooms = new();
     private Coroutine pathfindingRoutine;
+    private HashSet<IGeneratorListener> listeners = new();
+    [SerializeField] private InventoryObject inventory;
 
     void Awake()
     {
         target = GetComponent<Target>();
+        inventory = ScriptableObject.CreateInstance<InventoryObject>();
+        inventory.SlotCount = 4;
+        inventory.AddListener(this);
     }
     void Start()
     {
@@ -54,16 +64,40 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
     void OnEnable()
     {
         maxPower = GeneratorSystem.Instance.GlobalPower;
+        GeneratorSystem.Instance.Track(this);
+    }
+    void OnDisable()
+    {
+        GeneratorSystem.Instance.Untrack(this);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (chargePerFuel + newFuel <= 100f)
+        {
+            // Try consume
+            if (InventoryExtensions.CanQuickRemove(inventory, fuelItem, 1))
+            {
+                InventoryExtensions.QuickRemove(inventory, fuelItem, 1);
+                GetComponent<HP>().Increase(chargePerFuel);
+            }
+        }
         if (updateRequested || newFuel != fuel)
         {
             StartCalculatingPower();
             updateRequested = false;
         }
+    }
+
+    public void AddListener(IGeneratorListener listener)
+    {
+        this.listeners.Add(listener);
+        listener.StateChanged(this);
+    }
+    public void RemoveListener(IGeneratorListener listener)
+    {
+        listeners.Remove(listener);
     }
     public void RequestUpdate()
     {
@@ -141,7 +175,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
 
     public void Interact(Interactor interactor)
     {
-        GetComponent<HP>().Increase(25f);
+        GeneratorUI.Instance.Open(this, interactor);
     }
     public void NewHP(float oldHP, float newHP)
     {
@@ -150,6 +184,22 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener
         running = newFuel > 0f;
         if (running) target.SetDiscoverability(Target.Discoverability.discoverable);
         else target.SetDiscoverability(Target.Discoverability.hidden);
+        FireStateChanged();
+    }
+    private void FireStateChanged()
+    {
+        foreach (IGeneratorListener listener in listeners)
+        {
+            listener.StateChanged(this);
+        }
     }
 
+    public void StateChanged(InventoryObject obj)
+    {
+        FireStateChanged();
+    }
+}
+public interface IGeneratorListener
+{
+    void StateChanged(Generator generator);
 }

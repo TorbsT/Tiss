@@ -226,12 +226,15 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   logoRenderer: {fileID: 3117147535540488937}
   producedPower: 0
+  fuelItem: {fileID: 11400000, guid: cf2b26baf3baeaf4388c56469a63f2be, type: 2}
+  chargePerFuel: 1
   fpsPriority: 1000
   interactDelay: 0
   isSearchingRooms: 0
   roomSearchFrames: 0
   updateRequested: 0
   running: 0
+  inventory: {fileID: 0}
 --- !u!61 &256185587990921857
 BoxCollider2D:
   m_ObjectHideFlags: 0

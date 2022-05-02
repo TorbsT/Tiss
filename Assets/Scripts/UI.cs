@@ -23,6 +23,13 @@ public class UI : MonoBehaviour
         {
             bool startPause = !pauseMenu.activeSelf;
             pauseMenu.SetActive(startPause);
+            if (startPause)
+            {
+                PauseSystem.Instance.Pause();
+            } else
+            {
+                PauseSystem.Instance.Resume();
+            }
         }
     }
 

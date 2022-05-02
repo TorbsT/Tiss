@@ -26,8 +26,13 @@ public class UIItem : MonoBehaviour
     private void OnEnable()
     {
         oldQuantity = int.MinValue;
+        Refresh();
     }
-    private void Update()
+    void Update()
+    {
+        Refresh();
+    }
+    private void Refresh()
     {
         if (item == null)
         {

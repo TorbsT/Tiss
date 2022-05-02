@@ -31,6 +31,7 @@ public class HP : MonoBehaviour
     }
     public void Set(float newHealth)
     {
+        newHealth = Mathf.Max(newHealth, 0f);
         // Inform arbitrary listeners
         foreach (IHPListener l in listeners)
         {

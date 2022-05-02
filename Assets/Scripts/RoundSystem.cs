@@ -13,6 +13,7 @@ public class RoundSystem : MonoBehaviour, IEventListener
     }
     public static RoundSystem Instance { get; private set; }
     public int Round => round;
+    public float CurrentWaveDuration => waveDuration;
     private RoundTimer timer => RoundTimer.Instance;
     private RoundInfoUI info => RoundInfoUI.Instance;
     [SerializeField] private float warmupDuration = 10f;
