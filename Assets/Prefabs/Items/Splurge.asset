@@ -17,4 +17,4 @@ MonoBehaviour:
   prefab: {fileID: 1395350257481101201, guid: 36e1f40f9239a2d49b0f836929a17d87, type: 3}
   id: Splurge
   tags: 
-  stackSize: 64
+  stackSize: 10

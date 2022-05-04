@@ -17,4 +17,4 @@ MonoBehaviour:
   prefab: {fileID: 3011492918047905978, guid: 6ae3e702780fd6444a8f2bc142acc668, type: 3}
   id: Ammo
   tags: ammo,
-  stackSize: 1024
+  stackSize: 1000

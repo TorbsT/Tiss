@@ -34,7 +34,7 @@ public class UIInventoryManager : MonoBehaviour, IHotbarListener, IButtonReceive
     {
         movingUIInv.transform.position = Input.mousePosition;
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (false && Input.GetKeyDown(KeyCode.Mouse1))
         {
             DropMoving();
         }

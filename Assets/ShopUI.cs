@@ -8,6 +8,9 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
 {
     public static ShopUI Instance { get; private set; }
 
+    [Header("CONFIG")]
+    [SerializeField] private int alwaysUnlockedSlots;
+
     [Header("Panels")]
     [SerializeField] private RectTransform welcomePanel;
     [SerializeField] private RectTransform inspectPanel;
@@ -15,6 +18,7 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
     [SerializeField] private RectTransform inspectBorder;
 
     [Header("Inspect Panel")]
+    [SerializeField] private Button button;
     [SerializeField] private TextMeshProUGUI buttonField;
     [SerializeField] private TextMeshProUGUI titleField;
     [SerializeField] private TextMeshProUGUI descField;
@@ -122,6 +126,7 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
         chosenTitle = shop.GetTitle(chosenIndex);
         chosenDesc = shop.GetDesc(chosenIndex);
 
+        bool powered = shop.Powered;
         for (int i = 0; i < inventorySlots.Count; i++)
         {
             Item item = shop.GetItem(i);
@@ -129,6 +134,8 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
             UIItemSlot slot = inventorySlots[i];
             slot.SetItem(item);
             slot.SetQuantity(quantity);
+            bool locked = !powered && i >= alwaysUnlockedSlots;
+            slot.SetLocked(locked);
         }
 
 
@@ -139,9 +146,12 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
 
         if (chosen)
         {
+            bool locked = inventorySlots[chosenIndex].Locked;
             buttonField.text = "$" + chosenCost;
+            button.interactable = !locked;
             titleField.text = chosenTitle;
-            descField.text = chosenDesc;
+            if (locked) descField.text = "This item is only available when the shop is powered by a nearby generator.";
+            else descField.text = chosenDesc;
             inspectSlot.SetItem(chosenItem);
             inspectSlot.SetQuantity(chosenQuantity);
             lastChosenSlot = inventorySlots[chosenIndex];

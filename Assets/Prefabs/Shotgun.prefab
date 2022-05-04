@@ -139,7 +139,7 @@ MonoBehaviour:
   flashPrefab: {fileID: 8636678470764523763, guid: 402ca7e86e787294280bd24ff5aa8804, type: 3}
   bulletPrefab: {fileID: 8237071375302184920, guid: b03a8c4359bfdba4d99e33985104be9c, type: 3}
   gunSO: {fileID: 11400000, guid: 2e3c4449dba14944695bc347237e2afa, type: 2}
-  bulletSO: {fileID: 11400000, guid: bdadeea9488e9314e8170088093fe1c8, type: 2}
+  bulletSO: {fileID: 11400000, guid: 180bdc440f3f1df458e77b235e13d627, type: 2}
   shotOrigin: {fileID: 779676093215561121}
   flashObject: {fileID: 11400000, guid: 3e1b166989a3478418174986548a2638, type: 2}
 --- !u!114 &5075711101237444256

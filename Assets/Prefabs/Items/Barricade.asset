@@ -17,4 +17,4 @@ MonoBehaviour:
   prefab: {fileID: 1704098749425701253, guid: 430021c3e4c0d0f4c921604dd8c6edaf, type: 3}
   id: Barricade
   tags: 
-  stackSize: 64
+  stackSize: 10

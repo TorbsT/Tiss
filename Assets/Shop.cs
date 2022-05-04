@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shop : MonoBehaviour, IInteractableListener
+public class Shop : MonoBehaviour, IInteractableListener, IBatteryListener
 {
     [System.Serializable]
     private class Offer
@@ -14,8 +14,11 @@ public class Shop : MonoBehaviour, IInteractableListener
         [SerializeField] public int cost;
         [SerializeField] public int quantity;
     }
-    private HashSet<IShopListener> listeners = new();
 
+    public bool Powered => powered;
+
+    private HashSet<IShopListener> listeners = new();
+    private bool powered;
     [SerializeField] private float loseUIRange;
     [SerializeField] private int availableCount = 1;
     [SerializeField] private ShopPoolObject itemPool;
@@ -121,5 +124,10 @@ public class Shop : MonoBehaviour, IInteractableListener
     private bool InRange(int index)
     {
         return index >= 0 && index < offers.Count;
+    }
+
+    public void NewCharge(int oldCharge, int newCharge)
+    {
+        powered = newCharge > 0;
     }
 }

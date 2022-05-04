@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34e105ba60cf634182e68e3b5b7aa6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireMode: 0
+  fireMode: 1
   shotDelay: 0.5
 --- !u!95 &964273801436343297
 Animator:

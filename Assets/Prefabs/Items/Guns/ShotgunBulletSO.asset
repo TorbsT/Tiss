@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eff68d5eb67435e458666d55af4fe81d, type: 3}
-  m_Name: FlammenBulletSO
+  m_Name: ShotgunBulletSO
   m_EditorClassIdentifier: 
   speedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.8
-      inSlope: 0.19999999
-      outSlope: 0.19999999
+      value: 0.5
+      inSlope: 0.5
+      outSlope: 0.5
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
@@ -27,8 +27,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.19999999
-      outSlope: 0.19999999
+      inSlope: 0.5
+      outSlope: 0.5
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -36,7 +36,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  speed: 3
-  knockback: 0
-  despawnTime: 10
+  speed: 30
+  knockback: 0.5
+  despawnTime: 100
   damage: 5

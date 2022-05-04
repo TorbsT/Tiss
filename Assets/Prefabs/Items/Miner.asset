@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f9080f864612e47bac5962102213e7, type: 3}
   m_Name: Miner
   m_EditorClassIdentifier: 
+  name: 
   inventorySprite: {fileID: 21300000, guid: f458a8cd071cfc4498a5ba3ea5e913d0, type: 3}
   prefab: {fileID: 6231505188138191432, guid: d190eb31905b9af4db44aa8a8a1f166d, type: 3}
   id: Miner
-  stackSize: 64
+  tags: 
+  stackSize: 10

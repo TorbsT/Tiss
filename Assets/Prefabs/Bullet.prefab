@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -3406320081699797511}
   - component: {fileID: 4912627056350950666}
   - component: {fileID: 8964761229047616935}
+  - component: {fileID: -3166375528339163372}
   m_Layer: 6
   m_Name: Bullet
   m_TagString: Untagged
@@ -101,7 +102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea51453c1d028374fbd0e4cb33d866df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  so: {fileID: 0}
   life: 0
 --- !u!61 &5252608299193821418
 BoxCollider2D:
@@ -120,7 +120,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
+    oldSize: {x: 0.25, y: 0.25}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
+  connected: {fileID: 0}
 --- !u!114 &8964761229047616935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,3 +177,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 0
+--- !u!114 &-3166375528339163372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8237071375302184920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208965adbc2b70048811c030d1766fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEnable: 
+  onDisable: pebble

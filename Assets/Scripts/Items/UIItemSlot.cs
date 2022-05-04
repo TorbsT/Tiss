@@ -10,10 +10,12 @@ public class UIItemSlot : MonoBehaviour
     private UIInventoryManager manager => UIInventoryManager.Instance;
     public int Index { get { if (index < 0) index = int.Parse(gameObject.name); return index; } }
     public UIItem UIItem => uiItem;
-
+    public bool Locked => locked;
 
     [SerializeField] private bool debug;
+    [SerializeField] private bool locked;
     [SerializeField] private Image background;
+    [SerializeField] private Image lockedImg;
     [SerializeField] private Color markColor;
     private Color unmarkColor;
     private RectTransform rectTransform;
@@ -42,6 +44,11 @@ public class UIItemSlot : MonoBehaviour
         this.quantity = quantity;
         Refresh();
     }
+    public void SetLocked(bool locked)
+    {
+        this.locked = locked;
+        Refresh();
+    }
     public void Mark()
     {
         //background.color = markColor;
@@ -65,6 +72,13 @@ public class UIItemSlot : MonoBehaviour
         rt.anchorMax = Vector2.one*1f;
 
         rt.sizeDelta = Vector2.one;
+        if (lockedImg != null)
+        {
+            lockedImg.transform.SetAsLastSibling();
+            lockedImg.gameObject.SetActive(locked);
+            background.raycastTarget = !locked;
+        }
+
         /*
         if (item != null && item.InventorySprite != null)
         {

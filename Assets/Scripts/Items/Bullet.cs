@@ -10,6 +10,8 @@ public class Bullet : MonoBehaviour
     private BulletSO so;
     [SerializeField] private float life;
     private bool shotOff = false;
+
+    // Cached
     private Rigidbody2D rb;
 
     private void Awake()
@@ -27,7 +29,7 @@ public class Bullet : MonoBehaviour
         Transform tr = collision.collider.transform;
 
         Rigidbody2D rb = tr.GetComponent<Rigidbody2D>();
-        if (rb != null) tr.position += transform.right * so.Knockback;
+        if (rb != null) rb.AddForce(transform.right * so.Knockback*100);
         Team otherTeam = tr.GetComponent<Team>();
         if (otherTeam != null)
         {
@@ -57,7 +59,7 @@ public class Bullet : MonoBehaviour
     {
         if (!shotOff)
         {
-            Vector3 v = transform.right * so.Speed;
+            Vector3 v = transform.right * so.Speed * so.SpeedCurve.Evaluate(Random.value);
             rb.velocity = new Vector2(v.x, v.y);
             shotOff = true;
         }

@@ -9,6 +9,7 @@ public class Cam : MonoBehaviour
     private new Camera camera;
     private bool searching;
     [SerializeField] private AnimationCurve scrollCurve;
+    [SerializeField, Range(0f, 10f)] private float panSpeed;
     [SerializeField, Range(0f, 10f)] private float scrollSpeed;
     [SerializeField, Range(5f, 100f)] private float minZoom;
     [SerializeField, Range(1f, 5f)] private float maxZoom;
@@ -39,11 +40,18 @@ public class Cam : MonoBehaviour
             if (!searching) Search();
             return;
         }
-        transform.position = following.position + new Vector3(0f, 0f, -10f);
+
 
         float scroll = -Input.mouseScrollDelta.y;
         scroll *= scrollSpeed;
         scroll *= scrollCurve.Evaluate((camera.orthographicSize-maxZoom) / (minZoom - maxZoom));
         camera.orthographicSize = Mathf.Clamp(camera.orthographicSize + scroll, maxZoom, minZoom);
+
+        Vector2 mousePos = Input.mousePosition;
+        Vector2 screenSize = new(Screen.width, Screen.height);
+        Vector2 pan = new((mousePos.x - screenSize.x / 2f) / screenSize.x, (mousePos.y - screenSize.y / 2f) / screenSize.y);
+        pan *= panSpeed;
+        pan *= camera.orthographicSize;
+        transform.position = following.position + new Vector3(pan.x, pan.y, -10f);
     }
 }

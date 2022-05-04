@@ -8,6 +8,7 @@ public class GeneratorUI : MonoBehaviour, IGeneratorListener
 {
     public static GeneratorUI Instance { get; private set; }
 
+    [SerializeField] private float range;
     [SerializeField] private Gradient batteryColors;
     [SerializeField] private GameObject poweredField;
     [SerializeField] private GameObject chargingField;
@@ -16,8 +17,8 @@ public class GeneratorUI : MonoBehaviour, IGeneratorListener
     [SerializeField] private Image batteryImg;
     [SerializeField] private RectTransform inventoryWrapper;
 
-    private Generator generator;
-    private Interactor interactor;
+    [SerializeField] private Generator generator;
+    [SerializeField] private Interactor interactor;
     private List<UIItemSlot> slots;
 
     private void Awake()
@@ -30,7 +31,13 @@ public class GeneratorUI : MonoBehaviour, IGeneratorListener
             slots.Add(slot);
         }
     }
-
+    void Update()
+    {
+        if (interactor != null && generator != null)
+        {
+            if ((interactor.transform.position - generator.transform.position).magnitude > range) Close();
+        }
+    }
     public void Open(Generator generator, Interactor interactor)
     {
         bool onlyClose = this.generator != null;

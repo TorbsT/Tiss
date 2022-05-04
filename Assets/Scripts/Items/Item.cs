@@ -17,5 +17,5 @@ public class Item : ScriptableObject
     [SerializeField] private GameObject prefab;
     [SerializeField] private string id;
     [SerializeField] private string tags;
-    [SerializeField, Range(1, 1024)] private int stackSize = 1;
+    [SerializeField, Range(1, 1000)] private int stackSize = 1;
 }

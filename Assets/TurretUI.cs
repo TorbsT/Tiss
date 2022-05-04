@@ -7,6 +7,7 @@ public class TurretUI : MonoBehaviour, ITurretListener
 {
     public static TurretUI Instance { get; private set; }
 
+    [SerializeField] private float range;
     [SerializeField] private TextMeshProUGUI poweredField;
     [SerializeField] private TextMeshProUGUI needsPowerField;
     [SerializeField] private TextMeshProUGUI mountingErrorField;
@@ -31,6 +32,13 @@ public class TurretUI : MonoBehaviour, ITurretListener
             gunSlots.Add(slot);
         }
         gameObject.SetActive(false);
+    }
+    void Update()
+    {
+        if (interactor != null && turret != null)
+        {
+            if ((interactor.transform.position - turret.transform.position).magnitude > range) Close();
+        }
     }
 
     public void Open(Turret turret, Interactor interactor)

@@ -13,22 +13,34 @@ MonoBehaviour:
   m_Name: ShopPool
   m_EditorClassIdentifier: 
   spawns:
+  - title: Gas
+    group: Ammo
+    desc: Used as fuel in generators and flammenwerfers
+    item: {fileID: 11400000, guid: cf2b26baf3baeaf4388c56469a63f2be, type: 2}
+    quantity: 100
+    cost: 40
   - title: Ammo
     group: Ammo
-    desc: All-purpose ammo
+    desc: Used for shotgun & AR
     item: {fileID: 11400000, guid: 76c1c8b49431cb14eb5e1edc052fc6fd, type: 2}
-    quantity: 128
-    cost: 10
+    quantity: 100
+    cost: 25
   - title: Shotgun
     group: Weapon
     desc: Firearm. High bullet spread, but gets the job done
     item: {fileID: 11400000, guid: dae245efd2557c64fba7b42d24bda237, type: 2}
     quantity: 1
-    cost: 15
-  - title: AR
-    group: Weapon
-    desc: Firearm. Assault rifle with a high rate of fire and minimal spread
-    item: {fileID: 11400000, guid: 053d70ead37e16e44b4f419dfc1122a3, type: 2}
+    cost: 50
+  - title: Barricade
+    group: Trap
+    desc: Placeable. Prevents passage through a door until destroyed
+    item: {fileID: 11400000, guid: 66ab7183b45dfea4eb104f9bf9c57291, type: 2}
+    quantity: 1
+    cost: 50
+  - title: '"Glue"'
+    group: Trap
+    desc: Placeable. Slows down zombies
+    item: {fileID: 11400000, guid: 62cb22d14d705c645aaa15e0d9a40858, type: 2}
     quantity: 1
     cost: 30
   - title: Flammenwerfer
@@ -37,36 +49,24 @@ MonoBehaviour:
     item: {fileID: 11400000, guid: 998854d1e7b1cfe40bd84931765abfc9, type: 2}
     quantity: 1
     cost: 40
+  - title: AR
+    group: Weapon
+    desc: Firearm. Assault rifle with a high rate of fire and minimal spread
+    item: {fileID: 11400000, guid: 053d70ead37e16e44b4f419dfc1122a3, type: 2}
+    quantity: 1
+    cost: 200
+  - title: Shitcoin Miner
+    group: Utility
+    desc: Placeable. Produces shitcoin over time. Closely packing miners together
+      reduces efficiency
+    item: {fileID: 11400000, guid: 949fc65e3c370c742b5b7a7d7bf4f34c, type: 2}
+    quantity: 1
+    cost: 20
   - title: Turret
     group: Trap
     desc: Placeable. Automatically aims and shoots at zombies. Requires a mounted
       firearm to function.
     item: {fileID: 11400000, guid: 44ee35349dd197f4a9e4b6da0be90418, type: 2}
     quantity: 1
-    cost: 30
-  - title: Barricade
-    group: Trap
-    desc: Placeable. Prevents passage through a door until destroyed
-    item: {fileID: 11400000, guid: 66ab7183b45dfea4eb104f9bf9c57291, type: 2}
-    quantity: 6
-    cost: 5
-  - title: Shitcoin Miner
-    group: Utility
-    desc: Placeable. Produces shitcoin over time. Closely packing miners together
-      reduces efficiency
-    item: {fileID: 11400000, guid: 949fc65e3c370c742b5b7a7d7bf4f34c, type: 2}
-    quantity: 6
-    cost: 5
-  - title: '"Glue"'
-    group: Trap
-    desc: Placeable. Slows down zombies
-    item: {fileID: 11400000, guid: 62cb22d14d705c645aaa15e0d9a40858, type: 2}
-    quantity: 6
-    cost: 5
-  - title: Gas
-    group: Ammo
-    desc: Used as fuel in generators and flammenwerfers
-    item: {fileID: 11400000, guid: cf2b26baf3baeaf4388c56469a63f2be, type: 2}
-    quantity: 83
-    cost: 5
+    cost: 150
   seed: 1234

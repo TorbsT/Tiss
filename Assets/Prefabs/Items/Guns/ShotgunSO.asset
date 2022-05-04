@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShotgunSO
   m_EditorClassIdentifier: 
   ammo: {fileID: 11400000, guid: 76c1c8b49431cb14eb5e1edc052fc6fd, type: 2}
-  shotDelay: 3
   shotSpread: 20
   shotCount: 20
+  ammoPerBurst: 2
   auto: 0
