@@ -21,7 +21,7 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener, 
     [SerializeField] private Transform target;
     [SerializeField] private float range;
     private Tooltip tooltip;
-    private ICollection<Gun> childGuns = new HashSet<Gun>();
+    private Gun childGun;
     private Collider2D[] targetsInRange;
     private bool[] targetsLOS;
     private bool powered;
@@ -124,10 +124,10 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener, 
     }
     private void AttachedChanged()
     {
-        childGuns = plate.GetComponentsInChildren<Gun>();
-
-        foreach (Transform t in plate.GetComponentsInChildren<Transform>())
+        childGun = plate.GetComponentInChildren<Gun>();
+        if (childGun != null)
         {
+            Transform t = childGun.transform;
             t.localPosition = Vector2.zero;
             t.localRotation = Quaternion.identity;
         }
@@ -142,13 +142,13 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener, 
     }
     private void TryShoot()
     {
-        foreach (Gun gun in childGuns)
+        if (childGun != null)
         {
-            Weapon w = gun.GetComponent<Weapon>();  // oh boy
-            if (powered && w.DelayOver && InventoryExtensions.CanQuickRemove(ammoInventory, gun.GunSO.Ammo, gun.GunSO.AmmoPerBurst))
+            Weapon w = childGun.GetComponent<Weapon>();  // oh boy
+            if (powered && w.DelayOver && InventoryExtensions.CanQuickRemove(ammoInventory, childGun.GunSO.Ammo, childGun.GunSO.AmmoPerBurst))
             {
                 w.Shoot();
-                InventoryExtensions.QuickRemove(ammoInventory, gun.GunSO.Ammo, gun.GunSO.AmmoPerBurst);
+                InventoryExtensions.QuickRemove(ammoInventory, childGun.GunSO.Ammo, childGun.GunSO.AmmoPerBurst);
             }
         }
     }

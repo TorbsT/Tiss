@@ -6,6 +6,7 @@ public class MachineSystem : MonoBehaviour, IEventListener
 {
     [SerializeField] private GameObject generatorPrefab;
     [SerializeField] private GameObject shopPrefab;
+    [SerializeField] private GameObject minerPrefab;
     void Awake()
     {
         EventSystem.AddEventListener(this, Event.LoaderFinished);
@@ -27,7 +28,7 @@ public class MachineSystem : MonoBehaviour, IEventListener
             {
                 SpawnMachine(shopPrefab, room);
             }
-
+            SpawnSmallMachine(minerPrefab, playerRoom);
         }
     }
     private void SpawnMachine(GameObject prefab, Room room)
@@ -38,6 +39,11 @@ public class MachineSystem : MonoBehaviour, IEventListener
             t.position = room.MachineSpawn.position;
             t.localRotation = room.MachineSpawn.localRotation;
         }
-            
+    }
+    private void SpawnSmallMachine(GameObject prefab, Room room)
+    {
+        Transform t = EzPools.Instance.Depool(prefab).transform;
+        t.position = room.SmallMachineSpawn.position;
+        t.localRotation = room.SmallMachineSpawn.localRotation;
     }
 }

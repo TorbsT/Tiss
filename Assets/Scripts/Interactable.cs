@@ -9,6 +9,7 @@ public class Interactable : MonoBehaviour
     private HashSet<IInteractableListener> listeners = new();
     private Tooltip tooltip;
     [SerializeField] private bool active = true;
+    [SerializeField] private Vector2 offset = Vector2.up*1f;
     public void Hover(Interactor interactor)
     {
         if (!active)
@@ -24,7 +25,7 @@ public class Interactable : MonoBehaviour
         tooltip.KeyCode = KeyCode.F;
         tooltip.transform.SetParent(UI.Instance.TooltipTransform, false);
         tooltip.TransformToFollow = transform;
-        tooltip.Offset = Vector2.up*2f;
+        tooltip.Offset = offset;
     }
 
     public void Unhover(Interactor interactor)

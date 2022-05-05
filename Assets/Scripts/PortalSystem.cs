@@ -13,7 +13,7 @@ public class PortalSystem : MonoBehaviour, IEventListener
         EventSystem.AddEventListener(this, Event.NewWave);
     }
 
-    [SerializeField] private AnimationCurve zombiesPerRound;
+    [SerializeField] private AnimationCurveObject zombiesPerRound;
     [SerializeField] private GameObject portalPrefab;
     [SerializeField] private int minRoomsAway = 1;
     [SerializeField] private int zombiesToSpawn;
@@ -25,7 +25,7 @@ public class PortalSystem : MonoBehaviour, IEventListener
 
     public void StartSpawningPortals()
     {
-        zombiesToSpawn = Mathf.FloorToInt(zombiesPerRound.Evaluate(GetRound()));
+        zombiesToSpawn = Mathf.FloorToInt(zombiesPerRound.Curve.Evaluate(GetRound()));
         StopPortalRoutine();
         portalRoutine = StartCoroutine(PortalRoutine());
     }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Gas
   m_EditorClassIdentifier: 
   name: Gas
-  inventorySprite: {fileID: 21300000, guid: 124d73bd12e3047458f4e39f756eab7d, type: 3}
+  inventorySprite: {fileID: 21300000, guid: 90bcace79a2f55b49843a77b6325da70, type: 3}
   prefab: {fileID: 1648662835548650197, guid: 749a3f0388513f147ab2941a937ec01b, type: 3}
   id: Gas
   tags: ammo,

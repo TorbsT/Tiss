@@ -24,6 +24,7 @@ public class EventSystem : MonoBehaviour
     /**
      * Listens to all events.
      */
+    /* please do not use
     public static void AddListener(IEventListener listener)
     {
         EnsureDict();
@@ -53,6 +54,7 @@ public class EventSystem : MonoBehaviour
     /**
      * Remove listening to all events.
      */
+    /* please do not use
     public static void RemoveListener(IEventListener listener)
     {
         EnsureDict();
@@ -61,6 +63,7 @@ public class EventSystem : MonoBehaviour
             RemoveEventListener(listener, e);
         }
     }
+    */
     /**
      * Every object listening to this event,
      * will be notified
@@ -81,6 +84,7 @@ public class EventSystem : MonoBehaviour
         {
             listener.EventDeclared(e);
         }
+        Debug.Log(ls.Count);
     }
 
     private static void EnsureDict()
@@ -97,13 +101,14 @@ public class EventSystem : MonoBehaviour
 }
 public enum Event
 {
+    LoaderFinished,
+    MasterStarted,
     NewRound,
     NewWave,
-    RotationsDone,
-    LoaderFinished,
     PathfindingToPlayerDone,
-    MasterStarted,
     PowerChanged,
+    RotationsDone,
+    ZombiesKilledDuringWave
 }
 public interface IEventListener
 {

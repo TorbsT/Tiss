@@ -7,10 +7,12 @@ public class UI : MonoBehaviour
 {
     public RectCalculator RectCalculator => rectCalculator;
     public RectTransform TooltipTransform => tooltipTransform;
+    public RectTransform HealthbarTransform => healthbarTransform;
     public static UI Instance { get; private set; }
 
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private RectTransform tooltipTransform;
+    [SerializeField] private RectTransform healthbarTransform;
     private RectCalculator rectCalculator;
     private void Awake()
     {

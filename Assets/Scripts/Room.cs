@@ -26,6 +26,7 @@ public class Room : MonoBehaviour
     public int Power { get => power; }
     public Direction NewDirection { get => newDirection; }
     public Transform MachineSpawn { get => machineSpawn; }
+    public Transform SmallMachineSpawn { get => smallMachineSpawn; }
     public int NewRotation { get => newRotation; set { newRotation = value;
             if (newRotation % 4 == 0) newDirection = Direction.NORTH;
             else if (newRotation % 4 == 1) newDirection = Direction.EAST;
@@ -46,8 +47,9 @@ public class Room : MonoBehaviour
     [SerializeField] private AnimationCurve rotationCurve;
     [SerializeField] private AnimationCurve lightCurve;
     [SerializeField] private Gradient lightGradient;
-    [SerializeField] private SpriteRenderer floorSprite;
+    [SerializeField] private SpriteRenderer[] renderers;
     [SerializeField] private Transform machineSpawn;
+    [SerializeField] private Transform smallMachineSpawn;
     [SerializeField] private Border[] borders;
 
     private HashSet<Vector2Int> neighbours;
@@ -196,11 +198,18 @@ public class Room : MonoBehaviour
                 lightanimTime += Time.deltaTime;
                 float animProgress = lightCurve.Evaluate(lightanimTime / lightAnimationDuration);
                 float lightValue = animProgress * (lightanimTargetRatio - lightanimStartRatio) + lightanimStartRatio;
-                floorSprite.color = lightGradient.Evaluate(lightValue);
+                foreach (SpriteRenderer renderer in renderers)
+                {
+                    renderer.color = lightGradient.Evaluate(lightValue);
+                }
+                
                 yield return null;
             }
         }
-        floorSprite.color = lightGradient.Evaluate(lightanimTargetRatio);
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            renderer.color = lightGradient.Evaluate(lightanimTargetRatio);
+        }
 
         power = newPower;
         lightanimRunning = false;

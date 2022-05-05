@@ -6,6 +6,7 @@ using Pathfinding;
 public class ItemPlacer : MonoBehaviour
 {
     public GameObject PrefabToPreview { get => prefabToPreview; set { prefabToPreview = value; } }
+    public bool CanPlace => preview != null && preview.Valid;
 
     [SerializeField] private float range;
     [SerializeField] private GameObject prefabToPreview;
@@ -38,6 +39,8 @@ public class ItemPlacer : MonoBehaviour
                 if (miner != null) miner.enabled = false;
                 Target target = preview.GetComponent<Target>();
                 if (target != null) target.enabled = false;
+                HealthbarDisplayer hpdisplay = preview.GetComponent<HealthbarDisplayer>();
+                if (hpdisplay != null) hpdisplay.enabled = false;
 
             }
             oldPrefab = prefabToPreview;
@@ -83,6 +86,9 @@ public class ItemPlacer : MonoBehaviour
         if (target != null) target.enabled = true;
         Interactable interactable = go.GetComponent<Interactable>();
         if (interactable != null) interactable.Active = true;
+        HealthbarDisplayer hpdisplay = go.GetComponent<HealthbarDisplayer>();
+        if (hpdisplay != null) hpdisplay.enabled = true;
+
         Placeable placeable = go.GetComponent<Placeable>();
         if (placeable != null)
         {

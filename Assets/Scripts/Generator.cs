@@ -19,7 +19,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
     }
 
     public Vector3 Position => transform.position;
-    public bool Running => running;
+    public bool NewRunning => newRunning;
     public int MaxPower { get => maxPower; set { maxPower = value; } }
     public float NewFuel => newFuel;
     public InventoryObject Inventory => inventory;
@@ -38,6 +38,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
     [SerializeField] private bool isSearchingRooms;
     [SerializeField] private int roomSearchFrames;
     [SerializeField] private bool updateRequested;
+    [SerializeField] private bool newRunning;
     [SerializeField] private bool running;
 
     private float lastHoverTime;
@@ -65,6 +66,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
     {
         maxPower = GeneratorSystem.Instance.GlobalPower;
         GeneratorSystem.Instance.Track(this);
+        GetComponent<HP>().Set(100f);
     }
     void OnDisable()
     {
@@ -83,10 +85,11 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
                 GetComponent<HP>().Increase(chargePerFuel);
             }
         }
-        if (updateRequested || newFuel != fuel)
+        if (updateRequested || newRunning != running)
         {
             StartCalculatingPower();
             updateRequested = false;
+            running = newRunning;
         }
     }
 
@@ -108,7 +111,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
         if (isSearchingRooms) StopAllCoroutines();
         if (GetComponent<RoomDweller>().Room == null) return;
 
-        if (running) producedPower = maxPower;
+        if (newRunning) producedPower = maxPower;
         else producedPower = 0;
 
         pathfindingRoutine = StartCoroutine(CalculateRoomsRoutine());
@@ -170,6 +173,7 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
         target.SetDiscoverability(discoverability);
         poweredRooms = newCalculatedRooms;
         fuel = newFuel;
+        Debug.Log("Æ");
         GeneratorSystem.Instance.NotifyPowerChanged();
     }
 
@@ -181,8 +185,8 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
     {
         newFuel = Mathf.Clamp(newHP, 0f, 100f);
         logoRenderer.color = logoGradient.Evaluate(newFuel / 100f);
-        running = newFuel > 0f;
-        if (running) target.SetDiscoverability(Target.Discoverability.discoverable);
+        newRunning = newFuel > 0f;
+        if (newRunning) target.SetDiscoverability(Target.Discoverability.discoverable);
         else target.SetDiscoverability(Target.Discoverability.hidden);
         FireStateChanged();
     }

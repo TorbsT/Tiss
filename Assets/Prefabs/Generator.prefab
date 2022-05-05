@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 1458681922881496304}
   - component: {fileID: 356812118779109216}
   - component: {fileID: 1673417674440083351}
+  - component: {fileID: 4345512407512112709}
   m_Layer: 11
   m_Name: Generator
   m_TagString: Untagged
@@ -233,6 +234,7 @@ MonoBehaviour:
   isSearchingRooms: 0
   roomSearchFrames: 0
   updateRequested: 0
+  newRunning: 0
   running: 0
   inventory: {fileID: 0}
 --- !u!61 &256185587990921857
@@ -394,6 +396,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5177613522b4fa4c858b09042f85160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4345512407512112709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4142767738475809018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20559ad0af0ceba4a982e7f50c6afb43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alwaysDisplay: 0
+  changeDisplayTime: 2
+  offset: {x: 0, y: 1}
+  gradientObject: {fileID: 11400000, guid: f540df0a5334a31458bf76f9cf1a2e1d, type: 2}
+  displaying: 0
 --- !u!1 &8870704105867677520
 GameObject:
   m_ObjectHideFlags: 0

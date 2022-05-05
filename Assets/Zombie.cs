@@ -58,12 +58,14 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     private void OnEnable()
     {
         PathfindingSystem.Instance.AddZombie(this);
+        ZombieSystem.Instance.Track(this);
         collisions = new();
         GetComponent<HP>().Set(100f);
     }
     private void OnDisable()
     {
         PathfindingSystem.Instance.RemoveZombie(this);
+        ZombieSystem.Instance.Untrack(this);
     }
     
     void OnCollisionEnter2D(Collision2D collision)
