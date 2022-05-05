@@ -238,6 +238,9 @@ MonoBehaviour:
   lightSpeed: 1.5
   darkAttackDelay: 0.25
   darkSpeed: 4.5
+  darkSprite: {fileID: 21300000, guid: cdfc26d34791cc74bb39d45e4a8bc41c, type: 3}
+  darkEyesSprite: {fileID: 21300000, guid: e174c47bc4b19ca40b76ab1e01f98788, type: 3}
+  eyesRenderer: {fileID: 7654446275676862526}
   darkSize: 2
   gizmos: 1
   dark: 0
@@ -413,5 +416,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alwaysDisplay: 0
   changeDisplayTime: 2
+  offset: {x: 0, y: 1}
   gradientObject: {fileID: 11400000, guid: f540df0a5334a31458bf76f9cf1a2e1d, type: 2}
   displaying: 0

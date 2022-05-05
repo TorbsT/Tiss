@@ -14,6 +14,9 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     [SerializeField] private float lightSpeed;
     [SerializeField] private float darkAttackDelay;
     [SerializeField] private float darkSpeed;
+    [SerializeField] private Sprite darkSprite;
+    [SerializeField] private Sprite darkEyesSprite;
+    [SerializeField] private SpriteRenderer eyesRenderer;
     [SerializeField, Range(1f, 2f)] private float darkSize = 2f;
 
     [Header("DEBUG")]
@@ -25,6 +28,9 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     [SerializeField] private float attackDelay;
     [SerializeField] private Room currentRoom;
 
+    private Sprite lightSprite;
+    private Sprite lightEyesSprite;
+    private new SpriteRenderer renderer;
     private Locomotion locomotion;
     private Transform subgoal;
     private TargetChooser chooser;
@@ -39,6 +45,9 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
         pathfinder = GetComponent<Pathfinder>();
         chooser = GetComponent<TargetChooser>();
         lookat = GetComponent<LookAt>();
+        renderer = GetComponent<SpriteRenderer>();
+        lightSprite = renderer.sprite;
+        lightEyesSprite = eyesRenderer.sprite;
     }
 
     // Start is called before the first frame update
@@ -147,11 +156,15 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             l.BaseSpeed = darkSpeed;
             attackDelay = darkAttackDelay;
             transform.localScale *= darkSize;
+            renderer.sprite = darkSprite;
+            eyesRenderer.sprite = darkEyesSprite;
         } else
         {
             l.BaseSpeed = lightSpeed;
             attackDelay = lightAttackDelay;
             transform.localScale /= darkSize;
+            renderer.sprite = lightSprite;
+            eyesRenderer.sprite = lightEyesSprite;
         }
         dark = newDark;
     }
