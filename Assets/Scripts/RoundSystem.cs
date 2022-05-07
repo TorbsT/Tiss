@@ -16,6 +16,7 @@ public class RoundSystem : MonoBehaviour, IEventListener
     public float CurrentWaveDuration => waveDuration;
     private RoundTimer timer => RoundTimer.Instance;
     private RoundInfoUI info => RoundInfoUI.Instance;
+    private RoundDescUI desc => RoundDescUI.Instance;
     [SerializeField] private float warmupDuration = 10f;
     [SerializeField] private float waveDuration = 10f;
 
@@ -34,6 +35,7 @@ public class RoundSystem : MonoBehaviour, IEventListener
     {
         SetColor(Color.green);
         info.Text = "Round "+round;
+        desc.Text = "Prepare your defences";
     }
     // Update is called once per frame
     void Update()
@@ -50,6 +52,7 @@ public class RoundSystem : MonoBehaviour, IEventListener
                 SetColor(Color.red);
                 EventSystem.DeclareEvent(Event.NewWave);
                 info.Text = "Wave " + round;
+                desc.Text = "Survive";
             }
         } else if (state == State.wave)
         {
@@ -61,6 +64,7 @@ public class RoundSystem : MonoBehaviour, IEventListener
                 time = 0f;
                 state = State.warmup;
                 info.Text = "Round " + round;
+                desc.Text = "Prepare your defences";
                 SetColor(Color.green);
                 RoundChanged();
             }
@@ -71,6 +75,7 @@ public class RoundSystem : MonoBehaviour, IEventListener
         timer.ImageColor = c;
         timer.TextColor = c;
         info.Color = c;
+        desc.Color = c;
     }
     private void RoundChanged()
     {
@@ -86,6 +91,8 @@ public class RoundSystem : MonoBehaviour, IEventListener
         } else if (e == Event.ZombiesKilledDuringWave)
         {
             timerScalar = 10f;
+            desc.Text = "All zombies eliminated";
+            desc.Color = Color.green;
         }
     }
 }

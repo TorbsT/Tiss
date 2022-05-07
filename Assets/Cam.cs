@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cam : MonoBehaviour
+public class Cam : MonoBehaviour, IHPListener
 {
     // Start is called before the first frame update
     private Transform following;
     private new Camera camera;
     private bool searching;
+
+    [SerializeField] private Animator animator;
     [SerializeField] private AnimationCurve scrollCurve;
     [SerializeField, Range(0f, 10f)] private float panSpeed;
     [SerializeField, Range(0f, 10f)] private float scrollSpeed;
@@ -29,8 +31,12 @@ public class Cam : MonoBehaviour
         searching = true;
         Player p = FindObjectOfType<Player>();
         if (p == null) Invoke(nameof(Search), 1f);
-        following = p.transform;
-        searching = false;
+        else
+        {
+            p.GetComponent<HP>().AddListener(this);
+            following = p.transform;
+            searching = false;
+        }
     }
     // Update is called once per frame
     void Update()
@@ -40,7 +46,6 @@ public class Cam : MonoBehaviour
             if (!searching) Search();
             return;
         }
-
 
         float scroll = -Input.mouseScrollDelta.y;
         scroll *= scrollSpeed;
@@ -53,5 +58,10 @@ public class Cam : MonoBehaviour
         pan *= panSpeed;
         pan *= camera.orthographicSize;
         transform.position = following.position + new Vector3(pan.x, pan.y, -10f);
+    }
+
+    public void NewHP(float oldHP, float newHP)
+    {
+        if (newHP < oldHP) animator.SetTrigger("hurt");
     }
 }

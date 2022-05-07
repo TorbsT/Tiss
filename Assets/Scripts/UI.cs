@@ -11,9 +11,12 @@ public class UI : MonoBehaviour
     public static UI Instance { get; private set; }
 
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject deadMenu;
+    [SerializeField] private GameObject COck;
     [SerializeField] private RectTransform tooltipTransform;
     [SerializeField] private RectTransform healthbarTransform;
     private RectCalculator rectCalculator;
+    private bool dead;
     private void Awake()
     {
         Instance = this;
@@ -21,7 +24,7 @@ public class UI : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!dead && Input.GetKeyDown(KeyCode.Escape))
         {
             bool startPause = !pauseMenu.activeSelf;
             pauseMenu.SetActive(startPause);
@@ -34,7 +37,13 @@ public class UI : MonoBehaviour
             }
         }
     }
-
+    public void Died()
+    {
+        dead = true;
+        deadMenu.SetActive(true);
+        COck.SetActive(true);
+        PauseSystem.Instance.Pause();
+    }
     public void Restart()
     {
         SceneManager.LoadSceneAsync("Game");

@@ -15,6 +15,7 @@ public class Locomotion : MonoBehaviour
     [SerializeField] private float deceleration = 100f;
 
     [Header("DEBUG")]
+    [SerializeField] private bool debug;
     [SerializeField] private float speed;
     [SerializeField] private Vector2 direction;
     [SerializeField] private Vector2 delta;
@@ -34,24 +35,48 @@ public class Locomotion : MonoBehaviour
         Vector2 oldVelocity = rb.velocity;
         float oldMagnitude = oldVelocity.magnitude;
 
+        float standstillMagnitude = oldMagnitude - deceleration * Time.fixedDeltaTime;
+        standstillMagnitude = Mathf.Max(0f, standstillMagnitude);
+
         if (direction == Vector2.zero)
         {
             // Decelerate
             if (oldMagnitude == 0f) return;
-            float newMagnitude = oldMagnitude - deceleration*Time.fixedDeltaTime;
-            newMagnitude = Mathf.Max(0f, newMagnitude);
-
-            rb.velocity *= newMagnitude / oldMagnitude;
+            rb.velocity *= standstillMagnitude / oldMagnitude;
         } else
         {
             // Accelerate
             if (acceleration == 0f) return;
-            Vector2 newVelocity = oldVelocity + acceleration*direction.normalized*Time.fixedDeltaTime;
-            float newMagnitude = newVelocity.magnitude;
-            newMagnitude = Mathf.Min(speed, newMagnitude);
-            newVelocity *= newMagnitude / newVelocity.magnitude;
 
-            rb.velocity = newVelocity;
+            Vector2 walkVelocity = oldVelocity + acceleration*direction.normalized*Time.fixedDeltaTime;
+            float walkMagnitude = walkVelocity.magnitude;
+
+            if (walkMagnitude < standstillMagnitude)
+            {
+                if (debug) Debug.Log("11");
+                // Walking direction slows down more than standing still
+                walkVelocity *= walkMagnitude / walkVelocity.magnitude;
+                rb.velocity = walkVelocity;
+            } else
+            {
+                if (walkMagnitude > speed)
+                {
+                    if (debug) Debug.Log("22");
+                    Vector2 newVelocity = walkVelocity.normalized * (oldMagnitude - deceleration);
+                    if (newVelocity.magnitude < speed) newVelocity = newVelocity.normalized * speed;
+                    rb.velocity = newVelocity;
+                } else
+                {
+                    if (debug) Debug.Log("33");
+                    walkVelocity *= walkMagnitude / walkVelocity.magnitude;
+                    rb.velocity = walkVelocity;
+                }
+            }
+
+            walkMagnitude = Mathf.Min(speed, walkMagnitude);
+            walkVelocity *= walkMagnitude / walkVelocity.magnitude;
+
+            rb.velocity = walkVelocity;
         }
     }
 

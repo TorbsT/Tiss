@@ -25,6 +25,11 @@ public class PlayerInventoryAPI : MonoBehaviour, IWalletProvider
         dropper = GetComponent<ItemDropper>();
         hotbar = GetComponent<Hotbar>();
         placer = GetComponent<ItemPlacer>();
+
+        main = ScriptableObject.CreateInstance<InventoryObject>();
+        main.SlotCount = 9;
+        moving = ScriptableObject.CreateInstance<InventoryObject>();
+        moving.SlotCount = 1;
     }
     void OnDestroy()
     {

@@ -11,7 +11,8 @@ public class UIInventoryManager : MonoBehaviour, IHotbarListener, IButtonReceive
     private PlayerInventoryAPI api;
     [SerializeField] private UIInventory mainUIInv;
     [SerializeField] private UIInventory movingUIInv;
-    [SerializeField] private Transform hotbarChooserTransform; 
+    [SerializeField] private Transform hotbarChooserTransform;
+    [SerializeField] private Vector2 chooserOffset;
 
     private void Awake()
     {
@@ -71,7 +72,8 @@ public class UIInventoryManager : MonoBehaviour, IHotbarListener, IButtonReceive
         if (mainUIInv != null)
         {
             Transform uiSlotTransform = mainUIInv.transform.GetChild(index);
-            hotbarChooserTransform.position = uiSlotTransform.position;
+            Vector2 slotPos = uiSlotTransform.position;
+            hotbarChooserTransform.position = slotPos+chooserOffset;
         }
 
     }

@@ -7,7 +7,7 @@ public class Melee : MonoBehaviour
     [SerializeField] private bool gizmos;
     [SerializeField] private Animator animator;
     [SerializeField, Range(0f, 100f)] private float range = 100f;
-    [SerializeField, Range(0f, 100f)] private float knockback = 100f;
+    [SerializeField, Range(0f, 1000f)] private float knockback = 100f;
 
     private Vector2 origin;
     private Vector2 aim;

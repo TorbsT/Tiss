@@ -197,7 +197,7 @@ MonoBehaviour:
   gizmos: 1
   animator: {fileID: 964273801436343297}
   range: 2
-  knockback: 100
+  knockback: 1000
 --- !u!114 &3745365327012414593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,8 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34e105ba60cf634182e68e3b5b7aa6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireMode: 1
-  shotDelay: 0.5
+  fireMode: 0
+  shotDelay: 1
 --- !u!95 &964273801436343297
 Animator:
   serializedVersion: 4

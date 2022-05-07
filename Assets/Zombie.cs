@@ -14,6 +14,8 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     [SerializeField] private float lightSpeed;
     [SerializeField] private float darkAttackDelay;
     [SerializeField] private float darkSpeed;
+    [SerializeField] private float lightAttackKnockback;
+    [SerializeField] private float darkAttackKnockback;
     [SerializeField] private Sprite darkSprite;
     [SerializeField] private Sprite darkEyesSprite;
     [SerializeField] private SpriteRenderer eyesRenderer;
@@ -26,6 +28,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     [SerializeField] private float timeSinceTargetUpdate;
     [SerializeField] private float timeSinceAttack;
     [SerializeField] private float attackDelay;
+    [SerializeField] private float attackKnockback;
     [SerializeField] private Room currentRoom;
 
     private Sprite lightSprite;
@@ -111,7 +114,17 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
                     if (hp != null)
                     {
                         timeSinceAttack = 0f;
-                        hp.Decrease(attackDamage);
+                        float dmg = attackDamage;
+                        if (t.GetComponent<Player>() != null) dmg *= 10f;
+                        hp.Decrease(dmg);
+
+                        Vector2 f = (t.position - transform.position) * attackKnockback;
+                        GetComponent<Rigidbody2D>().AddForce(-f);
+                        Rigidbody2D rb = t.GetComponent<Rigidbody2D>();
+                        if (rb != null)
+                        {
+                            rb.AddForce(f);
+                        }
                         break;
                     }
                 }
@@ -158,6 +171,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             transform.localScale *= darkSize;
             renderer.sprite = darkSprite;
             eyesRenderer.sprite = darkEyesSprite;
+            attackKnockback = darkAttackKnockback;
         } else
         {
             l.BaseSpeed = lightSpeed;
@@ -165,6 +179,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             transform.localScale /= darkSize;
             renderer.sprite = lightSprite;
             eyesRenderer.sprite = lightEyesSprite;
+            attackKnockback = lightAttackKnockback;
         }
         dark = newDark;
     }

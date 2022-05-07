@@ -11,6 +11,8 @@ public class HP : MonoBehaviour
         public Sprite sprite;
     }
 
+    public float Health => health;
+
     [SerializeField] private float health;
     [SerializeField] private SpriteRenderer healthRenderer;
     [SerializeField] private List<HPSpritePair> healthMapper;

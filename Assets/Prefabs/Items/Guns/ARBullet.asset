@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eff68d5eb67435e458666d55af4fe81d, type: 3}
-  m_Name: DefaultBullet
+  m_Name: ARBullet
   m_EditorClassIdentifier: 
   speedCurve:
     serializedVersion: 2
@@ -39,4 +39,4 @@ MonoBehaviour:
   speed: 25
   knockback: 0.1
   despawnTime: 100
-  damage: 20
+  damage: 10

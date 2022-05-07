@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
+public class ShopUI : MonoBehaviour, IShopListener, IWalletListener, IButtonReceiver
 {
     public static ShopUI Instance { get; private set; }
 
@@ -89,6 +89,7 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
         Close();
         shop.AddListener(this);
         gameObject.SetActive(true);
+        PlayerInventoryAPI.Instance.Wallet.AddListener(this);
     }
     public void Close()
     {
@@ -101,6 +102,7 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
             shop.RemoveListener(this);
             this.shop = null;
         }
+        PlayerInventoryAPI.Instance.Wallet.RemoveListener(this);
         gameObject.SetActive(false);
     }
     public void StateChanged(Shop shop)
@@ -147,11 +149,13 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
         if (chosen)
         {
             bool locked = inventorySlots[chosenIndex].Locked;
-            buttonField.text = "$" + chosenCost;
-            button.interactable = !locked;
-            titleField.text = chosenTitle;
+            bool afford = PlayerInventoryAPI.Instance.Wallet.Shitcoin >= chosenCost;
             if (locked) descField.text = "This item is only available when the shop is powered by a nearby generator.";
             else descField.text = chosenDesc;
+            if (!afford) descField.text = "You can't afford this item.";
+            buttonField.text = "$" + chosenCost;
+            titleField.text = chosenTitle;
+            button.interactable = !locked && afford;
             inspectSlot.SetItem(chosenItem);
             inspectSlot.SetQuantity(chosenQuantity);
             lastChosenSlot = inventorySlots[chosenIndex];
@@ -160,5 +164,10 @@ public class ShopUI : MonoBehaviour, IShopListener, IButtonReceiver
         {
             lastChosenSlot = null;
         }
+    }
+
+    public void WalletChanged(int oldValue, int newValue)
+    {
+        Refresh();
     }
 }

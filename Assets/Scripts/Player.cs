@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IHPListener
 {
     public static Player Instance { get; private set; }
     [SerializeField] private bool gizmos;
+    [SerializeField] private float regenPerSecond;
     [SerializeField] private Item clubItem;
     private Locomotion locomotion;
     private Target target;
@@ -49,10 +50,20 @@ public class Player : MonoBehaviour
         Vector2 mousePos = UI.Instance.RectCalculator.ScreenPointToWorld(mouseScreenPosition);
         GetComponent<LookAt>().LookingAt = mousePos;
 
-
-
         // movement
         Vector2 direction = new(ad, ws);
         locomotion.Direction = direction;
+
+        if (hp.Health < 100f)
+        hp.Increase(regenPerSecond * Time.deltaTime);
+    }
+
+    public void NewHP(float oldHP, float newHP)
+    {
+        if (newHP <= 0f)
+        {
+            GetComponent<Rigidbody2D>().simulated = false;
+            UI.Instance.Died();
+        }
     }
 }
