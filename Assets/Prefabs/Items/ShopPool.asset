@@ -18,19 +18,19 @@ MonoBehaviour:
     desc: Used as fuel in generators and flammenwerfers
     item: {fileID: 11400000, guid: cf2b26baf3baeaf4388c56469a63f2be, type: 2}
     quantity: 100
-    cost: 40
+    cost: 120
   - title: Ammo
     group: Ammo
     desc: Used for shotgun & AR
     item: {fileID: 11400000, guid: 76c1c8b49431cb14eb5e1edc052fc6fd, type: 2}
     quantity: 100
-    cost: 25
+    cost: 50
   - title: Shotgun
     group: Weapon
     desc: Firearm. High bullet spread, but gets the job done
     item: {fileID: 11400000, guid: dae245efd2557c64fba7b42d24bda237, type: 2}
     quantity: 1
-    cost: 50
+    cost: 70
   - title: Barricade
     group: Trap
     desc: Placeable. Prevents passage through a door until destroyed
@@ -48,7 +48,7 @@ MonoBehaviour:
     desc: The real firearm. Requires gas to shoot
     item: {fileID: 11400000, guid: 998854d1e7b1cfe40bd84931765abfc9, type: 2}
     quantity: 1
-    cost: 40
+    cost: 100
   - title: AR
     group: Weapon
     desc: Firearm. Assault rifle with a high rate of fire and minimal spread

@@ -9,10 +9,11 @@ public class PortalSystem : MonoBehaviour, IEventListener
     private void Awake()
     {
         Instance = this;
-        EventSystem.AddEventListener(this, Event.NewRound);
+        EventSystem.AddEventListener(this, Event.LoaderFinished);
         EventSystem.AddEventListener(this, Event.NewWave);
     }
 
+    [SerializeField] private bool gizmos;
     [SerializeField] private AnimationCurveObject zombiesPerRound;
     [SerializeField] private GameObject portalPrefab;
     [SerializeField] private int minRoomsAway = 1;
@@ -22,6 +23,26 @@ public class PortalSystem : MonoBehaviour, IEventListener
     private HashSet<Node> chosenNodes;
     private Coroutine portalRoutine;
     private bool portalRoutineRunning;
+    private ICollection<Node> ns;
+
+    void OnDrawGizmos()
+    {
+        if (gizmos)
+        {
+            Gizmos.color = Color.blue;
+            if (ns != null)
+            foreach (Node n in ns)
+            {
+                Gizmos.DrawCube(n.Room.transform.position, Vector3.one * 10f);
+            }
+            Gizmos.color = Color.magenta;
+            if (chosenNodes != null)
+            foreach (Node n in chosenNodes)
+            {
+                Gizmos.DrawCube(n.Room.transform.position, Vector3.one * 10f);
+            }
+        }
+    }
 
     public void StartSpawningPortals()
     {
@@ -103,6 +124,7 @@ public class PortalSystem : MonoBehaviour, IEventListener
         if (canStart)
         {
             chosenNodes = new();
+            ns = ato.GetNodes();
             foreach (Room.Direction direction in Room.GetDirections())
             {
                 Node n = ExtremeNode(direction);
@@ -133,7 +155,7 @@ public class PortalSystem : MonoBehaviour, IEventListener
         {
             Node best = null;
 
-            foreach (Node node in ato.GetNodes())
+            foreach (Node node in ns)
             {
                 if (node.StepsFromTarget < minRoomsAway) continue;
                 if (best == null)
@@ -169,7 +191,13 @@ public class PortalSystem : MonoBehaviour, IEventListener
         if (e == Event.PathfindingToPlayerDone)
         {
             EventSystem.RemoveEventListener(this, Event.PathfindingToPlayerDone);
-            StartSpawningPortals();
+            Invoke(nameof(StartSpawningPortals), 1f);
+            EventSystem.AddEventListener(this, Event.NewRound);
+        }
+        if (e == Event.LoaderFinished)
+        {
+            EventSystem.RemoveEventListener(this, Event.LoaderFinished);
+            EventSystem.AddEventListener(this, Event.PathfindingToPlayerDone);
         }
         if (e == Event.NewWave)
         {

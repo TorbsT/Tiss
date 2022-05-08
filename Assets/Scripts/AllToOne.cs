@@ -105,6 +105,7 @@ namespace Pathfinding
             nodes = newNodes;
             state = State.calculated;
             PathfindingSystem.Instance.AllToOneDone(this);
+            Debug.Log("COCK");
         }
     }
     public class Node

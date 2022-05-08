@@ -6893,6 +6893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e0a12d2a81d9d24ebe221fe5edf2590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gizmos: 1
   zombiesPerRound: {fileID: 11400000, guid: 7d65f9fe8cb9a364f95bf71329d61535, type: 2}
   portalPrefab: {fileID: 3646306326478828916, guid: 6c8e1ed776c9a214d811b7b59a4fe0fc, type: 3}
   minRoomsAway: 1
@@ -6909,7 +6910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2335134006498b45a0ab18e033bd249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAvailable: 100
+  baseAvailable: 150
   currentAvailableLeft: 0
   waitPoints: 0
   speed: 3
@@ -6950,8 +6951,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93082fa05d2639640a478271147eb2ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  warmupDuration: 5
-  waveDuration: 60
+  warmupDuration: 30
+  waveDuration: 90
   time: 0
   timerScalar: 0
   round: 1
@@ -6995,6 +6996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allToOneFpsPriority: 1000
+  targetCount: 0
 --- !u!114 &1333484846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13069,7 +13071,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6714169102035949068, guid: 1613b4c55fe791248bddfcca78db1893, type: 3}
       propertyPath: debug
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6714169102035949068, guid: 1613b4c55fe791248bddfcca78db1893, type: 3}
       propertyPath: acceleration
@@ -13081,7 +13083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6714169102035949069, guid: 1613b4c55fe791248bddfcca78db1893, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6714169102035949070, guid: 1613b4c55fe791248bddfcca78db1893, type: 3}
       propertyPath: m_Intensity

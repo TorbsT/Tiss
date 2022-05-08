@@ -80,7 +80,9 @@ namespace Pathfinding
                     subGoalDistanceRequirement = 0.5f;
                 } else
                 {
-                    Node node = PathfindingSystem.Instance.LatestAllToOne(target)?.GetNode(currentRoom);
+                    AllToOne ato = PathfindingSystem.Instance.LatestAllToOne(target);
+                    Node node = null;
+                    if (ato != null) node = ato.GetNode(currentRoom);
                     if (node == null)
                     {  // no path available
                         state = State.noPathAvailable;
@@ -91,6 +93,7 @@ namespace Pathfinding
                         ICollection<Room> closerNeighbours = node.CloserNeighbours;
                         if (closerNeighbours.Count == 0)
                         {  // In same room
+                            Debug.Log(node.Room + " is closest");
                             state = State.inSameRoom;
                             newSubgoal = target.transform;
                             subGoalDistanceRequirement = 0f;

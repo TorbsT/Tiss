@@ -10,6 +10,7 @@ public class Portal : MonoBehaviour
     [SerializeField] private int zombiesToSpawn;
     [SerializeField] private bool spawning;
     [SerializeField] private GameObject zombiePrefab;
+    [SerializeField] private float spinSpeed;
 
     private void OnEnable()
     {
@@ -21,6 +22,7 @@ public class Portal : MonoBehaviour
     }
     private void Update()
     {
+        transform.Rotate(new(0f, 0f, spinSpeed * Time.deltaTime));
         if (!spawning) return;
         if (zombiesToSpawn <= 0)
         {

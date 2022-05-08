@@ -9,6 +9,7 @@ namespace Pathfinding
         public static PathfindingSystem Instance { get; private set; }
 
         [SerializeField] private float allToOneFpsPriority;
+        [SerializeField] private int targetCount;
         private Dictionary<Room, AllToOne> allToOnes = new();
         private HashSet<Target> targets = new();
         private HashSet<Zombie> zombies = new();
@@ -32,10 +33,14 @@ namespace Pathfinding
         public void AddTarget(Target target)
         {
             targets.Add(target);
+            Debug.Log("Added " + target.gameObject);
+            targetCount = targets.Count;
         }
         public void RemoveTarget(Target target)
         {
             targets.Remove(target);
+            Debug.Log("Removed " + target.gameObject);
+            targetCount = targets.Count;
         }
         public void AddZombie(Zombie zombie)
         {
@@ -51,17 +56,29 @@ namespace Pathfinding
             {
                 EventSystem.DeclareEvent(Event.PathfindingToPlayerDone);
             }
+            /*
+            HashSet<Target> tgs = new();
             foreach (Target t in waitingTargets)
+            {
+                Debug.Log(t + " is waiting");
+                tgs.Add(t);
+            }
+            /*
+            foreach (Target t in tgs)
             {
                 if (t.GetComponent<RoomDweller>().Room == ato.GetComponent<Room>())
                 {
+                    Debug.Log("Match " + t);
                     waitingTargets.Remove(t);
                     latestTargetToATOs[t] = ato;
-                    AllChooseTarget();
-                    break;
                 }
+            }*/
+            foreach (Target t in ato.transform.GetComponentsInChildren<Target>())
+            {
+                latestTargetToATOs[t] = ato;
             }
-            
+            AllChooseTarget();
+
         }
         public void RequestAllToOne(Target target)
         {
@@ -106,8 +123,13 @@ namespace Pathfinding
 
         private void CreateATO(Target target)
         {
-            if (target.GetComponent<RoomDweller>().Room.GetComponent<AllToOne>() != null) return;
-            AllToOne ato = target.GetComponent<RoomDweller>().Room.gameObject.AddComponent<AllToOne>();
+            AllToOne ato = target.GetComponent<RoomDweller>().Room.GetComponent<AllToOne>();
+            if (ato != null)
+            {
+                AllToOneDone(ato);  // bad probably
+                return;
+            }
+            ato = target.GetComponent<RoomDweller>().Room.gameObject.AddComponent<AllToOne>();
             allToOnes.Add(ato.GetComponent<Room>(), ato);
         }
     }

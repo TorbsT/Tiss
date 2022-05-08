@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 38d59227703d1d24da4041f837180405, type: 3}
   m_Color: {r: 0.509434, g: 0.13697045, b: 0.34114897, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -115,3 +115,4 @@ MonoBehaviour:
   zombiesToSpawn: 0
   spawning: 0
   zombiePrefab: {fileID: 3895385873017785338, guid: f07c9d3e6c9bbd24989489b7a786994c, type: 3}
+  spinSpeed: 360

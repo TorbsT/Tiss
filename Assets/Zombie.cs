@@ -8,6 +8,7 @@ using Pools;
 public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener, IHPListener, IBatteryListener
 {
     [Header("CONFIG")]
+    [SerializeField] private int moneysOnKill = 1;
     [SerializeField] private float lightAttackDelay;
     [SerializeField] private float attackRange;
     [SerializeField] private float attackDamage;
@@ -16,6 +17,8 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     [SerializeField] private float darkSpeed;
     [SerializeField] private float lightAttackKnockback;
     [SerializeField] private float darkAttackKnockback;
+    [SerializeField] private float lightMass;
+    [SerializeField] private float darkMass;
     [SerializeField] private Sprite darkSprite;
     [SerializeField] private Sprite darkEyesSprite;
     [SerializeField] private SpriteRenderer eyesRenderer;
@@ -154,7 +157,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     {
         if (newHP <= 0f)
         {
-            Player.Instance.GetComponent<IWalletProvider>().Wallet.Shitcoin += 5;
+            Player.Instance.GetComponent<IWalletProvider>().Wallet.Shitcoin += moneysOnKill;
             Despawn();
         }
     }
@@ -172,6 +175,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             renderer.sprite = darkSprite;
             eyesRenderer.sprite = darkEyesSprite;
             attackKnockback = darkAttackKnockback;
+            GetComponent<Rigidbody2D>().mass = darkMass;
         } else
         {
             l.BaseSpeed = lightSpeed;
@@ -180,6 +184,7 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
             renderer.sprite = lightSprite;
             eyesRenderer.sprite = lightEyesSprite;
             attackKnockback = lightAttackKnockback;
+            GetComponent<Rigidbody2D>().mass = lightMass;
         }
         dark = newDark;
     }

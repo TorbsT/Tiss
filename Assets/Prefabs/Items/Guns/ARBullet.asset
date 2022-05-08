@@ -39,4 +39,4 @@ MonoBehaviour:
   speed: 25
   knockback: 0.1
   despawnTime: 100
-  damage: 10
+  damage: 20

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class Player : MonoBehaviour, IHPListener
+public class Player : MonoBehaviour, IHPListener, IEventListener
 {
     public static Player Instance { get; private set; }
     [SerializeField] private bool gizmos;
@@ -13,6 +13,7 @@ public class Player : MonoBehaviour, IHPListener
     private Target target;
     private Vector2 lookingAt;
     private HP hp;
+    private Vector2 startPos;
 
     // Start is called before the first frame update
     void Awake()
@@ -21,13 +22,15 @@ public class Player : MonoBehaviour, IHPListener
         locomotion = GetComponent<Locomotion>();
         target = GetComponent<Target>();
         hp = GetComponent<HP>();
+        startPos = transform.position;
+        EventSystem.AddEventListener(this, Event.NewRound);
     }
 
     private void Start()
     {
         target.SetDiscoverability(Target.Discoverability.discoverable);
         hp.Set(100f);
-        GetComponent<IWalletProvider>().Wallet.Shitcoin = 150;
+        GetComponent<IWalletProvider>().Wallet.Shitcoin = 300;
         if (!InventoryExtensions.CanQuickRemove(GetComponent<PlayerInventoryAPI>().Main, clubItem, 1))
         {
             InventoryExtensions.QuickAdd(GetComponent<PlayerInventoryAPI>().Main, clubItem, 1);
@@ -64,6 +67,13 @@ public class Player : MonoBehaviour, IHPListener
         {
             GetComponent<Rigidbody2D>().simulated = false;
             UI.Instance.Died();
+        }
+    }
+    void IEventListener.EventDeclared(Event e)
+    {
+        if (e == Event.NewRound)
+        {
+            transform.position = startPos;
         }
     }
 }

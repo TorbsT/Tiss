@@ -17,6 +17,7 @@ public class TargetChooser : MonoBehaviour
     private Room currentRoom;
     [SerializeField] private Target target;
     [SerializeField] private bool running;
+    private float rdm;
     private ICollection<ITargetChooserListener> listeners = new HashSet<ITargetChooserListener>();
 
     private void Awake()
@@ -25,6 +26,7 @@ public class TargetChooser : MonoBehaviour
         {
             listeners.Add(comp);
         }
+        rdm = Random.Range(0f, 1f);
     }
     private void OnEnable()
     {
@@ -51,27 +53,44 @@ public class TargetChooser : MonoBehaviour
         target = null;
         running = true;
         currentRoom = SquareRoomSystem.Instance.PosToRoom(transform.position);
-        Target closestTarget = null;
+
+        List<Target> closestTargets = new();
         if (currentRoom != null)
         {
             int closestStepsFromTarget = int.MaxValue;
-            foreach (Target t in PathfindingSystem.Instance.GetTargets())
+            ICollection<Target> tgts = PathfindingSystem.Instance.GetTargets();
+            //Debug.Log(gameObject + " Æ" + tgts.Count);
+            foreach (Target t in tgts)
             {
+                //Debug.Log(gameObject + " 2 ");
                 yield return null;
+                //Debug.Log(gameObject + " 3 ");
                 if (!t.Discoverable) continue;
+                //Debug.Log(gameObject + " 4 ");
                 AllToOne ato = PathfindingSystem.Instance.LatestAllToOne(t);
+                if (ato == null) Debug.Log(t + " does not have an ATO ");
                 if (ato == null) continue;
+                //Debug.Log(gameObject + " 5 ");
                 Node node = ato.GetNode(currentRoom);
                 if (node == null) continue;
+                //Debug.Log(gameObject + " 6 ");
                 int stepsFromTarget = node.StepsFromTarget;
-                if (stepsFromTarget < closestStepsFromTarget)
+                if (stepsFromTarget <= closestStepsFromTarget)
                 {
+                    if (stepsFromTarget < closestStepsFromTarget) closestTargets = new();
+                    closestTargets.Add(t);
                     closestStepsFromTarget = stepsFromTarget;
-                    closestTarget = t;
+                    //Debug.Log(closestTargets.Count + " Æ" + stepsFromTarget + " " + gameObject + " " + t.gameObject);
                 }
             }
         }
 
+
+        Target closestTarget = null;
+        Debug.Log(closestTargets.Count);
+        int chosenIndex = Mathf.FloorToInt(rdm * closestTargets.Count);
+        if (chosenIndex < 0 || chosenIndex >= closestTargets.Count) Debug.Log("rdm " + rdm + ", " + chosenIndex + " " + closestTargets.Count);
+        closestTarget = closestTargets[chosenIndex];
         // If the zombie is out of bounds,
         // or if no rooms can be accessed from its current room:
         // choose the target with least air distance

@@ -84,7 +84,7 @@ public class EventSystem : MonoBehaviour
         {
             listener.EventDeclared(e);
         }
-        Debug.Log(ls.Count);
+        if (sDebugEvents) Debug.Log(ls.Count);
     }
 
     private static void EnsureDict()

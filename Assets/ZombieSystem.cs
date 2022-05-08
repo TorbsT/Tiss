@@ -31,6 +31,16 @@ public class ZombieSystem : MonoBehaviour, IEventListener
         if (e == Event.NewRound)
         {
             inWave = false;
+            HashSet<Zombie> zs = new();
+            foreach (Zombie zombie in zombies)
+            {
+                zs.Add(zombie);
+            }
+            foreach (Zombie z in zs)
+            {
+                z.Despawn();
+            }
+            
         } else if (e == Event.NewWave)
         {
             inWave = true;
