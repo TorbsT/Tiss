@@ -69,4 +69,10 @@ MonoBehaviour:
     item: {fileID: 11400000, guid: 44ee35349dd197f4a9e4b6da0be90418, type: 2}
     quantity: 1
     cost: 150
+  - title: Timebomb
+    group: Bomb
+    desc: Throwable. Rewinds time for objects in its explosion range
+    item: {fileID: 11400000, guid: f6f07cd44b41fbb4b8532c31c43901e8, type: 2}
+    quantity: 100
+    cost: 1
   seed: 1234

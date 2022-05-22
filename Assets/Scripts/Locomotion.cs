@@ -20,11 +20,15 @@ public class Locomotion : MonoBehaviour
     [SerializeField] private Vector2 direction;
     [SerializeField] private Vector2 delta;
     private HashSet<Splurge> splurges = new();
+
+    // Cached
     private Rigidbody2D rb;
+    private Rewinder rewinder;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        rewinder = GetComponent<Rewinder>();
     }
     private void Start()
     {
@@ -32,6 +36,11 @@ public class Locomotion : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (rewinder != null && rewinder.Rewinding)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
         Vector2 oldVelocity = rb.velocity;
         float oldMagnitude = oldVelocity.magnitude;
 

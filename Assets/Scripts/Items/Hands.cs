@@ -13,17 +13,22 @@ public class Hands : MonoBehaviour, IHotbarListener
     public Transform GunSocket => gunSocket;
 
     // Start is called before the first frame update
-    private Hotbar observedHotbar;
-    [SerializeField] private Item chosenItem;
-    [SerializeField] private State state;
+    [Header("ASSIGN")]
     [SerializeField] private Animator animator;
     [SerializeField] private Transform gunSocket;
+    [SerializeField] private float throwForce;
+
+    [Header("DEBUG")]
+    [SerializeField] private Item chosenItem;
+    [SerializeField] private State state;
     [SerializeField] private GameObject holsteredGO;
 
+    private Hotbar observedHotbar;
     // Cached
     private Weapon holsteredWeapon;
     private Melee holsteredMelee;
     private Gun holsteredGun;
+    private bool holdingBomb;
     private bool holdingPlaceable;
 
     void Start()
@@ -48,6 +53,12 @@ public class Hands : MonoBehaviour, IHotbarListener
                 GetComponent<ItemPlacer>().Place();
                 InventoryExtensions.QuickRemove(GetComponent<PlayerInventoryAPI>().Main, GetComponent<Hotbar>().ChosenIndex, 1);
             }
+        } else if (holdingBomb)
+        {
+            if (Input.GetKeyDown(m1))
+            {
+                ThrowBomb();
+            }
         }
     }
     public void StateChanged(Hotbar hotbar)
@@ -63,6 +74,7 @@ public class Hands : MonoBehaviour, IHotbarListener
         holsteredWeapon = null;
 
         holdingPlaceable = false;
+        holdingBomb = false;
         if (chosenItem != null)
         {
             GameObject prefab = chosenItem.Prefab;
@@ -85,12 +97,24 @@ public class Hands : MonoBehaviour, IHotbarListener
                 holdingPlaceable = true;
                 GetComponent<ItemPlacer>().PrefabToPreview = prefab;
             }
+            if (prefab.GetComponent<RewindBomb>() != null)
+            {
+                holdingBomb = true;
+            }
         }
         if (!holdingPlaceable) GetComponent<ItemPlacer>().PrefabToPreview = null;
 
     }
 
+    private void ThrowBomb()
+    {
+        GameObject go = EzPools.Instance.Depool(chosenItem.Prefab);
+        Rigidbody2D rb = go.GetComponent<Rigidbody2D>();
+        Vector2 pos = transform.position;
 
+        go.transform.position = pos;
+        rb.AddForce(100f * throwForce * (GetComponent<LookAt>().LookingAt - pos).normalized);
+    }
     private void TryShoot()
     {
         bool canShoot = true;
