@@ -25,11 +25,11 @@ public class Tooltip : MonoBehaviour
 
     private void Update()
     {
-        bool show = !ShopUI.Instance.isActiveAndEnabled && !MinerUI.Instance.isActiveAndEnabled && transformToFollow != null;
-        image.enabled = show;
-        keyCodeTextField.enabled = show;
+        //bool show = !ShopUI.Instance.isActiveAndEnabled && !MinerUI.Instance.isActiveAndEnabled && transformToFollow != null;
+        //image.enabled = show;
+        //keyCodeTextField.enabled = show;
         Vector2 posToFollow = transformToFollow.position;
-        if (show)
+        //if (show)
         rectTransform.anchoredPosition = UI.Instance.RectCalculator.WorldToScreenPoint(posToFollow+offset);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
-public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHPListener, IWalletListener
+public class Miner : MonoBehaviour, IBatteryListener, IHPListener, IWalletListener
 {
     public Wallet Stored { get => stored; }
     public float Range { get => range; set { range = value; } }
@@ -26,7 +26,6 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
     {
         stored = ScriptableObject.CreateInstance<Wallet>();
         stored.AddListener(this);
-        GetComponent<Interactable>().AddListener(this);
     }
     private void OnEnable()
     {
@@ -58,10 +57,6 @@ public class Miner : MonoBehaviour, IInteractableListener, IBatteryListener, IHP
         if (powered) t.SetDiscoverability(Target.Discoverability.discoverable);
         else t.SetDiscoverability(Target.Discoverability.hidden);
         FireStateChanged();
-    }
-    public void Interact(Interactor interactor)
-    {
-        MinerUI.Instance.Open(this, interactor);
     }
     public void NewHP(float oldHP, float newHP)
     {

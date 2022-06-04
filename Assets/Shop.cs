@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shop : MonoBehaviour, IInteractableListener, IBatteryListener
+public class Shop : MonoBehaviour, IBatteryListener
 {
     [System.Serializable]
     private class Offer
@@ -25,21 +25,9 @@ public class Shop : MonoBehaviour, IInteractableListener, IBatteryListener
     [SerializeField] private List<Offer> offers;
     [SerializeField] private Transform interactorTransform;
 
-    private void Awake()
-    {
-        GetComponent<Interactable>().AddListener(this);
-    }
     private void Start()
     {
         Fullrestock();
-    }
-    void Update()
-    {
-        if (interactorTransform == null) return;
-        if ((interactorTransform.position - transform.position).magnitude >= loseUIRange)
-        {
-            Interact(null);
-        }
     }
     public void Fullrestock()
     {
@@ -55,28 +43,6 @@ public class Shop : MonoBehaviour, IInteractableListener, IBatteryListener
             offers.Add(offer);
         }
         FireStateChanged();
-    }
-    public void Interact(Interactor interactor)
-    {
-        if (interactor == null)
-        {
-            ShopUI.Instance.Close();
-            interactorTransform = null;
-        } else
-        {
-            if (interactorTransform == null)
-            {
-                ShopUI.Instance.Open(this);
-                interactorTransform = interactor.transform;
-            }
-            else
-            {
-                ShopUI.Instance.Close();
-                interactorTransform = null;
-            }
-        }
-        
-        
     }
     public void AddListener(IShopListener listener)
     {

@@ -44,18 +44,7 @@ public class ShopUI : MonoBehaviour, IShopListener, IWalletListener, IButtonRece
         {
             inventorySlots.Add(slot);
         }
-        Close();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        gameObject.SetActive(false);
     }
 
     public void Click(UIItemSlot slot, UIInventory inv)
@@ -84,12 +73,16 @@ public class ShopUI : MonoBehaviour, IShopListener, IWalletListener, IButtonRece
         PlayerInventoryAPI.Instance.Wallet.Shitcoin -= chosenCost;
         InventoryExtensions.QuickAdd(PlayerInventoryAPI.Instance.Main, chosenItem, chosenQuantity);
     }
-    public void Open(Shop shop)
+    void OnEnable()
     {
+        Shop shop = PopupSystem.Instance.CurrentRequest.interacted.GetComponent<Shop>();
         Close();
         shop.AddListener(this);
-        gameObject.SetActive(true);
         PlayerInventoryAPI.Instance.Wallet.AddListener(this);
+    }
+    void OnDisable()
+    {
+        Close();
     }
     public void Close()
     {
@@ -103,7 +96,6 @@ public class ShopUI : MonoBehaviour, IShopListener, IWalletListener, IButtonRece
             this.shop = null;
         }
         PlayerInventoryAPI.Instance.Wallet.RemoveListener(this);
-        gameObject.SetActive(false);
     }
     public void StateChanged(Shop shop)
     {

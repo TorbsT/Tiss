@@ -33,32 +33,29 @@ public class TurretUI : MonoBehaviour, ITurretListener
         }
         gameObject.SetActive(false);
     }
-    void Update()
-    {
-        if (interactor != null && turret != null)
-        {
-            if ((interactor.transform.position - turret.transform.position).magnitude > range) Close();
-        }
-    }
 
-    public void Open(Turret turret, Interactor interactor)
+    void OnEnable()
     {
+        Turret turret = PopupSystem.Instance.CurrentRequest.interacted.GetComponent<Turret>();
+        Interactor interactor = PopupSystem.Interactor;
         bool justClosing = this.turret != null;
         Close();
         if (!justClosing)
         {
             this.turret = turret;
             this.interactor = interactor;
-            gameObject.SetActive(true);
             turret.AddListener(this);
         }
     }
-    public void Close()
+    private void OnDisable()
+    {
+        Close();
+    }
+    private void Close()
     {
         if (this.turret != null) this.turret.RemoveListener(this);
         this.turret = null;
         this.interactor = null;
-        gameObject.SetActive(false);
     }
 
     public void ClickGunSlot(UIItemSlot slot)

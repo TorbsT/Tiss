@@ -5,17 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class UI : MonoBehaviour
 {
+    public enum State
+    {
+        Free,
+        Popup
+    }
     public RectCalculator RectCalculator => rectCalculator;
-    public RectTransform TooltipTransform => tooltipTransform;
+
     public RectTransform HealthbarTransform => healthbarTransform;
     public static UI Instance { get; private set; }
 
-    [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private GameObject deadMenu;
+
     [SerializeField] private GameObject COck;
-    [SerializeField] private RectTransform tooltipTransform;
+
     [SerializeField] private RectTransform healthbarTransform;
     private RectCalculator rectCalculator;
+    private State state;
     private bool dead;
     private void Awake()
     {
@@ -24,6 +29,46 @@ public class UI : MonoBehaviour
     }
     private void Update()
     {
+        if (dead) return;
+        if (state == State.Free)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                state = State.Popup;
+                PopupSystem.Instance.Pause();
+                InteractSystem.Instance.Hide();
+            }
+            else if (Input.GetKeyDown(KeyCode.F) && InteractSystem.Instance.CanInteract())
+            {
+                state = State.Popup;
+                PopupRequest request = InteractSystem.Instance.Interact();
+                PopupSystem.Instance.Request(request);
+                InteractSystem.Instance.Hide();
+            }
+        } else if (state == State.Popup)
+        {
+            bool exit = Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F);
+            PopupRequest request = PopupSystem.Instance.CurrentRequest;
+            Interactable interacted = request.interacted;
+            Interactor interactor = InteractSystem.Interactor;
+            Vector2 playerPos = interactor.transform.position;
+            
+            if (interacted != null)
+            {
+                Vector2 interactedPos = interacted.transform.position;
+                exit = exit || !interacted.Active || !interacted.isActiveAndEnabled;
+                exit = exit || (playerPos - interactedPos).magnitude > interacted.CloseRange;
+            }
+
+            if (exit)
+            {
+                state = State.Free;
+                PopupSystem.Instance.Hide();
+                InteractSystem.Instance.Show();
+            }
+            
+        }
+        /*
         if (!dead && Input.GetKeyDown(KeyCode.Escape))
         {
             bool startPause = !pauseMenu.activeSelf;
@@ -36,13 +81,13 @@ public class UI : MonoBehaviour
                 PauseSystem.Instance.Resume();
             }
         }
+        */
     }
     public void Died()
     {
         dead = true;
-        deadMenu.SetActive(true);
-        COck.SetActive(true);
-        PauseSystem.Instance.Pause();
+        state = State.Popup;
+        PopupSystem.Instance.Died();
     }
     public void Restart()
     {

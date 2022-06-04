@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [SelectionBase]
-public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener, IBatteryListener
+public class Turret : MonoBehaviour, IInventoryListener, IBatteryListener
 {
     public InventoryObject GunInventory => gunInventory;
     public InventoryObject AmmoInventory => ammoInventory;
@@ -38,7 +38,6 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener, 
     {
         gunInventory.AddListener(this);
         ammoInventory.AddListener(this);
-        GetComponent<Interactable>().AddListener(this);
     }
     void OnDisable()
     {
@@ -153,28 +152,6 @@ public class Turret : MonoBehaviour, IInventoryListener, IInteractableListener, 
         }
     }
 
-    public void Interact(Interactor interactor)
-    {
-        TurretUI.Instance.Open(this, interactor);
-        /*
-        Hotbar hb = interactor.GetComponent<Hotbar>();
-        int index = hb.ChosenIndex;
-
-        InventoryObject swappingInv = interactor.GetComponent<PlayerInventoryAPI>().Main;
-        if (gunInventory.GetSlotItem(0) == null && swappingInv.GetSlotItem(0) == null)
-        {
-            // Pick up turret
-            Drop d = GetComponent<Drop>();
-            swappingInv.Set(index, d.Item, 1);
-            GetComponent<Destroyable>().Destroy();
-        } else
-        {
-            // Swap items
-            InventoryExtensions.Swap(gunInventory, 0, swappingInv, index);
-        }
-        */
-        
-    }
     public void StateChanged(InventoryObject inv)
     {
         if (child != null)

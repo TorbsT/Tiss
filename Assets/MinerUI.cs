@@ -26,35 +26,32 @@ public class MinerUI : MonoBehaviour, IMinerListener
     private void Awake()
     {
         Instance = this;
-        Close();
+        gameObject.SetActive(false);
     }
-    private void Update()
+    void OnEnable()
     {
-        if (miner == null) return;
-        if ((interactor.transform.position-miner.transform.position).magnitude > maxDistance)
-        {
-            Close();
-        }
-    }
-    public void Open(Miner miner, Interactor interactor)
-    {
+        Miner miner = PopupSystem.Instance.CurrentRequest.interacted.GetComponent<Miner>();
+        Interactor interactor = PopupSystem.Interactor;
+
         bool justClosing = this.miner != null;
         Close();
         if (!justClosing)
         {
             this.miner = miner;
             this.interactor = interactor;
-            gameObject.SetActive(true);
             miner.AddListener(this);
         }
 
     }
-    public void Close()
+    private void OnDisable()
+    {
+        Close();
+    }
+    private void Close()
     {
         if (this.miner != null) this.miner.RemoveListener(this);
         this.miner = null;
         this.interactor = null;
-        gameObject.SetActive(false);
     }
 
     public void Move()

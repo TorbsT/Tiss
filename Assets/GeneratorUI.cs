@@ -24,39 +24,36 @@ public class GeneratorUI : MonoBehaviour, IGeneratorListener
     private void Awake()
     {
         Instance = this;
-        gameObject.SetActive(false);
         slots = new();
         foreach (UIItemSlot slot in inventoryWrapper.GetComponentsInChildren<UIItemSlot>())
         {
             slots.Add(slot);
         }
+        gameObject.SetActive(false);
     }
-    void Update()
+    void OnEnable()
     {
-        if (interactor != null && generator != null)
-        {
-            if ((interactor.transform.position - generator.transform.position).magnitude > range) Close();
-        }
-    }
-    public void Open(Generator generator, Interactor interactor)
-    {
+        Generator generator = PopupSystem.Instance.CurrentRequest.interacted.GetComponent<Generator>();
+        Interactor interactor = PopupSystem.Interactor;
         bool onlyClose = this.generator != null;
         Close();
         if (!onlyClose)
         {
             this.generator = generator;
             this.interactor = interactor;
-            gameObject.SetActive(true);
             generator.AddListener(this);
         }
     }
-    public void Close()
+    void OnDisable()
+    {
+        Close();
+    }
+    private void Close()
     {
         if (generator != null)
         generator.RemoveListener(this);
         generator = null;
         interactor = null;
-        gameObject.SetActive(false);
     }
     public void Clicked(UIItemSlot slot)
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using Pools;
 using Pathfinding;
 
-public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInventoryListener
+public class Generator : MonoBehaviour, IHPListener, IInventoryListener
 {
     private class PathfindingStep
     {
@@ -56,10 +56,6 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
         inventory = ScriptableObject.CreateInstance<InventoryObject>();
         inventory.SlotCount = 4;
         inventory.AddListener(this);
-    }
-    void Start()
-    {
-        GetComponent<Interactable>().AddListener(this);
     }
     // Start is called before the first frame update
     void OnEnable()
@@ -175,11 +171,6 @@ public class Generator : MonoBehaviour, IInteractableListener, IHPListener, IInv
         fuel = newFuel;
         Debug.Log("Æ");
         GeneratorSystem.Instance.NotifyPowerChanged();
-    }
-
-    public void Interact(Interactor interactor)
-    {
-        GeneratorUI.Instance.Open(this, interactor);
     }
     public void NewHP(float oldHP, float newHP)
     {

@@ -6,10 +6,18 @@ using Pools;
 public class Interactable : MonoBehaviour
 {
     public bool Active { get => active; set { active = value; } }
-    private HashSet<IInteractableListener> listeners = new();
-    private Tooltip tooltip;
+    public float OpenRange => openRange;
+    public float CloseRange => closeRange;
+    public Vector2 Offset => offset;
+
     [SerializeField] private bool active = true;
+    [SerializeField, Range(1f,10f)] private float openRange = 5f;
+    [SerializeField, Range(2f, 15f)] private float closeRange = 10f;
     [SerializeField] private Vector2 offset = Vector2.up*1f;
+
+    //private Tooltip tooltip;
+
+    /*
     public void Hover(Interactor interactor)
     {
         if (!active)
@@ -37,14 +45,6 @@ public class Interactable : MonoBehaviour
         TooltipPool.Instance.Enpool(tooltip);
         tooltip = null;
     }
-    public void AddListener(IInteractableListener listener)
-    {
-        listeners.Add(listener);
-    }
-    public void RemoveListener(IInteractableListener listener)
-    {
-        listeners.Remove(listener);
-    }
     public void Interact(Interactor interactor)
     {
         if (!active)
@@ -56,4 +56,5 @@ public class Interactable : MonoBehaviour
             listener.Interact(interactor);
         }
     }
+    */
 }

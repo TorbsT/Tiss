@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
+    /*
     private enum State
     {
         none,
@@ -82,4 +83,5 @@ public class Interactor : MonoBehaviour
             break;
         }
     }
+    */
 }
