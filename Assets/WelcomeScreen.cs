@@ -32,6 +32,7 @@ public class WelcomeScreen : MonoBehaviour, IEventListener
             if (loadingTime >= minLoadingTime && hide)
             {
                 fading = true;
+                EventSystem.DeclareEvent(Event.ScreenFade);
             }
         } else
         {

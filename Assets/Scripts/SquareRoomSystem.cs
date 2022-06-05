@@ -8,6 +8,7 @@ public class SquareRoomSystem : MonoBehaviour, IEventListener
 
     [SerializeField] private int mapSize;
     private Dictionary<Vector2Int, Room> dict = new();
+    [SerializeField, Range(0.5f, 3f)] private float shuffleDuration = 1f;
 
     private void Awake()
     {

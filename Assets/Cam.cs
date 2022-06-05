@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cam : MonoBehaviour, IHPListener
+public class Cam : MonoBehaviour, IHPListener, IEventListener
 {
     // Start is called before the first frame update
     private Transform following;
@@ -24,6 +24,7 @@ public class Cam : MonoBehaviour, IHPListener
     void Start()
     {
         Search();
+        EventSystem.AddEventListener(this, Event.ScreenFade);
     }
 
     private void Search()
@@ -63,5 +64,12 @@ public class Cam : MonoBehaviour, IHPListener
     public void NewHP(float oldHP, float newHP)
     {
         if (newHP < oldHP) animator.SetTrigger("hurt");
+    }
+    void IEventListener.EventDeclared(Event e)
+    {
+        if (e == Event.ScreenFade)
+        {
+            animator.SetTrigger("coolrotation");
+        }
     }
 }

@@ -75,6 +75,10 @@ public class Room : MonoBehaviour
 
     private bool newPowerOutdated;
 
+    private void Awake()
+    {
+        
+    }
     // Start is called before the first frame update
     void Start()
     {

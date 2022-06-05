@@ -24,11 +24,12 @@ public class RoundSystem : MonoBehaviour, IEventListener
     [SerializeField] private float time;
     [SerializeField] private float timerScalar = 1f;
     [SerializeField] private int round;
+    private bool started;
 
     private void Awake()
     {
         Instance = this;
-        EventSystem.AddEventListener(this, Event.LoaderFinished);
+        EventSystem.AddEventListener(this, Event.ScreenVisible);
         EventSystem.AddEventListener(this, Event.ZombiesKilledDuringWave);
     }
     void Start()
@@ -40,6 +41,7 @@ public class RoundSystem : MonoBehaviour, IEventListener
     // Update is called once per frame
     void Update()
     {
+        if (!started) return;
         time += Time.deltaTime*timerScalar;
         if (state == State.warmup)
         {
@@ -84,9 +86,10 @@ public class RoundSystem : MonoBehaviour, IEventListener
     }
     public void EventDeclared(Event e)
     {
-        if (e == Event.LoaderFinished)
+        if (e == Event.ScreenVisible)
         {
-            EventSystem.RemoveEventListener(this, Event.LoaderFinished);
+            EventSystem.RemoveEventListener(this, Event.ScreenVisible);
+            started = true;
             RoundChanged();
         } else if (e == Event.ZombiesKilledDuringWave)
         {
