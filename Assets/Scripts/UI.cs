@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UI : MonoBehaviour
+public class UI : MonoBehaviour, IEventListener
 {
     public enum State
     {
@@ -19,17 +19,24 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject COck;
 
     [SerializeField] private RectTransform healthbarTransform;
+    [SerializeField] private WelcomeScreen welcomeScreen;
     private RectCalculator rectCalculator;
     private State state;
     private bool dead;
+    private bool active;
     private void Awake()
     {
         Instance = this;
         rectCalculator = GetComponent<RectCalculator>();
+        welcomeScreen.gameObject.SetActive(true);
+    }
+    private void Start()
+    {
+        EventSystem.AddEventListener(this, Event.ScreenVisible);
     }
     private void Update()
     {
-        if (dead) return;
+        if (!active || dead) return;
         if (state == State.Free)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -96,5 +103,12 @@ public class UI : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu");
+    }
+    void IEventListener.EventDeclared(Event e)
+    {
+        if (e == Event.ScreenVisible)
+        {
+            active = true;
+        }
     }
 }

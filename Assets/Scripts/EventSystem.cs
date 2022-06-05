@@ -108,6 +108,8 @@ public enum Event
     PathfindingToPlayerDone,
     PowerChanged,
     RotationsDone,
+    ScreenVisible,
+    ShuffleDone,
     ZombiesKilledDuringWave
 }
 public interface IEventListener
