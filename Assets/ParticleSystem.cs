@@ -26,16 +26,16 @@ public class ParticleSystem : MonoBehaviour
         Instance = this;
     }
 
-    public void Spawn()
+    public static void Spawn()
     {
-        GameObject prefab = GetPrefab(particleName);
+        GameObject prefab = Instance.GetPrefab(Instance.particleName);
         if (prefab == null)
         {
-            Debug.LogWarning("Tried spawning particle " + particleName + ", but it does not exist");
+            Debug.LogWarning("Tried spawning particle " + Instance.particleName + ", but it does not exist");
             return;
         }
         GameObject go = EzPools.Instance.Depool(prefab);
-        go.transform.position = pos;
+        go.transform.position = Instance.pos;
     }
     private GameObject GetPrefab(string name)
     {

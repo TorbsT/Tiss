@@ -47,10 +47,13 @@ public class UI : MonoBehaviour, IEventListener
             }
             else if (Input.GetKeyDown(KeyCode.F) && InteractSystem.Instance.CanInteract())
             {
-                state = State.Popup;
                 PopupRequest request = InteractSystem.Instance.Interact();
-                PopupSystem.Instance.Request(request);
-                InteractSystem.Instance.Hide();
+                if (request != null)
+                {
+                    state = State.Popup;
+                    PopupSystem.Instance.Request(request);
+                    InteractSystem.Instance.Hide();
+                }
             }
         } else if (state == State.Popup)
         {

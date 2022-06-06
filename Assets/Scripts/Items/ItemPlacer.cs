@@ -41,6 +41,8 @@ public class ItemPlacer : MonoBehaviour
                 if (target != null) target.enabled = false;
                 HealthbarDisplayer hpdisplay = preview.GetComponent<HealthbarDisplayer>();
                 if (hpdisplay != null) hpdisplay.enabled = false;
+                Teleporter teleporter = preview.GetComponent<Teleporter>();
+                if (teleporter != null) teleporter.enabled = false;
 
             }
             oldPrefab = prefabToPreview;
@@ -88,6 +90,8 @@ public class ItemPlacer : MonoBehaviour
         if (interactable != null) interactable.Active = true;
         HealthbarDisplayer hpdisplay = go.GetComponent<HealthbarDisplayer>();
         if (hpdisplay != null) hpdisplay.enabled = true;
+        Teleporter teleporter = go.GetComponent<Teleporter>();
+        if (teleporter != null) teleporter.enabled = true;
 
         Placeable placeable = go.GetComponent<Placeable>();
         if (placeable != null)

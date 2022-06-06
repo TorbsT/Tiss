@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 6776636117233446819}
   - component: {fileID: 5292253935416127679}
   - component: {fileID: 8531843822839267752}
+  - component: {fileID: 6634956804206144529}
   m_Layer: 11
   m_Name: Miner
   m_TagString: Untagged
@@ -212,6 +213,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 1
+  openRange: 5
+  closeRange: 10
+  offset: {x: 0, y: 1}
 --- !u!114 &5341618693323424432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +408,21 @@ MonoBehaviour:
   offset: {x: 0, y: 1}
   gradientObject: {fileID: 11400000, guid: f540df0a5334a31458bf76f9cf1a2e1d, type: 2}
   displaying: 0
+--- !u!114 &6634956804206144529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231505188138191432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a42b66c2e897b469e3ba77117f1065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frames: []
+  rewinding: 0
+  localTime: 0
 --- !u!1 &8549232962340451261
 GameObject:
   m_ObjectHideFlags: 0

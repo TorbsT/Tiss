@@ -29,7 +29,7 @@ public class RoundSystem : MonoBehaviour, IEventListener
     private void Awake()
     {
         Instance = this;
-        EventSystem.AddEventListener(this, Event.ScreenVisible);
+        EventSystem.AddEventListener(this, Event.LoaderFinished);
         EventSystem.AddEventListener(this, Event.ZombiesKilledDuringWave);
     }
     void Start()
@@ -86,9 +86,9 @@ public class RoundSystem : MonoBehaviour, IEventListener
     }
     public void EventDeclared(Event e)
     {
-        if (e == Event.ScreenVisible)
+        if (e == Event.LoaderFinished)
         {
-            EventSystem.RemoveEventListener(this, Event.ScreenVisible);
+            EventSystem.RemoveEventListener(this, Event.LoaderFinished);
             started = true;
             RoundChanged();
         } else if (e == Event.ZombiesKilledDuringWave)

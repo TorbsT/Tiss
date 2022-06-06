@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 3583445339441506148}
   - component: {fileID: -2376856016738384899}
   - component: {fileID: -4565409465310942991}
+  - component: {fileID: -7112796683563005161}
   m_Layer: 11
   m_Name: Barricade
   m_TagString: Untagged
@@ -247,3 +248,18 @@ MonoBehaviour:
   offset: {x: 0, y: 1}
   gradientObject: {fileID: 11400000, guid: f540df0a5334a31458bf76f9cf1a2e1d, type: 2}
   displaying: 0
+--- !u!114 &-7112796683563005161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704098749425701253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a42b66c2e897b469e3ba77117f1065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frames: []
+  rewinding: 0
+  localTime: 0

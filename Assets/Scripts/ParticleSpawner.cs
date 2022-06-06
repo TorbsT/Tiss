@@ -20,6 +20,6 @@ public class ParticleSpawner : MonoBehaviour
         if (particle == "") return;
         ParticleSystem.Pos = transform.position;
         ParticleSystem.Particle = particle;
-        ParticleSystem.Instance.Spawn();
+        ParticleSystem.Spawn();
     }
 }

@@ -75,4 +75,10 @@ MonoBehaviour:
     item: {fileID: 11400000, guid: f6f07cd44b41fbb4b8532c31c43901e8, type: 2}
     quantity: 100
     cost: 1
+  - title: Teleporter
+    group: Teleporter
+    desc: Placeable. Allows you to instantly teleport between locations
+    item: {fileID: 11400000, guid: c7d34e05aedf48b47a16722888dd5ae1, type: 2}
+    quantity: 1
+    cost: 1
   seed: 1234

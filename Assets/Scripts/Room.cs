@@ -26,7 +26,8 @@ public class Room : MonoBehaviour
     public int Power { get => power; }
     public Direction NewDirection { get => newDirection; }
     public Transform MachineSpawn { get => machineSpawn; }
-    public Transform SmallMachineSpawn { get => smallMachineSpawn; }
+    public Transform[] SmallMachineSpawns { get => smallMachineSpawns; }
+    public int SmallMachines { get => smallMachines; set { smallMachines = value; } }
     public int NewRotation { get => newRotation; set { newRotation = value;
             if (newRotation % 4 == 0) newDirection = Direction.NORTH;
             else if (newRotation % 4 == 1) newDirection = Direction.EAST;
@@ -49,7 +50,7 @@ public class Room : MonoBehaviour
     [SerializeField] private Gradient lightGradient;
     [SerializeField] private SpriteRenderer[] renderers;
     [SerializeField] private Transform machineSpawn;
-    [SerializeField] private Transform smallMachineSpawn;
+    [SerializeField] private Transform[] smallMachineSpawns;
     [SerializeField] private Border[] borders;
 
     private HashSet<Vector2Int> neighbours;
@@ -58,6 +59,7 @@ public class Room : MonoBehaviour
     private Dictionary<Generator, int> powerSources = new();
     private HashSet<IPowerListener> powerListeners = new();
 
+    private int smallMachines;
     private int rotation;
     private int power;
 

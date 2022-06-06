@@ -45,7 +45,7 @@ public class InteractSystem : MonoBehaviour
         Vector2 mousePos = UI.Instance.RectCalculator.ScreenPointToWorld(Input.mousePosition);
         foreach (Interactable interactable in FindObjectsOfType<Interactable>())
         {
-            if (!interactable.Active || !interactable.isActiveAndEnabled) return;
+            if (!interactable.Active || !interactable.isActiveAndEnabled) continue;
             Vector2 p = interactable.transform.position;
             if ((p-interactorPos).sqrMagnitude <= Mathf.Pow(interactable.OpenRange,2))
             {
@@ -93,16 +93,24 @@ public class InteractSystem : MonoBehaviour
 
     internal PopupRequest Interact()
     {
-        PopupRequest r = new PopupRequest
+        Teleporter teleporter = hovering.GetComponent<Teleporter>();
+        if (teleporter != null)
         {
-            closeRange = hovering.CloseRange,
-            interacted = hovering
-        };
-        if (hovering.GetComponent<Generator>() != null) r.popup = GeneratorUI.Instance.gameObject;
-        else if (hovering.GetComponent<Turret>() != null) r.popup = TurretUI.Instance.gameObject;
-        else if (hovering.GetComponent<Miner>() != null) r.popup = MinerUI.Instance.gameObject;
-        else if (hovering.GetComponent<Shop>() != null) r.popup = ShopUI.Instance.gameObject;
-        return r;
+            TeleporterSystem.Instance.Teleport(interactor.transform, teleporter);
+            return null;
+        } else
+        {
+            PopupRequest r = new PopupRequest
+            {
+                closeRange = hovering.CloseRange,
+                interacted = hovering
+            };
+            if (hovering.GetComponent<Generator>() != null) r.popup = GeneratorUI.Instance.gameObject;
+            else if (hovering.GetComponent<Turret>() != null) r.popup = TurretUI.Instance.gameObject;
+            else if (hovering.GetComponent<Miner>() != null) r.popup = MinerUI.Instance.gameObject;
+            else if (hovering.GetComponent<Shop>() != null) r.popup = ShopUI.Instance.gameObject;
+            return r;
+        }
     }
 
     internal void Show()

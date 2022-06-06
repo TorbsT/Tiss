@@ -20,6 +20,7 @@ public class RewindBomb : MonoBehaviour
     {
         life = 0f;
         rangeVisualizer.transform.localScale = Vector3.one * range;
+        GetComponent<Rigidbody2D>().angularVelocity = (Random.value-0.5f) * 360f*2f;
     }
 
     // Update is called once per frame
@@ -30,6 +31,7 @@ public class RewindBomb : MonoBehaviour
         {
             // Explode
             RewindSystem.Instance.StartRewind(transform.position, range, speed, duration);
+            Cam.Instance.Shake();
             GetComponent<Destroyable>().Destroy();
         }
     }
