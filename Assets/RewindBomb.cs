@@ -19,7 +19,7 @@ public class RewindBomb : MonoBehaviour
     private void OnEnable()
     {
         life = 0f;
-        rangeVisualizer.transform.localScale = Vector3.one * range/0.15f;
+        rangeVisualizer.transform.localScale = Vector3.one * range;
     }
 
     // Update is called once per frame

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RewindBomb
   m_EditorClassIdentifier: 
   name: Rewind bomb
-  inventorySprite: {fileID: 21300000, guid: 4e5d0154480f6c24394d6773ae7660eb, type: 3}
+  inventorySprite: {fileID: 21300000, guid: 03ac22c8a464fe445a75b180be348201, type: 3}
   prefab: {fileID: 1110324732487006568, guid: 13d84f3413b67234b91abe467084eea4, type: 3}
   id: rewindbomb
   tags: bomb
