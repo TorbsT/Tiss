@@ -1,6 +1,6 @@
 <h1>Tiss</h1>
 <p>Tiss is a top-down survival/horde game. Build your base and defend against waves of zombies in an ever-changing maze.</p>
-<p>Version 1.0 - Iteration 2 (MVP)</p>
+<p>Version 1.1 - Iteration 3</p>
 <img src="/Resources/TissShowcase.png" alt="Yep" title="Fjert">
 
 <h2>How to play</h2>
