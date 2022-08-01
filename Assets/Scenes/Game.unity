@@ -7440,6 +7440,8 @@ MonoBehaviour:
     prefab: {fileID: 8605351529257564505, guid: 9247999a4f2ed6b40ac02cc000b8199e, type: 3}
   - name: teleport
     prefab: {fileID: 774895169887281635, guid: d8a44b3bb8959a648b0fbc79fc0a2a39, type: 3}
+  - name: blood
+    prefab: {fileID: 5388683830382004992, guid: 0386adb569992b54bb7fc65564c8b1a0, type: 3}
   - name: fizzle
     prefab: {fileID: 8605351529257564505, guid: 9247999a4f2ed6b40ac02cc000b8199e, type: 3}
   pos: {x: 0, y: 0}

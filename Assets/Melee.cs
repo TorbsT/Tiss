@@ -44,6 +44,9 @@ public class Melee : MonoBehaviour
             hitPos = collider.transform.position;
             collider.attachedRigidbody.AddForce((hitPos - origin) * knockback);
             collider.GetComponent<HP>()?.Decrease(20);
+            ParticleSystem.Particle = "blood";
+            ParticleSystem.Pos = hitPos;
+            ParticleSystem.Spawn();
         }
     }
     private void Update()

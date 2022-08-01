@@ -9,6 +9,8 @@ public class Bullet : MonoBehaviour
     public BulletSO SO { get => so; set { so = value; } }
     private BulletSO so;
     [SerializeField] private float life;
+    [SerializeField] private string hitZombieParticle = "blood";
+    [SerializeField] private string hitWallParticle = "pebble";
     private bool shotOff = false;
 
     // Cached
@@ -36,7 +38,13 @@ public class Bullet : MonoBehaviour
             if (GetComponent<Team>().CanInjure(otherTeam))
             {
                 otherTeam.GetComponent<HP>().Decrease(so.Damage);
+                ParticleSystem.Particle = hitZombieParticle;
+            } else
+            {
+                ParticleSystem.Particle = hitWallParticle;
             }
+            ParticleSystem.Pos = collision.collider.transform.position;
+            ParticleSystem.Spawn();
         }
         Despawn();
     }
