@@ -87,10 +87,10 @@ public class Hands : MonoBehaviour, IHotbarListener
                 holsteredWeapon = holsteredGO.GetComponent<Weapon>();
                 holsteredMelee = holsteredGO.GetComponent<Melee>();
                 holsteredGun = holsteredGO.GetComponent<Gun>();
-                Collider2D collider = holsteredGO.GetComponent<Collider2D>();
-                if (collider != null) collider.enabled = false;
-                Rigidbody2D rb = holsteredGO.GetComponent<Rigidbody2D>();
-                if (rb != null) rb.simulated = false;
+                //Collider2D collider = holsteredGO.GetComponent<Collider2D>();
+                //if (collider != null) collider.enabled = false;
+                //Rigidbody2D rb = holsteredGO.GetComponent<Rigidbody2D>();
+                //if (rb != null) rb.simulated = false;
                 holsteredGO.GetComponent<Holsterable>().Holster(this);
             }
             if (prefab.GetComponent<Placeable>() != null)
