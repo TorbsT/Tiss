@@ -7197,6 +7197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1333484837}
+  - component: {fileID: 1333484856}
   - component: {fileID: 1333484836}
   - component: {fileID: 1333484844}
   - component: {fileID: 1333484847}
@@ -7214,6 +7215,9 @@ GameObject:
   - component: {fileID: 1333484840}
   - component: {fileID: 1333484853}
   - component: {fileID: 1333484851}
+  - component: {fileID: 1333484855}
+  - component: {fileID: 1333484854}
+  - component: {fileID: 1333484857}
   m_Layer: 0
   m_Name: Systems
   m_TagString: Untagged
@@ -7487,6 +7491,57 @@ MonoBehaviour:
   disappearParticle: teleport
   appearParticle: teleport
   teleporters: []
+--- !u!114 &1333484854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333484835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a943071830843a948a7418ec0cc88977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1333484855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333484835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7061c7ffdf3f01c44a262d30c2598f19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1333484856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333484835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8749f521afa98364893564847c112683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  From: {x: -1, y: -1}
+  To: {x: 3, y: 4}
+  mode: 2
+--- !u!114 &1333484857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333484835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e0be90b87dd6a4f9515a6130de1f19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1365510226
 GameObject:
   m_ObjectHideFlags: 0

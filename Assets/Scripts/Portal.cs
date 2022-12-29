@@ -14,11 +14,11 @@ public class Portal : MonoBehaviour
 
     private void OnEnable()
     {
-        PortalSystem.Instance.Add(this);
+        //PortalSystem.Instance.Add(this);
     }
     private void OnDisable()
     {
-        PortalSystem.Instance.Remove(this);
+        //PortalSystem.Instance.Remove(this);
     }
     private void Update()
     {

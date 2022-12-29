@@ -38,9 +38,11 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     private Sprite lightEyesSprite;
     private new SpriteRenderer renderer;
     private Locomotion locomotion;
+    public Transform Subgoal { get => subgoal; set { subgoal = value; } }
+    public Target Target { get => Target; set { target = value; } }
     private Transform subgoal;
-    private TargetChooser chooser;
     private Target target;
+    private TargetChooser chooser;
     private Pathfinder pathfinder;
     private HashSet<Transform> collisions = new();
     private LookAt lookat;
@@ -72,15 +74,17 @@ public class Zombie : MonoBehaviour, IPathfinderListener, ITargetChooserListener
     }
     private void OnEnable()
     {
-        PathfindingSystem.Instance.AddZombie(this);
-        ZombieSystem.Instance.Track(this);
+        //PathfindingSystem.Instance.AddZombie(this);
+        //ZombieSystem.Instance.Track(this);
+        ZombieBrainSystem.Instance.ZombieSpawned(this);
         collisions = new();
         GetComponent<HP>().Set(100f);
     }
     private void OnDisable()
     {
-        PathfindingSystem.Instance.RemoveZombie(this);
-        ZombieSystem.Instance.Untrack(this);
+        //PathfindingSystem.Instance.RemoveZombie(this);
+        //ZombieSystem.Instance.Untrack(this);
+        ZombieBrainSystem.Instance.ZombieDespawned(this);
     }
     
     void OnCollisionEnter2D(Collision2D collision)

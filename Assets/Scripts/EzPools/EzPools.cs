@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class EzPools : MonoBehaviour
 {
     public GameObject UIItemPrefab => uiItemPrefab;
@@ -9,6 +10,10 @@ public class EzPools : MonoBehaviour
     private readonly Dictionary<string, Pool> dict = new();
 
     private void Awake()
+    {
+        Instance = this;
+    }
+    private void OnEnable()
     {
         Instance = this;
     }
@@ -94,6 +99,7 @@ public class EzPools : MonoBehaviour
         }
         public void Enpool(GameObject go)
         {
+            if (go == null) Debug.LogError("Tried enpooling null");
             queue.Enqueue(go);
             pooled++;
             released--;

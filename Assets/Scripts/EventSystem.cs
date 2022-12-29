@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class EventSystem : MonoBehaviour
 {
     // Intended as replacement for SystemListeners.
@@ -101,6 +102,10 @@ public class EventSystem : MonoBehaviour
 }
 public enum Event
 {
+    // Procedural
+    ChunksRecalculated,
+
+    // Square
     LoaderFinished,
     MasterStarted,
     NewRound,

@@ -10,6 +10,7 @@ public class Destroyable : MonoBehaviour
     [SerializeField] private bool debug;
     [SerializeField] private EzPools.Pool connected;
     private bool destroyed;
+    private bool quitting;
 
     public void JustInstantiated(EzPools.Pool pool)
     {
@@ -32,9 +33,11 @@ public class Destroyable : MonoBehaviour
     }
     public void Destroy()
     {
+        if (QuittingSystem.Quitting) return;
         if (connected == null)
         {
-            GameObject.Destroy(gameObject);
+            if (Application.isEditor) DestroyImmediate(gameObject);
+            else GameObject.Destroy(gameObject);
             Log("DESTROYED");
         } else
         {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SquareRoomSystem : MonoBehaviour, IEventListener
+public class SquareRoomSystem : MonoBehaviour, IEventListener, ICoordinateSystem
 {
     public static SquareRoomSystem Instance { get; private set; }
 

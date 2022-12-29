@@ -137,6 +137,10 @@ public class Room : MonoBehaviour
         else return loc.x > id.x;
     }
 
+    public ICollection<Vector2Int> GetNeighbours()
+    {
+        return neighbours;
+    }
     public ICollection<Room> GetAccessibleRooms()
     {
         HashSet<Room> rooms = new();
@@ -284,7 +288,7 @@ public class Room : MonoBehaviour
 
         rotation = newRotation;
         rotanimRunning = false;
-        RotationSystem.Instance.FinishedRotating(this);
+        //RotationSystem.Instance.FinishedRotating(this);
     }
     public void AllOtherRoomsLoaded()
     {
@@ -292,6 +296,7 @@ public class Room : MonoBehaviour
     }
     private void UpdateBorders()
     {
+        /*
         foreach (Border border in borders)
         {
             Direction absDirection = RelativeToAbsoluteDirection(border.RelativeDirection);
@@ -301,6 +306,7 @@ public class Room : MonoBehaviour
             if (debug) Debug.Log(r.id + " " + loc + " " + absDirection + " " + border.RelativeDirection);
             border.gameObject.SetActive(show);
         }
+        */
     }
     private Room GetRoom(Vector2Int loc) => SquareRoomSystem.Instance.LocToRoom(loc);
     private Vector2Int RelativeToAbsLoc(Vector2Int loc) => id + loc;
