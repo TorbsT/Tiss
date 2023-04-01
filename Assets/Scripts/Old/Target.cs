@@ -29,11 +29,11 @@ namespace Pathfinding
         [Header("DEBUG")]
         [SerializeField] private bool targetable;
         [SerializeField] private float timeSinceLocCheck;
-        [SerializeField] private bool outdated;
+        //[SerializeField] private bool outdated;
         [SerializeField] private Vector2Int loc;
         [SerializeField] private AllToOne allToOne;
         [SerializeField] private Discoverability discoverability;
-        [SerializeField] private State state;
+        //[SerializeField] private State state;
         private RoomDweller dweller;
         private void Awake()
         {
@@ -41,7 +41,7 @@ namespace Pathfinding
         }
         private void OnEnable()
         {
-            outdated = true;
+            //outdated = true;
             discoverability = Discoverability.hidden;
             RegisterTarget();
         }
@@ -53,18 +53,18 @@ namespace Pathfinding
         {
             if (dweller == null || dweller.Room == null)
             {
-                state = State.outOfBounds;
+                //state = State.outOfBounds;
                 allToOne = null;
             } else
             {
                 allToOne = dweller.Room.GetComponent<AllToOne>();
                 if (allToOne == null)
                 {
-                    state = State.unreadyRoom;
+                    //state = State.unreadyRoom;
                     PathfindingSystem.Instance.RequestAllToOne(this);
                 } else
                 {
-                    state = State.readyRoom;
+                    //state = State.readyRoom;
                 }
             }
         }
@@ -94,7 +94,7 @@ namespace Pathfinding
         }
         public void MarkOutdated()
         {
-            outdated = true;
+            //outdated = true;
             allToOne = null;
         }
     }

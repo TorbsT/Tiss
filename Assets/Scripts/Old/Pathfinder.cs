@@ -28,7 +28,7 @@ namespace Pathfinding
         [SerializeField] private Room currentRoom;
         [SerializeField] private Vector2Int currentLoc;
         [SerializeField] private bool outdated;
-        [SerializeField] private State state = State.noTarget;
+        //[SerializeField] private State state = State.noTarget;
         [SerializeField] private float subGoalDistanceRequirement;
         [SerializeField] private float timeSinceReachedCheck;
         private HashSet<IPathfinderListener> listeners = new();
@@ -55,7 +55,7 @@ namespace Pathfinding
         {
             if (target == null)
             {
-                state = State.noTarget;
+                //state = State.noTarget;
                 return;
             }
 
@@ -74,7 +74,7 @@ namespace Pathfinding
                 Transform newSubgoal = null;
                 if (currentRoom == null)
                 {
-                    state = State.outOfBounds;
+                    //state = State.outOfBounds;
                     //newSubgoal = target.transform;
                     newSubgoal = BorderSystem.Instance.GetClosest(transform.position).transform;
                     subGoalDistanceRequirement = 0.5f;
@@ -85,7 +85,7 @@ namespace Pathfinding
                     if (ato != null) node = ato.GetNode(currentRoom);
                     if (node == null)
                     {  // no path available
-                        state = State.noPathAvailable;
+                        //state = State.noPathAvailable;
                         newSubgoal = target.transform;
                         subGoalDistanceRequirement = 0f;
                     } else
@@ -94,13 +94,13 @@ namespace Pathfinding
                         if (closerNeighbours.Count == 0)
                         {  // In same room
                             Debug.Log(node.Room + " is closest");
-                            state = State.inSameRoom;
+                            //state = State.inSameRoom;
                             newSubgoal = target.transform;
                             subGoalDistanceRequirement = 0f;
                         }
                         else
                         {  // Has some closer rooms
-                            state = State.navigatingToNextRoom;
+                            //state = State.navigatingToNextRoom;
                             subGoalDistanceRequirement = roomReachedDistance;
                             int chosenIndex = Random.Range(0, closerNeighbours.Count);
                             int i = 0;
