@@ -12,8 +12,8 @@ TagManager:
   - Water
   - UI
   - Bullet
-  - Player
-  - DroppedItem
+  - SpriteUI
+  - PierceBullet
   - Wall
   - Zombie
   - Barricade
@@ -21,7 +21,7 @@ TagManager:
   - WorldBorder
   - Bomb
   - Teleporter
-  - 
+  - Lights
   - 
   - 
   - 
