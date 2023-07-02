@@ -9,15 +9,22 @@ namespace Assets.Scripts.Systems
 {
     using Components;
     using Extensions;
+    using TorbuTils.Giraphe;
+
     internal class BuildSystem : MonoBehaviour
     {
         public static BuildSystem Instance { get; private set; }
+
+        public event Action<Vector2Int, GameObject> JustBuilt;
 
         [SerializeField] private List<GameObject> towerPrefabs = new();
         private Dictionary<Vector2Int, GameObject> towers = new();
         private HashSet<Vector2Int> loadedLocs = new();
         private HashSet<Vector2Int> emptylocs = new();
+        private HashSet<Vector2Int> litlocs = new();
+        private HashSet<Vector2Int> buildablelocs = new();
 
+        public Dictionary<Vector2Int, GameObject> Towers => towers;
         private void Awake()
         {
             Instance = this;
@@ -25,14 +32,16 @@ namespace Assets.Scripts.Systems
         private void OnEnable()
         {
             ChunkLoader.Instance.LoadedDelta += LoadDelta;
+            LightGraph.Instance.Updated += LightUpdated;
             LoadDelta(ChunkLoader.Instance.CopyLoaded());
         }
         private void OnDisable()
         {
             ChunkLoader.Instance.LoadedDelta -= LoadDelta;
+            LightGraph.Instance.Updated -= LightUpdated;
         }
-        public ICollection<Vector2Int> CopyEmptyLocs() => emptylocs.Copy();
-        public bool IsEmpty(Vector2Int loc) => emptylocs.Contains(loc);
+        public ICollection<Vector2Int> CopyBuildableLocs() => buildablelocs.Copy();
+        public bool CanBuild(Vector2Int loc) => buildablelocs.Contains(loc);
         public void Build(string towerName, Vector2Int loc, float rot)
         {
             GameObject prefab;
@@ -52,7 +61,9 @@ namespace Assets.Scripts.Systems
             if (orientation != null)
                 orientation.Local = rot - room.transform.eulerAngles.z;
             emptylocs.Remove(loc);
-            // Invoke event
+            towers.Add(loc, go);
+            RefreshBuildable();
+            JustBuilt?.Invoke(loc, go);
         }
         public ICollection<string> CopyTowerNames()
         {
@@ -67,6 +78,28 @@ namespace Assets.Scripts.Systems
                 loadedLocs.Add(loc);
                 emptylocs.Add(loc);  // Change if implementing unload
             }
+            RefreshBuildable();
+        }
+        private void LightUpdated()
+        {
+            litlocs = new();
+            foreach (var loc in LightGraph.Instance.Graph.CopyNodes())
+            {
+                object obj = LightGraph.Instance.Graph
+                    .GetSatellite(loc, Settings.CostSatellite);
+                if (obj == null) continue;
+                int darkness = (int)obj;
+                if (darkness > 1) continue;
+                litlocs.Add(loc);
+            }
+            RefreshBuildable();
+        }
+        private void RefreshBuildable()
+        {
+            buildablelocs = new();
+            foreach (var loc in emptylocs)
+                buildablelocs.Add(loc);
+            buildablelocs.IntersectWith(litlocs);
         }
     }
 }

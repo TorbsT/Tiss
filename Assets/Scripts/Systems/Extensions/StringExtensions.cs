@@ -18,7 +18,9 @@ namespace Assets.Scripts.Systems.Extensions
             if (value == null) return null;
             string[] parts = value.Split(",");
             if (parts.Length != 2) return null;
-            result = new(int.Parse(parts[0]), int.Parse(parts[1]));
+            string xString = parts[0];
+            string yString = parts[1];
+            result = new(int.Parse(xString), int.Parse(yString));
             return result;
         }
         internal static int? Range(this string command)

@@ -27,8 +27,9 @@ namespace Assets.Scripts.Systems.Towers
 
         protected void Heat(T turret, float amount, float? falloff = null, int? range = null)
         {
-            Vector2Int loc = turret.GetLoc();
             HeatSpreadSystem s = HeatSpreadSystem.Instance;
+            if (s == null) return;
+            Vector2Int loc = turret.GetLoc();
             s.Heat(loc, amount, falloff, range);
         }
         protected virtual void UpgradesChanged() { }

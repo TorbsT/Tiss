@@ -11,8 +11,12 @@ namespace Assets.Scripts.Systems.Towers
     internal class IceTowerSystem : TowerSystem<IceTower>
     {
         [SerializeField] private Projectile projectilePrefab;
-        [SerializeField] private float heatSpread = -0.1f;
-        [SerializeField] private float cooldownBetweenShots = 0.2f;
+
+        protected override void JustEnabled()
+        {
+            SetFloat("heat", -0.01f);
+            SetFloat("cooldown", 1.5f);
+        }
         protected override void Tick(ICollection<IceTower> turrets)
         {
             foreach (var icetower in turrets)
@@ -22,14 +26,14 @@ namespace Assets.Scripts.Systems.Towers
                 bool shoot = icetower.CachedAcquirer.HasTarget;
                 if (shoot)
                 {
-                    icetower.Cooldown = cooldownBetweenShots;
+                    icetower.Cooldown = GetFloat("cooldown").Value;
                     var projectile =
                         ((ProjectileSystem)ProjectileSystem.Instance)
                         .Shoot(icetower.ShotOrigin, projectilePrefab);
                     projectile.ImpactAction += Impact;
                     VFXSystem.Instance.Play
                         (VFXSystem.Instance.IceBullet, projectile.transform);
-                    Heat(icetower, heatSpread);
+                    Heat(icetower, GetFloat("heat").Value);
                 }
             }
         }
@@ -37,7 +41,6 @@ namespace Assets.Scripts.Systems.Towers
         {
             VFXSystem.Instance.Play
                 (VFXSystem.Instance.IceImpact, projectile.transform.position);
-            //Rigidbody2D.AddForce(Vector2.down);
         }
     }
 }

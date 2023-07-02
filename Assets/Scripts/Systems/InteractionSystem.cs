@@ -15,6 +15,18 @@ namespace Assets.Scripts.Systems
         private GameObject hovered;
         private GameObject hoveredSprite;
         private GameObject hoveredUIElement;
+
+        private List<IInteractionHandler> handlers = new();
+
+        private void Start()
+        {
+            handlers = new();
+            foreach (var handler in FindObjectsOfType<MonoBehaviour>()
+                .OfType<IInteractionHandler>())
+            {
+                handlers.Add(handler);
+            }
+        }
         private void Update()
         {
             hoveredSprite = GetHoveredSprite();
@@ -44,16 +56,22 @@ namespace Assets.Scripts.Systems
         }
         private void Hover(GameObject go)
         {
-            ShopSystem.Instance.Hover(go);
+            Tooltip.TooltipData data = null;
+            foreach (var handler in handlers)
+            {
+                Tooltip.TooltipData newData = handler.Hover(go);
+                if (data == null)
+                    data = newData;
+            }
+            TooltipSystem.Instance.ShowTooltip(data);
             Interact(go, obj => obj.Hovered = true);
         }
         private void Unhover(GameObject go)
             => Interact(go, obj => obj.Hovered = false);
         private void Select(GameObject go, bool trigger)
         {
-            ShopSystem.Instance.Select(go);
-            InfoSystem.Instance.Select(go);
-            ChestSystem.Instance.Select(go);
+            foreach (var handler in handlers)
+                handler.Select(go);
             if (!trigger)
                 Interact(go, obj => obj.Selected = true);
         }
@@ -125,5 +143,10 @@ namespace Assets.Scripts.Systems
             }
             return null;
         }
+    }
+    public interface IInteractionHandler
+    {
+        Tooltip.TooltipData Hover(GameObject go);
+        void Select(GameObject go);
     }
 }

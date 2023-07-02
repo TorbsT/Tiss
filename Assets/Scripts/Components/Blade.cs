@@ -14,7 +14,8 @@ namespace Assets.Scripts.Components
         public HashSet<Collider2D> CollidedSinceLastCheck { get; set; } = new();
         protected override void Collided(
             ICollection<Collider2D> enterColliders,
-            ICollection<Collider2D> exitColliders)
+            ICollection<Collider2D> exitColliders,
+            ICollection<Collider2D> stayColliders)
         {
             foreach (var collider in enterColliders)
             {

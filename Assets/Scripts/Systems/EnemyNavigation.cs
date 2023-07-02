@@ -12,6 +12,7 @@ namespace Assets.Scripts.Systems
     internal class EnemyNavigation : MonoBehaviour
     {
         public static EnemyNavigation Instance { get; private set; }
+        public event Action Updated;
         public Graph<Vector2Int> Graph => navGraph;
         [SerializeField] private int iterationsEachTick = 1000;
         private bool running;
@@ -50,11 +51,11 @@ namespace Assets.Scripts.Systems
                 if (i % iterationsEachTick == 0)
                     yield return null;
             }
-                
 
             navGraph = dijkstra.ResultTree;
             running = false;
             GetComponent<Graph2DVisualizer>().Set(navGraph);
+            Updated?.Invoke();
         }
     }
 }

@@ -10,13 +10,13 @@ namespace Assets.Scripts.Systems
 {
     internal class VFXSystem : MonoBehaviour
     {
-        private class Effect
+        public class Effect
         {
-            public VisualEffect VFX { get; set; }
-            public Transform Follow { get; set; }
-            public bool StartLinger { get; set; }
-            public float LingerAge { get; set; }
-            public float LingerLifetime { get; set; }
+            internal VisualEffect VFX { get; set; }
+            internal Transform Follow { get; set; }
+            internal bool StartLinger { get; set; }
+            internal float LingerAge { get; set; }
+            internal float LingerLifetime { get; set; }
         }
         public static VFXSystem Instance { get; private set; }
 
@@ -28,11 +28,15 @@ namespace Assets.Scripts.Systems
         private Dictionary<VisualEffect, Effect> follows = new();
         private Dictionary<Transform, List<VisualEffect>> enpoolLookup = new();
 
-        public void Play(VisualEffect effectPrefab, Vector2 pos)
+        public void Stop(Effect effect)
+        {
+            Stop(effect.VFX);
+        }
+        public Effect Play(VisualEffect effectPrefab, Vector2 pos)
         => Play(effectPrefab, null, pos);
-        public void Play(VisualEffect effectPrefab, Transform follow)
+        public Effect Play(VisualEffect effectPrefab, Transform follow)
         => Play(effectPrefab, follow, follow.position);
-        private void Play(VisualEffect effectPrefab, Transform follow, Vector2 pos)
+        private Effect Play(VisualEffect effectPrefab, Transform follow, Vector2 pos)
         {
             VisualEffect vfx = PoolSystem.Depool
                 (effectPrefab.gameObject).GetComponent<VisualEffect>();
@@ -53,6 +57,7 @@ namespace Assets.Scripts.Systems
             }
             vfx.transform.position = pos;
             vfx.Play();
+            return value;
         }
         private void Awake()
         {
@@ -104,10 +109,14 @@ namespace Assets.Scripts.Systems
             if (!enpoolLookup.ContainsKey(go.transform)) return;
             foreach (var vfx in enpoolLookup[go.transform])
             {
-                Effect effect = follows[vfx];
-                effect.StartLinger = true;
-                vfx.Stop();
+                Stop(vfx);
             }
+        }
+        private void Stop(VisualEffect vfx)
+        {
+            Effect effect = follows[vfx];
+            effect.StartLinger = true;
+            vfx.Stop();
         }
     }
 }

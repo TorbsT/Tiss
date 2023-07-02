@@ -21,7 +21,9 @@ namespace Assets.Scripts.Components
         [field: SerializeField] public float Local { get; set; }
         [field: SerializeField] public float Goal { get; set; }
         [field: SerializeField] public bool TargetOutOfFOV { get; set; }
-        public float Global => Local + transform.parent.eulerAngles.z;
+        public float Global => transform.parent != null ? 
+            Local + transform.parent.eulerAngles.z :
+            Local;
 
         private void OnDrawGizmos()
         {

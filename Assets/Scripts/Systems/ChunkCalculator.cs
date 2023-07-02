@@ -38,7 +38,6 @@ namespace Assets.Scripts.Systems
 
         private void Awake()
         {
-            Debug.Log("gaa");
             Instance = this;
         }
         void OnDrawGizmos()

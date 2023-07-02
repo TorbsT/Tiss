@@ -16,6 +16,8 @@ namespace Assets.Scripts.Systems
         public event Action StateChanged;
 
         [SerializeField] private Gradient disturbanceGradient;
+        [SerializeField] private Gradient coldGradient;
+        [SerializeField, Range(0f, 1f)] private float resetToDisturbance = 0.75f;
         [SerializeField, Range(-1f, 1f)] private float disturbancePerSecond;
         private readonly HashSet<Room> rooms = new();
 
@@ -32,7 +34,7 @@ namespace Assets.Scripts.Systems
             room.Disturbance += amount;
             if (room.Disturbance >= 1f)
             {
-                room.Disturbance -= 1f;
+                room.Disturbance += resetToDisturbance-1f;
                 RotationSystem.Instance.AddRotation(room.gameObject, 1, false);
             }
             if (room.Disturbance <= 0f) room.Disturbance = 0f;
@@ -60,6 +62,7 @@ namespace Assets.Scripts.Systems
         }
         private void Update()
         {
+            if (disturbancePerSecond != 0f)
             foreach (Room room in rooms)
             {
                 Heat(room.Loc, disturbancePerSecond*Time.deltaTime);

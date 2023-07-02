@@ -22,6 +22,8 @@ namespace Assets.Scripts.Systems
                 upgradables.Add(upgradable);
         }
 
+        public bool TowerExists(string tower)
+            => GetTower(tower) != null;
         public void SetBool(string tower, string name, bool value)
             => GetTower(tower).SetBool(name, value);
         public void SetFloat(string tower, string name, float value)

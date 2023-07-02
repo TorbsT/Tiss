@@ -16,7 +16,7 @@ namespace Assets.Scripts.Systems.Towers
             {
                 foreach (var collided in blade.CollidedSinceLastCheck)
                 {
-                    ((EnemySystem)EnemySystem.Instance).Damage(collided, blade.Damage);
+                    EnemySystem.Instance.Damage(collided, blade.Damage);
                 }
                 blade.CollidedSinceLastCheck.Clear();
             }

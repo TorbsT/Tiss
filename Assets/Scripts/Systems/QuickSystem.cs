@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Systems.Extensions;
+﻿using Assets.Scripts.Components;
+using Assets.Scripts.Systems.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,11 @@ namespace Assets.Scripts.Systems
             T component = go.GetComponent<T>();
             if (component == null) return;
             ActiveComponents.Add(component);
+            if (ComponentDict.ContainsKey(go))
+            {
+                Debug.LogWarning($"{go} is not enpooled but was depooled");
+                ComponentDict.Remove(go);
+            }
             ComponentDict.Add(go, component);
             JustDepooledComponent(component);
             //JustDepooled?.Invoke(component);

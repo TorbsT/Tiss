@@ -23,7 +23,7 @@ namespace Assets.Scripts.Systems
             // Zoom
             float zoom = -Input.mouseScrollDelta.y;
             float newSize = cachedCamera.orthographicSize +
-                zoom * cachedCamera.orthographicSize*zoomSpeed;
+                zoom * cachedCamera.orthographicSize*zoomSpeed*Time.deltaTime;
             newSize = Mathf.Clamp(newSize, 0.1f, 100f);
             cachedCamera.orthographicSize = newSize;
 
@@ -32,7 +32,7 @@ namespace Assets.Scripts.Systems
             float ver = Input.GetAxisRaw("Vertical");
             Vector2 pos = cachedCamera.transform.position;
             Vector2 newPos = pos + 
-                new Vector2(hor, ver)*panSpeed*cachedCamera.orthographicSize;
+                new Vector2(hor, ver)*panSpeed*cachedCamera.orthographicSize*Time.deltaTime;
             cachedCamera.transform.position = new(newPos.x, newPos.y, -10);
         }
     }

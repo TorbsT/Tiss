@@ -67,12 +67,12 @@ namespace Assets.Scripts.Systems.Towers
         }
         protected override void JustEnabled()
         {
-            SetFloat("dmg", 20f);
+            SetFloat("dmg", 10f);
             SetInt("count", 4);
             SetFloat("speed", 1f);
-            SetFloat("spinup", 2f);
+            SetFloat("spinup", 10f);
             SetFloat("spindown", 4f);
-            SetFloat("heat", 0.02f);
+            SetFloat("heat", 0.001f);
         }
         protected override void JustDepooledComponent(Bladesaw component)
         {

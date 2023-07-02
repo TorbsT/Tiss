@@ -12,7 +12,8 @@ namespace Assets.Scripts.Systems
     using TorbuTils.Giraphe;
     internal class EnemySystem : QuickSystem<Enemy>
     {
-        [SerializeField] private GameObject fleshEaterPrefab;
+        public static new EnemySystem Instance { get; private set; }
+        [field: SerializeField] public List<Enemy> EnemyPrefabs { get; private set; }
         private int instanceIdCounter = 0;
         private Dictionary<int, Enemy> instances = new();
 
@@ -26,14 +27,25 @@ namespace Assets.Scripts.Systems
             if (enemy == null) return;
             enemy.Health -= amount;
             if (enemy.Health <= 0)
+            {
+                CurrencySystem.Instance.Balance += enemy.Bounty;
                 PoolSystem.Enpool(enemy.gameObject);
+            }
         }
-        internal void Summon(Vector2Int loc)
+        public Enemy Summon(Vector2 pos, string name = null)
         {
-            GameObject go = PoolSystem.Depool(fleshEaterPrefab);
+            if (name == null)
+                name = EnemyPrefabs
+                    [UnityEngine.Random.Range(0, EnemyPrefabs.Count)]
+                    .gameObject.name;
+            GameObject go = PoolSystem.Depool
+                (EnemyPrefabs.Find(match => match.gameObject.name == name).gameObject);
             Enemy enemy = go.GetComponent<Enemy>();
             enemy.Health = enemy.MaxHealth;
-            go.transform.position = loc+0.5f * 0.8f * UnityEngine.Random.insideUnitCircle;
+            go.transform.position = pos+0.02f * UnityEngine.Random.insideUnitCircle;
+            float angle = UnityEngine.Random.Range(0f, 360f);
+            go.transform.localRotation = Quaternion.Euler(new(0f, 0f, angle));
+            return enemy;
         }
         internal bool IsAlive(int instanceId)
             => GetByInstance(instanceId) != null ?
@@ -43,6 +55,10 @@ namespace Assets.Scripts.Systems
             if (!instances.ContainsKey(instanceId))
                 return null;
             return instances[instanceId];
+        }
+        protected override void JustEnabled()
+        {
+            Instance = this;
         }
         protected override void JustDepooledComponent(Enemy enemy)
         {
@@ -54,6 +70,7 @@ namespace Assets.Scripts.Systems
         {
             if (instances.ContainsKey(enemy.InstanceId))
                 instances.Remove(enemy.InstanceId);
+            //Debug.Log($"enpool: {ComponentDict.Count} {enemy.InstanceId}");
         }
         protected override void Tick(ICollection<Enemy> components)
         {

@@ -11,8 +11,8 @@ namespace Assets.Scripts.Systems
     using Extensions;
     internal class WorldGraph : MonoBehaviour
     {
-        public Graph<Vector2Int> Graph => graph;
         public static WorldGraph Instance { get; private set; }
+        public Graph<Vector2Int> Graph => graph;
 
         private readonly Graph<Vector2Int> graph = new();
         private readonly HashSet<Vector2Int> loaded = new();

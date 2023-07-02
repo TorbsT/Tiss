@@ -22,7 +22,7 @@ namespace Assets.Scripts.Systems
         public Graph<Vector2Int> Graph => graph;
         private Dictionary<Vector2Int, Room> rooms = new();
         private HashSet<Vector2Int> recentlyUpdated = new();
-        private Graph<Vector2Int> graph = new();
+        private readonly Graph<Vector2Int> graph = new();
         public event Action<ICollection<Vector2Int>> NodesUpdated;
         private void Awake()
         {
@@ -78,7 +78,6 @@ namespace Assets.Scripts.Systems
                 recentlyUpdated.Add(a);
                 recentlyUpdated.Add(b);
             }
-
         }
         public void Disconnect(Vector2Int a, Vector2Int b)
         {

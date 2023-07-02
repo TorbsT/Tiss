@@ -13,7 +13,13 @@ namespace Assets.Scripts.Systems.Towers
     internal class FlamethrowerSystem : TowerSystem<Flamethrower>
     {
         [SerializeField] private Projectile projectilePrefab;
-        [SerializeField] private float heatSpread = 0.1f;
+        protected override void JustEnabled()
+        {
+            SetFloat("heat", 0.01f);
+            SetFloat("dmg", 0f);
+            SetFloat("burndmg", 10f);
+            SetFloat("burnduration", 4f);
+        }
         protected override void Tick(ICollection<Flamethrower> turrets)
         {
             foreach (var flamethrower in turrets)
@@ -22,9 +28,14 @@ namespace Assets.Scripts.Systems.Towers
                 VisualEffect vfx = flamethrower.CachedVisualEffect;
                 if (shoot)
                 {
+                    Projectile projectile =
                     ((ProjectileSystem)ProjectileSystem.Instance)
                         .Shoot(flamethrower.ShotOrigin, projectilePrefab);
-                    Heat(flamethrower, heatSpread * Time.deltaTime);
+                    projectile.Debuffs = new();
+                    projectile.Debuffs.Add(new("burn", GetFloat("burnduration").Value,
+                        GetFloat("burndmg").Value));
+                    projectile.DPS = GetFloat("dmg").Value;
+                    Heat(flamethrower, GetFloat("heat").Value * Time.deltaTime);
                     if (!flamethrower.Shooting)
                     {
                         flamethrower.Shooting = true;

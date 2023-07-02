@@ -13,7 +13,10 @@ namespace Assets.Scripts.Systems
     {
         public void LookAt(Component component, Vector2 target)
         {
-            LookAt(ComponentDict[component.gameObject], target);
+            if (!ComponentDict.ContainsKey(component.gameObject))
+                return;
+            Look look = ComponentDict[component.gameObject];
+            LookAt(look, target);
         }
         public void LookAt(Look look, Vector2 target)
         {
@@ -78,43 +81,6 @@ namespace Assets.Scripts.Systems
                 look.LookingDirectly = aimExactly;
                 Vector3 newEuler = new Vector3(currentEuler.x, currentEuler.y, newAngle);
                 look.transform.rotation = Quaternion.Euler(newEuler);
-
-                /*
-                Vector2 pos = look.transform.position;
-                Vector3 currentEuler = look.transform.rotation.eulerAngles;
-                float current = currentEuler.z;
-
-                float goal = Vector2.Angle(Vector2.right, look.Target-pos);
-                if (goal < 0) goal = 360f - goal;
-                goal %= 360f;
-
-                //int facing = (int)look.Facing;
-                //current -= 90f * facing;
-                //current %= 360f;
-                //goal += 90f * facing;
-                //goal %= 360f;
-
-                float diff = goal - current;
-                //if (Mathf.Abs(diff) > 180f)
-                //    diff = 180f - (diff % 180f);
-                float tickSpeed = 1000f;
-                if (look.Object != null) 
-                    tickSpeed = Time.deltaTime*look.Object.TurnSpeed*360f;
-                float newAngle;
-                bool aimExactly = Mathf.Abs(diff) <= tickSpeed;
-                if (aimExactly)
-                    newAngle = goal;
-                else
-                    if (diff > 0)
-                        newAngle = current + tickSpeed;
-                    else
-                        newAngle = current - tickSpeed;
-                look.LookingDirectly = aimExactly;
-
-                Vector3 newEuler = new(currentEuler.x, currentEuler.y, newAngle);
-                look.transform.rotation = Quaternion.Euler(newEuler);
-                //Debug.Log(current + " " + goal);
-                */
             }
         }
     }

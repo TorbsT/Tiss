@@ -11,6 +11,7 @@ namespace Assets.Scripts.Components
     {
         [field: SerializeField] public float Health { get; set; }
         [field: SerializeField] public float MaxHealth { get; set; } = 100f;
+        [field: SerializeField] public int Bounty { get; set; } = 10;
 
         public int InstanceId { get; set; } = -1;
     }

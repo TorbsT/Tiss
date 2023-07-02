@@ -28,21 +28,21 @@ namespace Assets.Scripts.Components.Towers
         [field: SerializeField] public float DPS { get; set; } = 1f;
         [field: SerializeField, Range(0f, 360f)] public float Spread { get; set; } = 5f;
         [field: SerializeField] public Vector2 InitialSpeedRange { get; set; } = Vector2.one;
-        // Todo burn & other effects
 
         // Other
         public float MaxAge { get; set; }
         public float Age { get; set; }
+        public List<Debuff> Debuffs { get; set; } = new();
         public HashSet<Collider2D> CurrentCollisions { get; set; } = new();
         public Action<Projectile, GameObject> ImpactAction { get; set; }
         protected override void Collided(
             ICollection<Collider2D> enterColliders,
-            ICollection<Collider2D> exitColliders)
+            ICollection<Collider2D> exitColliders,
+            ICollection<Collider2D> stayColliders
+            )
         {
-            foreach (var collider in enterColliders)
+            foreach (var collider in stayColliders)
                 CurrentCollisions.Add(collider);
-            foreach (var collider in exitColliders)
-                CurrentCollisions.Remove(collider);
         }
         private void OnValidate()
         {

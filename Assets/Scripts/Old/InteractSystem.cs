@@ -8,7 +8,6 @@ public class InteractSystem : MonoBehaviour
     public static Interactor Interactor => Instance.interactor;
     public static InteractSystem Instance { get; private set; }
 
-
     [SerializeField] private RectTransform tooltipWrapper;
     private Tooltip tooltip;
 

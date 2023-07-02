@@ -35,11 +35,15 @@ namespace Assets.Scripts.Systems
             Transform t = go.transform;
             float animTime = RotationTime;
             if (immediate) animTime = 0f;
-            
+
+            float startValue = t.rotation.eulerAngles.z;
+            float endValue = -90f * r.Rotation;
+            endValue = Mathf.DeltaAngle(startValue, endValue);
+            endValue += startValue;
             Anim<float> rotationAnim = new()
             {
-                StartValue = t.rotation.eulerAngles.z,
-                EndValue = -90f * r.Rotation,
+                StartValue = startValue,
+                EndValue = endValue,
                 Action = (value) => t.rotation = 
                     Quaternion.identity* Quaternion.Euler(0f, 0f, value),
                 Curve = RotationCurve,

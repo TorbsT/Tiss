@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Systems
 {
-    internal class InfoSystem : MonoBehaviour
+    internal class InfoSystem : MonoBehaviour, IInteractionHandler
     {
         public static InfoSystem Instance { get; private set; }
         [field: SerializeField] public RectTransform InfoWrapper { get; private set; }
@@ -24,6 +24,10 @@ namespace Assets.Scripts.Systems
             {
                 Show(null);
             }
+        }
+        public Tooltip.TooltipData Hover(GameObject go)
+        {
+            return null;
         }
 
         private void Awake()

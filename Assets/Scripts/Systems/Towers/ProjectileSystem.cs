@@ -30,6 +30,8 @@ namespace Assets.Scripts.Systems.Towers
             projectile.transform.Rotate(0f, 0f, spreadInstance);
             projectile.CachedRigidbody.velocity = projectile.transform.right*speed;
 
+            // DPS?
+
             projectile.MaxAge = lifetime;
             projectile.Age = 0f;
             projectile.CurrentCollisions = new();
@@ -41,15 +43,23 @@ namespace Assets.Scripts.Systems.Towers
             {
                 foreach (var hitCollider in projectile.CurrentCollisions.Copy())
                 {
+                    if (!hitCollider.gameObject.activeSelf)
+                        continue;
                     float damage = projectile.DPS;
                     if (projectile.DespawnOnCollision != Projectile.CollisionMode.Any)
                         damage *= Time.fixedDeltaTime;
 
                     projectile.ImpactAction?.Invoke(projectile, hitCollider.gameObject);
+                    foreach (var debuff in projectile.Debuffs)
+                        DebuffManager.Instance.Apply(
+                            hitCollider, 
+                            debuff.Name, 
+                            debuff.Duration, 
+                            debuff.Value);
 
                     Enemy enemy = hitCollider.GetComponent<Enemy>();
-                    if (enemy != null)
-                        ((EnemySystem)EnemySystem.Instance).Damage(enemy, damage);
+                    if (enemy != null && enemy.isActiveAndEnabled)
+                        EnemySystem.Instance.Damage(enemy, damage);
 
                     if (projectile.DespawnOnCollision == Projectile.CollisionMode.None)
                         continue;
@@ -61,8 +71,9 @@ namespace Assets.Scripts.Systems.Towers
                     projectile.Age = projectile.MaxAge;
                     break;
                 }
+                projectile.CurrentCollisions = new();
 
-                projectile.Age += Time.deltaTime;
+                projectile.Age += Time.fixedDeltaTime;
                 if (projectile.Age >= projectile.MaxAge)
                 {
                     projectile.ImpactAction = null;

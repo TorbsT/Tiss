@@ -29,11 +29,19 @@ namespace Assets.Scripts.Systems
                 LocomotionObject obj = loco.Object;
                 Rigidbody2D rb = loco.Rb;
 
+                float handicap = 1f - Mathf.Clamp(loco.Handicap, 0f, 1f);
+                float allMultiplier = loco.AllMultiplier*handicap;
+                float acceleration = obj.Acceleration*loco.AllMultiplier;
+                float deceleration = obj.Deceleration*loco.AllMultiplier;
+                float speed = obj.BaseSpeed*loco.AllMultiplier;
+
                 Vector2 oldVelocity = rb.velocity;
                 float oldMagnitude = oldVelocity.magnitude;
 
+                loco.Handicap -= Time.fixedDeltaTime;
+
                 float standstillMagnitude =
-                    oldMagnitude - obj.Deceleration * Time.fixedDeltaTime;
+                    oldMagnitude - deceleration * Time.fixedDeltaTime;
                 standstillMagnitude = Mathf.Max(0f, standstillMagnitude);
 
                 if (loco.IntendedDirection == Vector2.zero)
@@ -45,10 +53,10 @@ namespace Assets.Scripts.Systems
                 else
                 {
                     // Accelerate
-                    if (obj.Acceleration == 0f) return;
+                    if (acceleration == 0f) return;
 
                     Vector2 walkVelocity =
-                        oldVelocity + obj.Acceleration * Time.fixedDeltaTime *
+                        oldVelocity + acceleration * Time.fixedDeltaTime *
                         loco.IntendedDirection.normalized;
                     float walkMagnitude = walkVelocity.magnitude;
 
@@ -60,13 +68,13 @@ namespace Assets.Scripts.Systems
                     }
                     else
                     {
-                        if (walkMagnitude > obj.BaseSpeed)
+                        if (walkMagnitude > speed)
                         {
                             Vector2 newVelocity =
                                 walkVelocity.normalized *
-                                (oldMagnitude - obj.Deceleration);
-                            if (newVelocity.magnitude < obj.BaseSpeed)
-                                newVelocity = newVelocity.normalized * obj.BaseSpeed;
+                                (oldMagnitude - deceleration);
+                            if (newVelocity.magnitude < speed)
+                                newVelocity = newVelocity.normalized * speed;
                             rb.velocity = newVelocity;
                         }
                         else
@@ -76,7 +84,7 @@ namespace Assets.Scripts.Systems
                         }
                     }
 
-                    walkMagnitude = Mathf.Min(obj.BaseSpeed, walkMagnitude);
+                    walkMagnitude = Mathf.Min(speed, walkMagnitude);
                     walkVelocity *= walkMagnitude / walkVelocity.magnitude;
 
                     rb.velocity = walkVelocity;

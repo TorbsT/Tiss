@@ -13,7 +13,16 @@ namespace Assets.Scripts.Systems
 
         private void Start()
         {
-            Invoke(nameof(Execute), 1f);
+            ChunkLoader.Instance.LoadedDelta += Loaded;
+        }
+        private void OnDisable()
+        {
+            ChunkLoader.Instance.LoadedDelta -= Loaded;
+        }
+        private void Loaded(Dictionary<Vector2Int, GameObject> loaded)
+        {
+            ChunkLoader.Instance.LoadedDelta -= Loaded;
+            Execute();
         }
         private void Execute()
         {
